@@ -1,2 +1,2 @@
 # POS-System
-POS System: FrontEnd [React + Ant.Design], BackenEnd [NodeJS + MySQL(on docker) + Sequelize]
+POS System: front-end [React + Ant.Design], back-end [NodeJS + MySQL(on docker) + Sequelize]

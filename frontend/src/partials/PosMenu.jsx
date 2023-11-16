@@ -12,6 +12,12 @@ import authStore from '../stores/authStore';
 
 const PosMenu = () => {
 	const navigate = useNavigate();
+
+	const logout = () => {
+		authStore.logout();
+		navigate('/login');
+	}
+
 	return (
 		<Menu
 			theme="dark"
@@ -36,10 +42,7 @@ const PosMenu = () => {
 			<Menu.Item
 				key="/logout"
 				icon={<LogoutOutlined />}
-				onClick={() => {
-					authStore.logout();
-					navigate('/login');
-				}}
+				onClick={logout}
 			>
 				Logout
 			</Menu.Item>

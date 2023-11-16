@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Layout } from 'antd';
 import { observer } from 'mobx-react';
-
 import PosMenu from './PosMenu';
 import {
 	MenuUnfoldOutlined,
@@ -10,8 +9,7 @@ import {
 	SettingOutlined,
 } from '@ant-design/icons';
 
-import { SiteLayout } from './PosLayout.style';
-//import Spinner from '../components/Spinner';
+import { SettingBtnWrap, SiteLayout, Title } from './PosLayout.style';
 
 const { Header, Sider, Content } = Layout;
 
@@ -25,20 +23,12 @@ const DefaultLayout = observer(() => {
 	return (
 		<SiteLayout>
 			<Layout>
-				{/*loading && <Spinner />*/}
 				<Sider trigger={null} collapsible collapsed={collapsed}>
-					<div className="logo">
-						<h1 className="text-center text-light font-wight-bold mt-4">
-							POS
-						</h1>
-					</div>
+					<Title>POS</Title>
 					<PosMenu />
 				</Sider>
 				<Layout className="site-layout">
-					<Header
-						className="site-layout-background"
-						style={{ padding: 0 }}
-					>
+					<Header className="site-layout-background">
 						{React.createElement(
 							collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
 							{
@@ -46,18 +36,11 @@ const DefaultLayout = observer(() => {
 								onClick: toggle,
 							},
 						)}
-						<div style={{ marginRight: '15px', cursor: 'pointer' }}>
+						<SettingBtnWrap>
 							<SettingOutlined />
-						</div>
+						</SettingBtnWrap>
 					</Header>
-					<Content
-						className="site-layout-background"
-						style={{
-							margin: '24px 16px',
-							padding: 24,
-							minHeight: 280,
-						}}
-					>
+					<Content className="site-layout-background">
 						<Outlet />
 					</Content>
 				</Layout>

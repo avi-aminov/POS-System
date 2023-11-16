@@ -1,0 +1,106 @@
+###
+GET http://localhost:3003/
+
+###
+POST http://localhost:3003/notes
+Content-Type: application/json
+
+{
+    "title": "test 2",
+    "body": "body test 2"
+}
+
+###
+GET http://localhost:3003/notes
+
+###
+GET http://localhost:3003/notes/653197a07ef405ca7deffdd7
+
+###
+PUT http://localhost:3003/notes/653197a07ef405ca7deffdd7
+Content-Type: application/json
+
+{
+    "title": "test 22",
+    "body": "body test 22"
+}
+
+###
+DELETE http://localhost:3003/notes/653197a07ef405ca7deffdd7
+
+
+###
+GET http://localhost:3003/check-auth
+
+
+###
+GET http://localhost:3003/logout
+
+
+###
+POST http://localhost:3003/sigup
+Content-Type: application/json
+
+{
+    "email": "demo@demo.com",
+    "password": "demo"
+}
+
+###
+POST http://localhost:3003/login
+Content-Type: application/json
+
+{
+    "email": "demo@demo.com",
+    "password": "demo"
+}
+
+
+###
+POST http://localhost:3003/contacts
+Content-Type: application/json
+
+{
+    "firstName": "first 1",
+    "lastName": "last 2",
+    "email": "email2@email2.com",
+    "role": 2,
+    "tags": [],
+    "company": "company",
+    "phone": "+972508321126",
+    "website": "https://www.google.com/",
+    "address": "בית פורת מורדכי 71",
+    "city": "אור יהודה",
+    "state": "",
+    "zip": "1233445",
+    "country": "ישראל"
+}
+
+###
+GET http://localhost:3003/contacts
+
+
+
+###
+GET http://localhost:3003/categories
+
+
+###
+GET http://localhost:3003/products
+
+
+###
+GET http://localhost:3003/customers
+
+
+
+###
+POST http://localhost:3003/sigup
+Content-Type: application/json
+
+{
+    "name": "demo",
+    "userId": "demo",
+    "password": "demo",
+    "verified": true
+}

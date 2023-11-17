@@ -20,6 +20,16 @@ const DefaultLayout = observer(() => {
 		setCollapsed(!collapsed);
 	};
 
+	const renderCollapsedButton = () => {
+		return React.createElement(
+			collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+			{
+				className: 'trigger',
+				onClick: toggle,
+			},
+		)
+	};
+
 	return (
 		<SiteLayout>
 			<Layout>
@@ -29,13 +39,7 @@ const DefaultLayout = observer(() => {
 				</Sider>
 				<Layout className="site-layout">
 					<Header className="site-layout-background">
-						{React.createElement(
-							collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-							{
-								className: 'trigger',
-								onClick: toggle,
-							},
-						)}
+						{renderCollapsedButton()}
 						<SettingBtnWrap>
 							<SettingOutlined />
 						</SettingBtnWrap>

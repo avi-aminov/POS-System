@@ -7,10 +7,10 @@ import {
 	MinusCircleOutlined,
 } from '@ant-design/icons';
 import { observer } from 'mobx-react';
-import cartStore from '../stores/cartStore';
-import settingStore from '../stores/settingsStore';
-import customersStore from '../stores/customersStore';
-import ordersStore from '../stores/ordersStore';
+import cartStore from '../../stores/cartStore';
+import settingStore from '../../stores/settingsStore';
+import customersStore from '../../stores/customersStore';
+import ordersStore from '../../stores/ordersStore';
 
 const Cashier = observer(() => {
 	const serverURL = import.meta.env.VITE_SERVER_URL;
@@ -251,7 +251,7 @@ const Cashier = observer(() => {
 								<div className="flex-grow-1">
 									<Select
 										showSearch
-										placeholder="Select a person"
+										placeholder="Select customer"
 										optionFilterProp="children"
 										onChange={onChange}
 										onSearch={onSearch}

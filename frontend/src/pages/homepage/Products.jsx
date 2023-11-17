@@ -3,7 +3,7 @@ import { Row, Col } from 'antd';
 import { observer } from 'mobx-react';
 import categoriesStore from '../../stores/categoriesStore';
 import productsStore from '../../stores/productsStore';
-import ItemList from '../../components/ItemList';
+import ItemList from './ItemList';
 
 const Products = observer(() => {
 	useEffect(() => {

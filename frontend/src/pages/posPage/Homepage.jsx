@@ -1,27 +1,26 @@
 import { Row, Col } from 'antd';
-
+import Cashier from '../homepage/Cashier';
 import { observer } from 'mobx-react';
 import Categories from './Categories';
 import Products from './Products';
 import ProductSearch from './ProductSearch';
-import Cashier from './Cashier';
-
-import { CategoriesWrap, ProductWrap } from './Homepage.style';
+import '../../App.css';
+import { CategoriesWrap } from './Homepage.style';
 
 const Homepage = observer(() => {
+	const maxW7 = {
+		maxWidth: '65%',
+	};
 
 	return (
 		<Row>
-			<ProductWrap>
-				<Col flex={3}>
-					<CategoriesWrap>
-						<Categories />
-						<ProductSearch />
-					</CategoriesWrap>
-					<Products />
-				</Col>
-			</ProductWrap>
-
+			<Col style={maxW7} flex={3}>
+				<CategoriesWrap>
+					<Categories />
+					<ProductSearch />
+				</CategoriesWrap>
+				<Products />
+			</Col>
 			<Cashier />
 		</Row>
 	);

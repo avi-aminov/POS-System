@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import categoriesStore from '../../stores/categoriesStore';
+import { CategoriesItem, CategoriesWrap, CategoryWrapper } from './Categories.style';
 
 const Categories = observer(() => {
 	const serverURL = import.meta.env.VITE_SERVER_URL;
@@ -9,64 +10,38 @@ const Categories = observer(() => {
 		categoriesStore.fetchCategories();
 	}, []);
 
-	const itemStyle = {
-		display: 'flex',
-		flexDirection: 'column-reverse',
-		justifyContent: 'center',
-		alignItems: 'center',
-	};
-
-	const categoryStyle = {
-		width: '100%',
-		justifyContent: 'center',
-		cursor: 'pointer',
-	};
-
-	const catWrap = {
-		alignItems: 'end',
-		marginBottom: '20px',
-	};
-
 	return (
-		<div className="d-flex" style={catWrap}>
-			<div
-				key="all"
-				style={categoryStyle}
-				className={`d-flex category ${
-					categoriesStore.selecedCategory === 0 && 'category-active'
-				}`}
+		<CategoriesWrap>
+			<CategoryWrapper
+				isSelected={categoriesStore.selecedCategory === 0}
 				onClick={() => categoriesStore.setSelecedCategory(0)}
 			>
-				<div style={itemStyle}>
-					<h4 style={{ fontSize: '16px' }}>All</h4>
-				</div>
-			</div>
-			{categoriesStore.categories &&
-				categoriesStore.categories.map((category) => (
-					<div
-						key={category.name}
-						style={categoryStyle}
-						className={`d-flex category ${
-							categoriesStore.selecedCategory === category.id &&
-							'category-active'
-						}`}
-						onClick={() =>
-							categoriesStore.setSelecedCategory(category.id)
-						}
-					>
-						<div style={itemStyle}>
-							<h4 style={{ fontSize: '16px' }}>
-								{category.name}
-							</h4>
-							<img
-								style={{ width: '80px' }}
-								src={`${serverURL}/uploads/${category.image}`}
-								alt=""
-							/>
-						</div>
-					</div>
-				))}
-		</div>
+				<CategoriesItem>
+					<h4>All</h4>
+					<img
+						src={`${serverURL}/global/select-all.jpg`}
+						alt=""
+					/>
+				</CategoriesItem>
+			</CategoryWrapper>
+
+			{categoriesStore.categories && categoriesStore.categories.map((category) => (
+				<CategoryWrapper
+					key={category.name}
+					isSelected={categoriesStore.selecedCategory === category.id &&
+						'category-active'}
+					onClick={() => categoriesStore.setSelecedCategory(category.id)}
+				>
+					<CategoriesItem>
+						<h4>{category.name}</h4>
+						<img
+							src={`${serverURL}/uploads/${category.image}`}
+							alt=""
+						/>
+					</CategoriesItem>
+				</CategoryWrapper>
+			))}
+		</CategoriesWrap>
 	);
 });
 

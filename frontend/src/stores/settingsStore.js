@@ -5,6 +5,7 @@ const settingsStore = observable({
 		currencySymbol: '$',
 		direction: 'ltr',
 		tax: 17,
+		lang: 'eng'
 	},
 
 	getTax() {

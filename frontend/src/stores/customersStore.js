@@ -4,6 +4,7 @@ import { observable, action, toJS } from 'mobx';
 const customersStore = observable({
 	customers: [],
 	selectedCustomers: null,
+	showAddCustomerDrawer: false,
 
 	// create data
 	createForm: {
@@ -44,7 +45,7 @@ const customersStore = observable({
 	}),
 
 	// create new Customer
-	createNote: action(async function () {
+	createCutsomer: action(async function () {
 		console.log('createForm', toJS(this.createForm));
 		const res = await axios.post('/customers', this.createForm);
 		if (res) {

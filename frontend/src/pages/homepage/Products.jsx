@@ -12,25 +12,19 @@ const Products = observer(() => {
 
 	return (
 		<Row>
-			{productsStore.products &&
-				productsStore.products
-					.filter(
-						(item) =>
-							(item.categoryID ===
-								categoriesStore.selecedCategory ||
-								categoriesStore.selecedCategory === 0) &&
-							(item.name
-								.toLowerCase()
-								.includes(
-									productsStore.searchQuery.toLowerCase(),
-								) ||
-								productsStore.searchQuery === ''),
-					)
-					.map((item) => (
-						<Col key={item.id} xs={24} lg={6} md={12} sm={6}>
-							<ItemList key={item.id} item={item} />
-						</Col>
-					))}
+			{productsStore.products && productsStore.products
+				.filter(
+					(item) =>
+						(item.categoryID === categoriesStore.selecedCategory ||
+							categoriesStore.selecedCategory === 0) &&
+						(item.name.toLowerCase().includes(productsStore.searchQuery.toLowerCase()) ||
+							productsStore.searchQuery === ''),
+				)
+				.map((item) => (
+					<Col key={item.id} xs={24} lg={6} md={12} sm={6}>
+						<ItemList key={item.id} item={item} />
+					</Col>
+				))}
 		</Row>
 	);
 });

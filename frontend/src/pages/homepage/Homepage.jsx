@@ -1,27 +1,23 @@
-import { Row, Col } from 'antd';
-
 import { observer } from 'mobx-react';
+import { Row, Col } from 'antd';
 import Categories from './Categories';
-import Products from './Products';
 import ProductSearch from './ProductSearch';
+import Products from './Products';
 import Cashier from './Cashier';
-
-import { CategoriesWrap, ProductWrap } from './Homepage.style';
+import { CategoriesAndProductSearchWrap, ProductWrap } from './Homepage.style';
 
 const Homepage = observer(() => {
-
 	return (
 		<Row>
 			<ProductWrap>
 				<Col flex={3}>
-					<CategoriesWrap>
+					<CategoriesAndProductSearchWrap>
 						<Categories />
 						<ProductSearch />
-					</CategoriesWrap>
+					</CategoriesAndProductSearchWrap>
 					<Products />
 				</Col>
 			</ProductWrap>
-
 			<Cashier />
 		</Row>
 	);

@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { Button, Drawer, Form, Row, Space, Col, Input } from 'antd';
 import { observer } from 'mobx-react';
 import customersStore from '../../stores/customersStore';
+import dictionaryStore from '../../stores/dictionaryStore';
 
 const AddCustomerDrawer = observer(() => {
-
     useEffect(() => {
         customersStore.fetchCustomers();
     }, []);
@@ -30,41 +30,39 @@ const AddCustomerDrawer = observer(() => {
 
     return (
         <Drawer
-            title="Add New Customer"
+            title={dictionaryStore.getString('add_new_customer')}
             width={720}
             onClose={onClose}
             open={customersStore.showAddCustomerDrawer}
-            styles={{
-                body: {
-                    paddingBottom: 80,
-                },
-            }}
             extra={
                 <Space>
-                    <Button onClick={onClose}>Cancel</Button>
-                    <Button onClick={createCutsomer} type="primary">
-                        Add
+                    <Button type="primary" onClick={onClose} danger>
+                        {dictionaryStore.getString('cancel')}
+                    </Button>
+
+                    <Button type="primary" onClick={createCutsomer}>
+                        {dictionaryStore.getString('add')}
                     </Button>
                 </Space>
             }
         >
-            <Form layout="vertical" hideRequiredMark>
+            <Form layout="vertical">
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
                             onChange={createCustomerFields}
                             name="fName"
-                            label="First Name"
+                            label={dictionaryStore.getString('first_name')}
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please enter first name',
+                                    message: dictionaryStore.getString('please_enter_first_name'),
                                 },
                             ]}
                         >
                             <Input
                                 name="fName"
-                                placeholder="Please enter first name"
+                                placeholder={dictionaryStore.getString('please_enter_first_name')}
                             />
                         </Form.Item>
                     </Col>
@@ -72,17 +70,17 @@ const AddCustomerDrawer = observer(() => {
                         <Form.Item
                             onChange={createCustomerFields}
                             name="lName"
-                            label="Last Name"
+                            label={dictionaryStore.getString('last_name')}
                             rules={[
                                 {
                                     required: false,
-                                    message: 'Please enter last name',
+                                    message: dictionaryStore.getString('please_enter_last_name'),
                                 },
                             ]}
                         >
                             <Input
                                 name="lName"
-                                placeholder="Please enter last name"
+                                placeholder={dictionaryStore.getString('please_enter_last_name')}
                             />
                         </Form.Item>
                     </Col>
@@ -93,17 +91,17 @@ const AddCustomerDrawer = observer(() => {
                             onChange={createCustomerFields}
                             type="email"
                             name="email"
-                            label="Email"
+                            label={dictionaryStore.getString('email')}
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please enter email',
+                                    message: dictionaryStore.getString('please_enter_email'),
                                 },
                             ]}
                         >
                             <Input
                                 name="email"
-                                placeholder="Please enter email"
+                                placeholder={dictionaryStore.getString('please_enter_email')}
                             />
                         </Form.Item>
                     </Col>
@@ -111,17 +109,17 @@ const AddCustomerDrawer = observer(() => {
                         <Form.Item
                             onChange={createCustomerFields}
                             name="phone"
-                            label="Phone Number"
+                            label={dictionaryStore.getString('phone_number')}
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please enter phone number',
+                                    message: dictionaryStore.getString('please_enter_phone_number'),
                                 },
                             ]}
                         >
                             <Input
                                 name="phone"
-                                placeholder="Please enter phone number"
+                                placeholder={dictionaryStore.getString('please_enter_phone_number')}
                             />
                         </Form.Item>
                     </Col>
@@ -131,17 +129,17 @@ const AddCustomerDrawer = observer(() => {
                         <Form.Item
                             onChange={createCustomerFields}
                             name="address"
-                            label="Address"
+                            label={dictionaryStore.getString('address')}
                             rules={[
                                 {
                                     required: false,
-                                    message: 'Please enter address',
+                                    message: dictionaryStore.getString('please_enter_address'),
                                 },
                             ]}
                         >
                             <Input
                                 name="address"
-                                placeholder="Please enter address"
+                                placeholder={dictionaryStore.getString('please_enter_address')}
                             />
                         </Form.Item>
                     </Col>
@@ -149,17 +147,17 @@ const AddCustomerDrawer = observer(() => {
                         <Form.Item
                             onChange={createCustomerFields}
                             name="city"
-                            label="City"
+                            label={dictionaryStore.getString('city')}
                             rules={[
                                 {
                                     required: false,
-                                    message: 'Please enter city',
+                                    message: dictionaryStore.getString('please_enter_city'),
                                 },
                             ]}
                         >
                             <Input
                                 name="city"
-                                placeholder="Please enter city"
+                                placeholder={dictionaryStore.getString('please_enter_city')}
                             />
                         </Form.Item>
                     </Col>
@@ -169,17 +167,17 @@ const AddCustomerDrawer = observer(() => {
                         <Form.Item
                             onChange={createCustomerFields}
                             name="zip"
-                            label="zip"
+                            label={dictionaryStore.getString('zip')}
                             rules={[
                                 {
                                     required: false,
-                                    message: 'Please enter zip',
+                                    message: dictionaryStore.getString('please_enter_zip'),
                                 },
                             ]}
                         >
                             <Input
                                 name="zip"
-                                placeholder="Please enter zip"
+                                placeholder={dictionaryStore.getString('please_enter_zip')}
                             />
                         </Form.Item>
                     </Col>

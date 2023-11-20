@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Upload, Button, message, List, Modal, Image } from 'antd';
+import { Upload, Button, message, List, Modal, Image, Row, Col } from 'antd';
 import {
 	UploadOutlined,
 	DeleteOutlined,
@@ -91,15 +91,25 @@ const MediaUpload = () => {
 				Upload
 			</Button>
 
-			<List
-				style={{ marginTop: 16 }}
-				header={<div>Image</div>}
-				bordered
-				dataSource={imageList}
-				renderItem={(item) => (
-					<List.Item
-						actions={[
-							<>
+
+
+			<Row>
+				{
+					imageList.map((item) => {
+						return (
+							<Col key={item.filename} className="gutter-row" span={3}
+								style={{
+									display: 'flex',
+									//justifyContent: 'center',
+									alignItems: 'center',
+									flexWrap: 'wrap'
+								}}>
+
+								<Image
+									height={140}
+									src={`${serverURL}/uploads/${item.filename}`}
+								/>
+
 								<Button
 									type="link"
 									icon={<CopyOutlined />}
@@ -119,16 +129,12 @@ const MediaUpload = () => {
 								>
 									Delete
 								</Button>
-							</>,
-						]}
-					>
-						<Image
-							width={100}
-							src={`${serverURL}/uploads/${item.filename}`}
-						/>
-					</List.Item>
-				)}
-			/>
+
+							</Col>
+						)
+					})
+				}
+			</Row>
 
 			{/* Image Preview Modal */}
 			<Modal visible={!!previewImage} onCancel={closeModal} footer={null}>

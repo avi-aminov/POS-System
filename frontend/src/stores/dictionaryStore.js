@@ -1,48 +1,20 @@
 import { observable, action, toJS } from 'mobx';
-//import axios from 'axios';
 import settingsStore from './settingsStore';
+// langs
+import Eng from '../dictionary/eng';
+import Heb from '../dictionary/heb';
 
 const dictionaryStore = observable({
+
 	dictionary: {
-		home: {
-			eng: "Home",
-			heb: "בית"
-		},
-		orders: {
-			eng: "Orders",
-			heb: "הזמנות"
-		},
-		items: {
-			eng: "Items",
-			heb: "מוצרים"
-		},
-		customers: {
-			eng: "Customers",
-			heb: "לקוחות"
-		},
-		media: {
-			eng: "Media",
-			heb: "מדיה"
-		},
-		logout: {
-			eng: "Logout",
-			heb: "התנתק"
-		}
+		eng: Eng,
+		heb: Heb
 	},
 
-	fetchCategories: action(async function () {
-		try {
-			//const { data } = await axios.get('/categories');
-
-		} catch (error) {
-			console.log(error);
-		}
-	}),
-
 	getString: action(function (str) {
-		// Check if the provided string exists in the dictionary
-		if (this.dictionary[str] && this.dictionary[str][settingsStore.settings.lang]) {
-			return toJS(this.dictionary[str][settingsStore.settings.lang]);
+		const currentLang = settingsStore.settings.lang;
+		if (this.dictionary[currentLang] && this.dictionary[currentLang][str]) {
+			return toJS(this.dictionary[currentLang][str]);
 		} else {
 			return str;
 		}

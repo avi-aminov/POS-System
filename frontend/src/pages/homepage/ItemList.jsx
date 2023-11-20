@@ -26,7 +26,7 @@ const ItemList = observer(({ item }) => {
 						<img
 							alt={item.name}
 							src={`${serverURL}/uploads/${item.image}`}
-							style={{ height: 200, width: 'auto' }}
+							style={{ height: 140, width: 'auto', padding: '5px' }}
 						/>
 					</div>
 				}

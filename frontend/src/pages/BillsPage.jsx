@@ -89,7 +89,7 @@ const BillsPage = observer(() => {
 
 			{popupModal && (
 				<Modal
-					width={400}
+					width={600}
 					pagination={false}
 					title="Invoice Details"
 					open={popupModal}

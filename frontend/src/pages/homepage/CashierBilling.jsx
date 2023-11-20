@@ -2,6 +2,9 @@ import { observer } from 'mobx-react';
 import cartStore from '../../stores/cartStore';
 import settingStore from '../../stores/settingsStore';
 import ordersStore from '../../stores/ordersStore';
+import { Button, Row, Col } from 'antd';
+import { PlusSquareOutlined } from '@ant-design/icons';
+import { BillingWrap } from './CashierBilling.style';
 
 const CashierBilling = observer(() => {
     const placeOrder = () => {
@@ -9,68 +12,63 @@ const CashierBilling = observer(() => {
     };
 
     return (
-        <div className="box p-3">
-            <dl className="row">
-                <dt className="col-6">Sub total :</dt>
-                <dd className="col-6 text-right">
+        <BillingWrap>
+            <Row>
+                <Col span={12}>Sub total :</Col>
+                <Col span={12}>
                     {cartStore.getSubTotal()}
                     {settingStore.settings.currencySymbol}
-                </dd>
+                </Col>
+            </Row>
 
-                <dt className="col-6">Discount :</dt>
-                <dd className="col-6 text-right">
-                    <button
-                        id="extra_discount"
-                        className="btn btn-sm"
-                        type="button"
-                        data-toggle="modal"
-                        data-target="#add-discount"
-                    >
-                        <i className="tio-edit" />
-                    </button>
+            <Row>
+                <Col span={12}>Discount :</Col>
+                <Col span={12}>
                     0.00 $
-                </dd>
+                    <PlusSquareOutlined
+                        onClick={() => {
+                            console.log('Add cupon')
+                        }}
+                    />
 
-                <dt className="col-6">
-                    Tax ({settingStore.settings.tax}%):
-                </dt>
-                <dd className="col-6 text-right">
+                </Col>
+            </Row>
+
+            <Row>
+                <Col span={12}>Tax ({settingStore.settings.tax}%):</Col>
+                <Col span={12}>
                     {cartStore.getTax()}
                     {settingStore.settings.currencySymbol}
-                </dd>
-                <dt className="col-6">Total :</dt>
-                <dd className="col-6 text-right h4 b">
-                    <span id="total_price">
-                        {cartStore.getTotalPrice()}
-                        {settingStore.settings.currencySymbol}
-                    </span>
-                </dd>
-            </dl>
-            <div className="row g-2">
-                <div className="col-6 mt-2">
-                    <a
-                        href="#"
-                        className="btn btn-danger btn-block"
+                </Col>
+            </Row>
+
+            <Row>
+                <Col span={12}>Sub total :</Col>
+                <Col span={12}>
+                    {cartStore.getSubTotal()}
+                    {settingStore.settings.currencySymbol}
+                </Col>
+            </Row>
+
+            <Row>
+                <Col span={12}>
+                    <Button
                         onClick={() => {
                             cartStore.clearCart();
-                        }}
-                    >
-                        <i className="fa fa-times-circle " />
+                        }} type="primary" danger>
                         Cancel Order
-                    </a>
-                </div>
-                <div className="col-6 mt-2">
-                    <button
-                        onClick={placeOrder}
-                        type="button"
-                        className="btn btn-success btn-block"
-                    >
-                        <i className="fa fa-shopping-bag" />
+                    </Button>
+                </Col>
+                <Col span={12}>
+                    <Button
+                        type="primary"
+                        onClick={placeOrder}>
                         Place Order
-                    </button>
-                </div>
-            </div>
-        </div>
+                    </Button>
+                </Col>
+            </Row>
+
+        </BillingWrap >
     );
 });
 

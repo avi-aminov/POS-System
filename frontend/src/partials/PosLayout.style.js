@@ -6,9 +6,14 @@ export const Title = styled.h1`
     padding: 20px 0 20px 0;
 `;
 
-export const SettingBtnWrap = styled.div`
-	margin-right: 15px; 
-	cursor: pointer;
+export const LeftSideBarBurgerWrap = styled.div`
+	display: flex;
+	padding: 10px 18px 3px 0;
+	justify-content: end;
+
+	svg {
+		color: #ffffff;
+	}
 `;
 
 export const StyledCartItem = styled.div`
@@ -29,14 +34,14 @@ export const SiteLayout = styled.div`
 	.site-layout .site-layout-background {
 		padding: 0;
 		background: #fff;
-		box-shadow: 0 0 3px #ccc;
+		box-shadol 0 0 3px #ccc;
 		margin: 0px 10px;
 		overflow: auto;
 
 		&.ant-layout-content {
 			margin: 24px 16px;
-			padding: 24px;
-			minHeight: 280px
+			padding: 5px;
+			min-height: 280px
 		}
 	}
 
@@ -65,6 +70,6 @@ export const SiteLayout = styled.div`
 	}
 
 	.ant-layout-content {
-		margin: 10px 10px !important;
+		margin: 0 !important;
 	}
 `;

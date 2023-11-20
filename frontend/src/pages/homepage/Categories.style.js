@@ -2,8 +2,11 @@ import styled from 'styled-components';
 
 export const CategoriesWrap = styled.div`
     display: flex;
-    alignItems: 'end',
-    marginBottom: '20px',  
+    align-items: end;
+    margin-bottom: 20px; 
+    max-width: 100%;
+    overflow: auto;
+     
 `;
 
 export const CategoriesItem = styled.div`

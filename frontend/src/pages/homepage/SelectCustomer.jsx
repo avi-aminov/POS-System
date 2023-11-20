@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import customersStore from '../../stores/customersStore';
-import { Select } from 'antd';
+import { Select, } from 'antd';
+import { UserAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
 
 const SelectCustomer = observer(() => {
 
@@ -23,11 +24,12 @@ const SelectCustomer = observer(() => {
     };
 
     return (
-        <div>
+        <div >
             <div className="card-body pb-0">
                 <div className="d-flex align-items-center gap-2 mb-3">
                     <div className="flex-grow-1">
                         <Select
+                            style={{ width: '100%' }}
                             showSearch
                             placeholder="Select customer"
                             optionFilterProp="children"
@@ -39,35 +41,24 @@ const SelectCustomer = observer(() => {
                             }
                         />
                     </div>
-                    <div className="">
-                        <button
-                            id="add_new_customer"
-                            type="button"
-                            data-toggle="modal"
-                            data-target="#add-customer"
-                            title="Add Customer"
+                    <div>
+                        <UserAddOutlined
+                            style={{ cursor: 'pointer' }}
                             onClick={showDrawer}
-                        >
-                            Add Customer
-                        </button>
-                        <button
-                            id="remove_customer"
-                            type="button"
-                            data-toggle="modal"
-                            data-target="#add-customer"
-                            title="Add Customer"
+                        />
+                        <MinusCircleOutlined
+                            style={{ cursor: 'pointer' }}
                             onClick={() => {
                                 customersStore.clearSelectedCustomers();
                             }}
-                        >
-                            Remove Customer
-                        </button>
+                        />
                     </div>
                 </div>
                 <div className="mb-3">
                     <label className="input-label text-capitalize">
                         Current customer :
                         <span
+                            style={{ color: 'red', fontWeight: '700' }}
                             className="style-i4"
                             id="current_customer"
                         >

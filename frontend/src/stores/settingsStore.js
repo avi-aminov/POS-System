@@ -2,10 +2,10 @@ import { observable } from 'mobx';
 
 const settingsStore = observable({
 	settings: {
-		currencySymbol: '$',
-		direction: 'ltr',
+		currencySymbol: '$', // $, ₪
+		direction: 'ltr', // rtl, ltr
 		tax: 17,
-		lang: 'eng'
+		lang: 'eng' // heb, eng
 	},
 
 	getTax() {

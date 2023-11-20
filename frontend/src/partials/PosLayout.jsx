@@ -3,19 +3,14 @@ import { Outlet } from 'react-router-dom';
 import { Layout } from 'antd';
 import { observer } from 'mobx-react';
 import PosMenu from './PosMenu';
-import {
-	MenuUnfoldOutlined,
-	MenuFoldOutlined,
-	SettingOutlined,
-} from '@ant-design/icons';
+import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { LeftSideBarBurgerWrap, SiteLayout } from './PosLayout.style';
+import settingsStore from '../stores/settingsStore';
 
-import { SettingBtnWrap, SiteLayout, Title } from './PosLayout.style';
-
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 const DefaultLayout = observer(() => {
 	const [collapsed, setCollapsed] = useState(false);
-
 	const toggle = () => {
 		setCollapsed(!collapsed);
 	};
@@ -30,24 +25,27 @@ const DefaultLayout = observer(() => {
 		)
 	};
 
+	const getSideBar = () => {
+		return (
+			<Sider trigger={null} collapsible collapsed={collapsed}>
+				<LeftSideBarBurgerWrap>
+					{renderCollapsedButton()}
+				</LeftSideBarBurgerWrap>
+				<PosMenu />
+			</Sider>
+		);
+	}
+
 	return (
 		<SiteLayout>
 			<Layout>
-				<Sider trigger={null} collapsible collapsed={collapsed}>
-					<Title>POS</Title>
-					<PosMenu />
-				</Sider>
+				{settingsStore.settings.direction === 'ltr' && getSideBar()}
 				<Layout className="site-layout">
-					<Header className="site-layout-background">
-						{renderCollapsedButton()}
-						<SettingBtnWrap>
-							<SettingOutlined />
-						</SettingBtnWrap>
-					</Header>
 					<Content className="site-layout-background">
 						<Outlet />
 					</Content>
 				</Layout>
+				{settingsStore.settings.direction === 'rtl' && getSideBar()}
 			</Layout>
 		</SiteLayout>
 	);

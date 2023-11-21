@@ -1,0 +1,29 @@
+{
+  "name": "pos-system",
+  "version": "1.0.0",
+  "description": "POS System: front-end [React + Ant.Design], back-end [NodeJS + MySQL(on docker) + Sequelize]",
+  "main": "index.js",
+  "scripts": {
+    "install-frontend": "cd frontend && install",
+    "install-backend": "cd backend && install",
+    "install": "concurrently \"npm run install-frontend\" \"npm run install-backend\"",
+    "start-frontend": "cd frontend && npm run dev",
+    "start-backend": "cd backend && npm run dev",
+    "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
+    "install-start": "concurrently \"npm run install\" \"npm run start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avi-aminov/POS-System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/avi-aminov/POS-System/issues"
+  },
+  "homepage": "https://github.com/avi-aminov/POS-System#readme",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

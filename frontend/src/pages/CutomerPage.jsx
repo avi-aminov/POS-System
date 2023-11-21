@@ -1,22 +1,36 @@
 import { useEffect } from 'react';
 //import axios from 'axios';
-import { Space, Table } from 'antd';
+import { Space, Table, Button } from 'antd';
 const { Column } = Table;
 import { observer } from 'mobx-react';
 import customersStore from '../stores/customersStore';
+import dictionaryStore from '../stores/dictionaryStore';
+import AddCustomerDrawer from './homepage/AddCustomerDrawer';
 
 const CutomerPage = observer(() => {
 	useEffect(() => {
 		customersStore.fetchCustomers();
 	}, []);
 
+	const showDrawer = () => {
+		customersStore.showAddCustomerDrawer = true;
+	};
+
 	return (
 		<>
+			<div style={{ display: 'flex', justifyContent: 'end' }}>
+				<Button type="primary" onClick={showDrawer}>
+					{dictionaryStore.getString('add_new')}
+				</Button>
+			</div>
+
+
+			<AddCustomerDrawer />
+
 			<h1>Cutomer Page</h1>
 			<Table dataSource={customersStore.customers}>
 				<Column title="First Name" dataIndex="fName" key="firstName" />
 				<Column title="Last Name" dataIndex="lName" key="lastName" />
-
 				<Column title="Phone" dataIndex="phone" key="phone" />
 				<Column title="email" dataIndex="email" key="email" />
 				<Column title="Address" dataIndex="address" key="address" />
@@ -28,7 +42,7 @@ const CutomerPage = observer(() => {
 					key="action"
 					render={(_, record) => (
 						<Space size="middle">
-							<a>Edit {/*record.id*/}</a>
+							<a>Edit {record.id}</a>
 						</Space>
 					)}
 				/>

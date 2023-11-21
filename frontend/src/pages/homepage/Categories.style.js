@@ -29,6 +29,7 @@ export const CategoryWrapper = styled.div`
   display: flex;
   justify-content: center;
   cursor: pointer;
-  background: ${({ isSelected }) => isSelected ? "#449ae9" : "white"};
+  border-radius: 15px;
+  background: ${({ isSelected }) => isSelected ? "#1677ff" : "white"};
   color: ${({ isSelected }) => isSelected ? "#ffffff" : "#000000"};
 `;

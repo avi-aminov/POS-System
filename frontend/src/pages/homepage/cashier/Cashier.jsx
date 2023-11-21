@@ -1,11 +1,17 @@
 import { observer } from 'mobx-react';
-import AddCustomerDrawer from './AddCustomerDrawer';
-import SelectCustomer from './SelectCustomer';
+import AddCustomerDrawer from '../AddCustomerDrawer';
+import SelectCustomer from '../SelectCustomer';
 import CashierProducts from './CashierProducts';
 import CashierBilling from './CashierBilling';
 import { Col } from 'antd';
-import dictionaryStore from '../../stores/dictionaryStore';
-import { OrderPosWrap, RightSideWrap, RightSideHeader, CashierProductsWrap, TableHeaderRow } from './Cashier.style';
+import dictionaryStore from '../../../stores/dictionaryStore';
+import {
+	OrderPosWrap,
+	RightSideWrap,
+	RightSideHeader,
+	CashierProductsWrap,
+	TableHeaderRow
+} from './Cashier.style';
 
 const Cashier = observer(() => {
 
@@ -26,10 +32,10 @@ const Cashier = observer(() => {
 							</RightSideHeader>
 
 							<TableHeaderRow gutter={16}>
-								<Col span={8}>Item</Col>
-								<Col span={8}>Qty</Col>
-								<Col span={4}>Price</Col>
-								<Col span={4}>Delete</Col>
+								<Col span={8}>{dictionaryStore.getString('item')}</Col>
+								<Col span={8}>{dictionaryStore.getString('qty')}</Col>
+								<Col span={4}>{dictionaryStore.getString('price')}</Col>
+								<Col span={4}>{dictionaryStore.getString('action')}</Col>
 							</TableHeaderRow>
 
 							<CashierProductsWrap>

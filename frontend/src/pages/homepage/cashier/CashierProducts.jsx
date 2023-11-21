@@ -1,21 +1,20 @@
 import { observer } from 'mobx-react';
-import cartStore from '../../stores/cartStore';
-import settingStore from '../../stores/settingsStore';
-import { Input } from 'antd';
+import cartStore from '../../../stores/cartStore';
+import settingStore from '../../../stores/settingsStore';
 import {
     DeleteOutlined,
     MinusSquareOutlined,
     PlusSquareOutlined
 } from '@ant-design/icons';
 import {
-
     TableRow,
     ItemCol,
     Image, Title,
     QuantityCol,
     PriceCol,
     DeleteCol,
-    PlusMinusWrap
+    PlusMinusWrap,
+    StyledInput
 } from './CashierProducts.style';
 
 const CashierProducts = observer(() => {
@@ -38,14 +37,13 @@ const CashierProducts = observer(() => {
                         <TableRow key={item.id} gutter={16}>
                             <ItemCol span={8}>
                                 <Image
-                                    className="avatar avatar-sm"
                                     src={`${serverURL}/uploads/${item.image}`}
                                     alt={item.name}
                                 />
                                 <Title>{getTitle(item.name)}</Title>
                             </ItemCol>
                             <QuantityCol span={8}>
-                                <Input
+                                <StyledInput
                                     type="number"
                                     value={item.quantity}
                                     onChange={(e) => {

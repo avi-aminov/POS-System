@@ -2,10 +2,10 @@ import { Card } from 'antd';
 import { observer } from 'mobx-react';
 import cartStore from '../../stores/cartStore';
 import settingStore from '../../stores/settingsStore';
+import { ImageWrap, Img, Price } from './ItemList.style';
 
 const ItemList = observer(({ item }) => {
 	const serverURL = import.meta.env.VITE_SERVER_URL;
-
 	const { Meta } = Card;
 
 	const handleAddTOCart = () => {
@@ -22,20 +22,16 @@ const ItemList = observer(({ item }) => {
 					cursor: 'pointer',
 				}}
 				cover={
-					<div style={{ display: 'flex', justifyContent: 'center' }}>
-						<img
-							alt={item.name}
-							src={`${serverURL}/uploads/${item.image}`}
-							style={{ height: 140, width: 'auto', padding: '5px' }}
-						/>
-					</div>
+					<ImageWrap>
+						<Img alt={item.name} src={`${serverURL}/uploads/${item.image}`} />
+					</ImageWrap>
 				}
 			>
 				<Meta title={item.name} />
-				<div style={{ display: 'flex', justifyContent: 'center' }}>
+				<Price>
 					{item.price}
 					{settingStore.settings.currencySymbol}
-				</div>
+				</Price>
 			</Card>
 		</div>
 	);

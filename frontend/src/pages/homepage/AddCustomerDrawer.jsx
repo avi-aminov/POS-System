@@ -78,8 +78,7 @@ const AddCustomerDrawer = observer(() => {
                                 },
                             ]}
                         >
-                            <Input
-                                name="lName"
+                            <Input name="lName"
                                 placeholder={dictionaryStore.getString('please_enter_last_name')}
                             />
                         </Form.Item>
@@ -99,8 +98,7 @@ const AddCustomerDrawer = observer(() => {
                                 },
                             ]}
                         >
-                            <Input
-                                name="email"
+                            <Input name="email"
                                 placeholder={dictionaryStore.getString('please_enter_email')}
                             />
                         </Form.Item>
@@ -117,8 +115,7 @@ const AddCustomerDrawer = observer(() => {
                                 },
                             ]}
                         >
-                            <Input
-                                name="phone"
+                            <Input name="phone"
                                 placeholder={dictionaryStore.getString('please_enter_phone_number')}
                             />
                         </Form.Item>
@@ -137,8 +134,7 @@ const AddCustomerDrawer = observer(() => {
                                 },
                             ]}
                         >
-                            <Input
-                                name="address"
+                            <Input name="address"
                                 placeholder={dictionaryStore.getString('please_enter_address')}
                             />
                         </Form.Item>
@@ -155,8 +151,7 @@ const AddCustomerDrawer = observer(() => {
                                 },
                             ]}
                         >
-                            <Input
-                                name="city"
+                            <Input name="city"
                                 placeholder={dictionaryStore.getString('please_enter_city')}
                             />
                         </Form.Item>
@@ -175,8 +170,7 @@ const AddCustomerDrawer = observer(() => {
                                 },
                             ]}
                         >
-                            <Input
-                                name="zip"
+                            <Input name="zip"
                                 placeholder={dictionaryStore.getString('please_enter_zip')}
                             />
                         </Form.Item>

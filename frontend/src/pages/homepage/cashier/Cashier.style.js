@@ -25,7 +25,6 @@ export const OrderPosWrap = styled.div`
     }
 `;
 
-
 export const RightSideWrap = styled.div`
     display: flex;
     flex-direction: column;
@@ -33,11 +32,11 @@ export const RightSideWrap = styled.div`
 `;
 
 export const RightSideHeader = styled.div`
-    height: 160px;
+    height: 140px;
 `;
 
 export const CashierProductsWrap = styled.div`
-    height: calc(100vh - 320px);
+    height: calc(100vh - 300px);
     flex: 1;
     overflow: auto;
 `;

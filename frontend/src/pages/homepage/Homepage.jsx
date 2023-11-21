@@ -3,7 +3,7 @@ import { Row, Col } from 'antd';
 import Categories from './Categories';
 import ProductSearch from './ProductSearch';
 import Products from './Products';
-import Cashier from './Cashier';
+import Cashier from './cashier/Cashier';
 import { CategoriesAndProductSearchWrap, ProductWrap } from './Homepage.style';
 
 const Homepage = observer(() => {

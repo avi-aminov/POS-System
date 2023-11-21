@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Row, Col } from 'antd';
+import { styled, css } from 'styled-components';
+import { Row, Col, Input } from 'antd';
 
 export const PlusMinusWrap = styled(Row)`
   display: flex;
@@ -51,4 +51,20 @@ export const PriceCol = styled(Col)`
 export const DeleteCol = styled(Col)`
   display: flex;
   align-items: center;
+`;
+
+export const StyledInput = styled(Input)`
+  ${(props) => props.type === 'number' && css`
+    /* Chrome, Safari, Edge, Opera */
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    &[type="number"] {
+      -moz-appearance: textfield;
+    }
+  `}
 `;

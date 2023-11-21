@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Upload, Button, message, List, Modal, Image, Row, Col } from 'antd';
+import { Upload, Button, message, Modal, Image, Row, Col } from 'antd';
 import {
 	UploadOutlined,
 	DeleteOutlined,

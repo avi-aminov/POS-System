@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { observer } from 'mobx-react';
 import dictionaryStore from '../stores/dictionaryStore';
 import {
 	Upload,
@@ -19,7 +18,7 @@ import {
 } from '@ant-design/icons';
 import { getBase64 } from '../utils/Utility';
 
-const MediaUpload = observer(() => {
+const MediaUpload = () => {
 	const serverURL = import.meta.env.VITE_SERVER_URL;
 	const [fileList, setFileList] = useState([]);
 	const [imageList, setImageList] = useState([]);
@@ -31,17 +30,40 @@ const MediaUpload = observer(() => {
 		fetchImageList();
 	}, []);
 
+
 	const fetchImageList = async () => {
 		try {
 			const response = await axios.get('/images');
 			setImageList(response.data);
 		} catch (error) {
-			message.success(dictionaryStore.getString('something_went_wrong'));
+			message.error(dictionaryStore.getString('something_went_wrong'));
 		}
 	};
 
-	const handleUpload = async () => {
-		fetchImageList();
+	const beforeUpload = async (file) => {
+		try {
+			const formData = new FormData();
+			formData.append('files', file);
+
+			// You can customize headers, etc., based on your needs
+			const config = {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			};
+
+			await axios.post(`${serverURL}/upload`, formData, config);
+			message.success(dictionaryStore.getString('file_uploaded_successfully'));
+
+			// Refresh the image list after upload
+			fetchImageList();
+
+			// Returning false prevents default upload behavior
+			return false;
+		} catch (error) {
+			message.error(dictionaryStore.getString('failed_to_upload_file'));
+			return false; // Returning false prevents default upload behavior
+		}
 	};
 
 	const handleCopyUrl = (url) => {
@@ -87,7 +109,7 @@ const MediaUpload = observer(() => {
 	return (
 		<div>
 			<Upload
-				action={`${serverURL}/upload`}
+				beforeUpload={beforeUpload}
 				listType="picture-card"
 				fileList={fileList}
 				onPreview={handlePreview}
@@ -95,20 +117,9 @@ const MediaUpload = observer(() => {
 				multiple={true}
 				name="files"
 				accept=".jpg, .jpeg, .png, .gif, .webp, .svg, .avif"
-				beforeUpload={() => {
-					console.log('beforeUpload');
-				}}
 			>
 				{fileList.length >= 8 ? null : uploadButton}
 			</Upload>
-
-			<Button
-				type="primary"
-				onClick={handleUpload}
-				style={{ marginTop: 16 }}
-			>
-				{dictionaryStore.getString('update_images_list')}
-			</Button>
 
 			<Row style={{ gap: '25px' }}>
 				{imageList.map((item) => (
@@ -165,6 +176,6 @@ const MediaUpload = observer(() => {
 			</Modal>
 		</div>
 	);
-});
+};
 
 export default MediaUpload;

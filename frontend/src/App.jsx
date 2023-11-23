@@ -5,10 +5,11 @@ import ItemPage from './pages/ItemPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import BillsPage from './pages/BillsPage';
-import CutomerPage from './pages/CutomerPage';
+//import CutomerPage from './pages/CutomerPage';
 import PosLayout from './partials/PosLayout';
 import RequireAuth from './components/RequireAuth';
 import MediaUpload from './pages/MediaUpload';
+import CustomersController from './pages/CustomersController';
 
 const App = () => {
 	return (
@@ -51,7 +52,8 @@ const App = () => {
 						path="/customers"
 						element={
 							<RequireAuth>
-								<CutomerPage />
+
+								<CustomersController />
 							</RequireAuth>
 						}
 					/>

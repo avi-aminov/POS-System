@@ -104,3 +104,19 @@ Content-Type: application/json
     "password": "demo",
     "verified": true
 }
+
+
+###
+POST http://localhost:3003/edit-customer
+Content-Type: application/json
+
+{
+    "id": 1,
+    "fName": "Avi",
+    "lName": "Aminov",
+    "email": "demo@test.com",
+    "phone": "0508321126",
+    "address": "Ben Porat Mordehai 71",
+    "city": "Or Yeuda",
+    "zip": "123456"
+}

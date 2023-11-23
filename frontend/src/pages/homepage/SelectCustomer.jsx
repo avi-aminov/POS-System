@@ -68,14 +68,10 @@ const SelectCustomer = observer(() => {
                             className="style-i4"
                             id="current_customer"
                         >
-                            {customersStore.customerSelectData
-                                .length > 0 &&
-                                customersStore.customerSelectedData
-                                    .fName}{' '}
-                            {customersStore.customerSelectData
-                                .length > 0 &&
-                                customersStore.customerSelectedData
-                                    .lName}
+                            {customersStore.customerSelectData.length > 0 &&
+                                customersStore.customerSelectedData?.fName}{' '}
+                            {customersStore.customerSelectData.length > 0 &&
+                                customersStore.customerSelectedData?.lName}
                         </span>
                     </label>
                 </div>

@@ -13,13 +13,7 @@ const Orders = sequelize.define(
 		},
 		customerID: {
 			type: DataTypes.INTEGER,
-			allowNull: true, // Allow NULL values
-			references: {
-				model: Customers,
-				key: 'id',
-			},
-			onUpdate: 'CASCADE',
-			onDelete: 'SET NULL',
+			allowNull: true,
 		},
 		subTotal: {
 			type: DataTypes.STRING,
@@ -46,10 +40,6 @@ const Orders = sequelize.define(
 		indexes: [], // Empty array to remove all indexes and foreign keys
 	},
 );
-
-Orders.belongsTo(Customers, {
-	foreignKey: 'customerID',
-});
 
 Orders.sync({ alter: true })
 	.then(() => {

@@ -10,7 +10,8 @@
     "start-frontend": "cd frontend && npm run dev",
     "start-backend": "cd backend && npm run dev",
     "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
-    "install-start": "concurrently \"npm run install\" \"npm run start\""
+    "install-start": "concurrently \"npm run install\" \"npm run start\"",
+    "seed": "cd backend && npm run seed"
   },
   "repository": {
     "type": "git",

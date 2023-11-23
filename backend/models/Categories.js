@@ -26,6 +26,7 @@ const Categories = sequelize.define(
 	},
 );
 
+// { alter: true }
 Categories.sync({ alter: true })
 	.then(() => {
 		console.log('Categories model synchronized successfully');

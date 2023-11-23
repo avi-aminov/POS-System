@@ -42,7 +42,7 @@ const Products = sequelize.define('products', {
 	},
 });
 
-Products.sync({ alter: true })
+Products.sync()
 	.then(() => {
 		console.log('Products model synchronized successfully');
 	})

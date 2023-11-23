@@ -21,6 +21,7 @@ sequelize
 
 			// Seed data for Customers
 			await Customers.bulkCreate(customers_data);
+
 		} catch (error) {
 			console.error('Error seeding data:', error);
 		} finally {

@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const OrderItems = sequelize.define('OrderItems', {
+const OrderItems = sequelize.define('orderItems', {
 	id: {
 		type: DataTypes.INTEGER,
 		autoIncrement: true,

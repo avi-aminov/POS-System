@@ -1,21 +1,33 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Upload, Button, message, Modal, Image, Row, Col } from 'antd';
+import { observer } from 'mobx-react';
+import dictionaryStore from '../stores/dictionaryStore';
+import {
+	Upload,
+	Button,
+	Popconfirm,
+	message,
+	Modal,
+	Image,
+	Row,
+	Col
+} from 'antd';
 import {
 	UploadOutlined,
 	DeleteOutlined,
 	CopyOutlined,
 } from '@ant-design/icons';
+import { getBase64 } from '../utils/Utility';
 
-const MediaUpload = () => {
-	const serverURL = 'http://localhost:3003';
-
-	const [file, setFile] = useState(null);
+const MediaUpload = observer(() => {
+	const serverURL = import.meta.env.VITE_SERVER_URL;
+	const [fileList, setFileList] = useState([]);
 	const [imageList, setImageList] = useState([]);
 	const [previewImage, setPreviewImage] = useState(null);
+	const [previewTitle, setPreviewTitle] = useState('');
+	const [previewOpen, setPreviewOpen] = useState(false);
 
 	useEffect(() => {
-		// Fetch the list of images when the component mounts
 		fetchImageList();
 	}, []);
 
@@ -24,128 +36,135 @@ const MediaUpload = () => {
 			const response = await axios.get('/images');
 			setImageList(response.data);
 		} catch (error) {
-			console.error('Error fetching image list:', error);
+			message.success(dictionaryStore.getString('something_went_wrong'));
 		}
-	};
-
-	const props = {
-		beforeUpload: (file) => {
-			setFile(file);
-			return false;
-		},
 	};
 
 	const handleUpload = async () => {
-		const formData = new FormData();
-		formData.append('file', file);
-
-		try {
-			await axios.post('/upload', formData, {
-				headers: { 'Content-Type': 'multipart/form-data' },
-			});
-			// Handle successful upload, e.g., show a success message or update media list.
-			message.success('File uploaded successfully');
-			// Refresh the image list after upload
-			fetchImageList();
-		} catch (error) {
-			console.error('Error uploading file:', error);
-			// Handle error, e.g., show an error message to the user.
-			message.error('Failed to upload file');
-		}
+		fetchImageList();
 	};
 
 	const handleCopyUrl = (url) => {
-		// Implement the logic to copy the image URL to the clipboard
-		// This example uses a simple prompt, you might want to use a library like clipboard.js
-		prompt('Copy the image URL:', url);
+		prompt(dictionaryStore.getString('copy_the_image_url'), url);
 	};
 
 	const handleDelete = async (filename) => {
 		try {
 			await axios.delete(`/images/${filename}`);
-			// Handle successful deletion, e.g., show a success message or update media list.
-			message.success('File deleted successfully');
+			// Show a success message or update media list.
+			message.success(dictionaryStore.getString('file_deleted_successfully'));
 			// Refresh the image list after deletion
 			fetchImageList();
 		} catch (error) {
-			console.error('Error deleting file:', error);
-			// Handle error, e.g., show an error message to the user.
-			message.error('Failed to delete file');
+			message.error(dictionaryStore.getString('failed_to_delete_file'));
 		}
 	};
 
 	const closeModal = () => {
-		setPreviewImage(null);
+		setPreviewOpen(false);
 	};
+
+	const handlePreview = async (file) => {
+		if (!file.url && !file.preview) {
+			file.preview = await getBase64(file.originFileObj);
+		}
+		setPreviewImage(file.url || file.preview);
+		setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+		setPreviewOpen(true);
+	};
+
+	const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+
+	const uploadButton = (
+		<div>
+			<UploadOutlined />
+			<div style={{ marginTop: 8 }}>
+				{dictionaryStore.getString('upload')}
+			</div>
+		</div>
+	);
 
 	return (
 		<div>
-			<Upload {...props}>
-				<Button icon={<UploadOutlined />}>Select File</Button>
+			<Upload
+				action={`${serverURL}/upload`}
+				listType="picture-card"
+				fileList={fileList}
+				onPreview={handlePreview}
+				onChange={handleChange}
+				multiple={true}
+				name="files"
+				accept=".jpg, .jpeg, .png, .gif, .webp, .svg, .avif"
+				beforeUpload={() => {
+					console.log('beforeUpload');
+				}}
+			>
+				{fileList.length >= 8 ? null : uploadButton}
 			</Upload>
+
 			<Button
 				type="primary"
 				onClick={handleUpload}
 				style={{ marginTop: 16 }}
 			>
-				Upload
+				{dictionaryStore.getString('update_images_list')}
 			</Button>
 
-
-
-			<Row>
-				{
-					imageList.map((item) => {
-						return (
-							<Col key={item.filename} className="gutter-row" span={3}
-								style={{
-									display: 'flex',
-									//justifyContent: 'center',
-									alignItems: 'center',
-									flexWrap: 'wrap'
-								}}>
-
-								<Image
-									height={140}
-									src={`${serverURL}/uploads/${item.filename}`}
+			<Row style={{ gap: '25px' }}>
+				{imageList.map((item) => (
+					<Col
+						key={item.filename}
+						className="gutter-row"
+						span={3}
+						style={{
+							display: 'flex',
+							alignItems: 'center',
+							flexWrap: 'wrap',
+							flex: '0 0 130px',
+							maxWidth: '25%'
+						}}
+					>
+						<div style={{ display: 'flex' }}>
+							<Image height={140} src={`${serverURL}/uploads/${item.filename}`} />
+							<div style={{
+								display: 'flex',
+								justifyContent: 'center',
+								flexWrap: 'wrap',
+								width: '30px'
+							}}>
+								<CopyOutlined
+									onClick={() =>
+										handleCopyUrl(`${serverURL}/uploads/${item.filename}`)}
 								/>
 
-								<Button
-									type="link"
-									icon={<CopyOutlined />}
-									onClick={() =>
-										handleCopyUrl(
-											`${serverURL}/uploads/${item.filename}`,
-										)
-									}
+								<Popconfirm
+									title={dictionaryStore.getString('are_you_sure_you_want_to_delete_this_image')}
+									onConfirm={() => handleDelete(item.filename)}
+									okText="Yes"
+									cancelText="No"
 								>
-									Copy URL
-								</Button>
-								,
-								<Button
-									type="link"
-									icon={<DeleteOutlined />}
-									onClick={() => handleDelete(item.filename)}
-								>
-									Delete
-								</Button>
+									<Button type="link" >
+										<DeleteOutlined />
+									</Button>
+								</Popconfirm>
+							</div>
+						</div>
 
-							</Col>
-						)
-					})
-				}
+					</Col>
+				))}
 			</Row>
 
 			{/* Image Preview Modal */}
-			<Modal visible={!!previewImage} onCancel={closeModal} footer={null}>
-				<img
-					alt="Preview"
-					style={{ width: '100%' }}
-					src={previewImage}
-				/>
+			<Modal
+				open={previewOpen}
+				onCancel={closeModal}
+				footer={null}
+				title={previewTitle}
+			>
+				<img alt={dictionaryStore.getString('preview')} style={{ width: '100%' }} src={previewImage} />
 			</Modal>
 		</div>
 	);
-};
+});
 
 export default MediaUpload;

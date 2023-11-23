@@ -47,7 +47,7 @@ const items = [
 		price: '59.99',
 		newPrice: null,
 		stock: 100,
-		barcode: null,
+		barcode: 'p1399',
 	},
 	{
 		categoryID: 3,

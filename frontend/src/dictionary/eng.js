@@ -38,4 +38,12 @@ export default {
     select_customer: "Select customer",
     current_customer: "Current customer :",
     add_new: "Add Customer",
+    copy_the_image_url: "Copy the image URL:",
+    file_deleted_successfully: "File deleted successfully",
+    failed_to_delete_file: "Failed to delete file",
+    upload: "Upload",
+    update_images_list: "Update images list",
+    are_you_sure_you_want_to_delete_this_image: "Are you sure you want to delete this image?",
+    preview: "Preview",
+    something_went_wrong: "Something went wrong",
 };

@@ -5,18 +5,27 @@ const answer = require('../utils/answer');
 
 const fetchOrders = async (req, res) => {
 	try {
-		const orders = await Orders.findAll({
-			include: [
-				{
-					model: Customers,
-					attributes: ['fName', 'lName', 'phone'], // Include only these columns from Customers
-				},
-			],
-		});
+		// Fetch orders
+		const orders = await Orders.findAll();
 
 		if (!orders) {
 			answer(404, 'No orders found', res);
 		}
+
+		// Fetch customers based on customerID from orders
+		const customerIDs = orders.map(order => order.customerID);
+		const customers = await Customers.findAll({
+			attributes: ['id', 'fName', 'lName', 'phone'],
+			where: {
+				id: customerIDs,
+			},
+		});
+
+		// Create a map for quick lookup of customer details by ID
+		const customerMap = customers.reduce((map, customer) => {
+			map[customer.id] = customer;
+			return map;
+		}, {});
 
 		// Extract the relevant information from the result
 		const formattedOrders = orders.map((order) => ({
@@ -27,9 +36,9 @@ const fetchOrders = async (req, res) => {
 			tax: order.tax,
 			total: order.total,
 			paymentMethod: order.paymentMethod,
-			fName: order.customerID ? order.Customer.fName : '',
-			lName: order.customerID ? order.Customer.lName : '',
-			phone: order.customerID ? order.Customer.phone : '',
+			fName: customerMap[order.customerID] ? customerMap[order.customerID].fName : '',
+			lName: customerMap[order.customerID] ? customerMap[order.customerID].lName : '',
+			phone: customerMap[order.customerID] ? customerMap[order.customerID].phone : '',
 			createdAt: order.createdAt,
 			updatedAt: order.updatedAt,
 		}));
@@ -40,6 +49,7 @@ const fetchOrders = async (req, res) => {
 		console.error(error);
 	}
 };
+
 
 const createOrders = async (req, res) => {
 	const { cart, customerID, subTotal, discount, tax, total, paymentMethod } =

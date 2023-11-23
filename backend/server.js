@@ -3,6 +3,7 @@ require('dotenv').config(); require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const { v4: uuidv4 } = require('uuid');
 
 const multer = require('multer');
 const path = require('path');
@@ -36,24 +37,34 @@ app.use(
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, 'public/uploads/');
+		cb(null, 'public/uploads'); // Set the destination folder for uploads
 	},
 	filename: function (req, file, cb) {
-		cb(null, Date.now() + path.extname(file.originalname));
+		const randomFileName = uuidv4(); // Generate a random filename
+		cb(null, randomFileName + path.extname(file.originalname)); // Keep the original file extension
 	},
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage }).array('files');
 
-app.post('/upload', upload.single('file'), (req, res) => {
-	// Handle file upload, e.g., save file path to database
-	res.status(200).send('File uploaded successfully');
+
+app.post('/upload', (req, res) => {
+	console.log('Received file upload request:', req.body, req.files);
+
+	upload(req, res, (err) => {
+		if (err) {
+			console.error('Error handling file upload:', err);
+			return res.status(500).json({ error: 'Internal Server Error' });
+		}
+
+		// Handle the uploaded files here
+		res.status(200).json({ message: 'Files uploaded successfully' });
+	});
 });
 
 app.get('/images', (req, res) => {
 	const uploadDirectory = 'public/uploads/';
 
-	// Read the contents of the uploads directory
 	fs.readdir(uploadDirectory, (err, files) => {
 		if (err) {
 			console.error('Error reading upload directory:', err);
@@ -61,13 +72,9 @@ app.get('/images', (req, res) => {
 			return;
 		}
 
-		// Filter out non-image files if needed
-		const imageFiles = files.filter((file) =>
-			/\.(jpg|jpeg|png|gif|webp|svg|avif)$/i.test(file),
-		);
+		const imageFiles = files.filter(file => /\.(jpg|jpeg|png|gif|webp|svg|avif)$/i.test(file));
 
-		// Create an array of objects with filenames
-		const imageList = imageFiles.map((filename) => ({ filename }));
+		const imageList = imageFiles.map(filename => ({ filename }));
 
 		res.json(imageList);
 	});

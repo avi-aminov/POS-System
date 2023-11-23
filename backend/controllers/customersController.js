@@ -16,6 +16,7 @@ const fetchCustomers = async (req, res) => {
 	}
 };
 
+
 const createCustomers = async (req, res) => {
 	const { fName, lName, email, phone, address, city, zip } = req.body;
 
@@ -38,7 +39,59 @@ const createCustomers = async (req, res) => {
 	}
 };
 
+const editCustomer = async (req, res) => {
+	const { id, fName, lName, email, phone, address, city, zip } = req.body;
+
+	try {
+		// Check if the customer with the given ID exists
+		const existingCustomer = await Customers.findByPk(id);
+		if (!existingCustomer) {
+			return answer(404, 'Customer not found', res);
+		}
+
+		// Update the customer's information
+		await existingCustomer.update({
+			fName,
+			lName,
+			email,
+			phone,
+			address,
+			city,
+			zip,
+		});
+
+		answer(200, 'Customer updated successfully', res, existingCustomer);
+	} catch (error) {
+		console.error(error);
+		answer(500, 'Internal Server Error', res);
+	}
+};
+
+
+const deleteCustomer = async (req, res) => {
+	const customerId = req.params.id;
+
+	try {
+		// Find the customer by ID
+		const customer = await Customers.findByPk(customerId);
+
+		if (!customer) {
+			return answer(404, 'Customer not found', res);
+		}
+
+		// Delete the customer
+		await customer.destroy();
+
+		answer(200, 'Customer deleted successfully', res);
+	} catch (error) {
+		console.error(error);
+		answer(500, 'Internal Server Error', res);
+	}
+};
+
 module.exports = {
 	fetchCustomers,
 	createCustomers,
+	editCustomer,
+	deleteCustomer
 };

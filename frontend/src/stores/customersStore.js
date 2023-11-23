@@ -45,11 +45,11 @@ const customersStore = observable({
 	}),
 
 	// create new Customer
-	createCutsomer: action(async function () {
-		console.log('createForm', toJS(this.createForm));
-		const res = await axios.post('/customers', this.createForm);
+	createCustomer: action(async function () {
+		const res = await axios.post('/customer', this.createForm);
+
 		if (res) {
-			this.setNotes([...this.customers, res.data.customers]);
+			this.customers = [...this.customers, res.data.customer];
 			this.setCreateForm({
 				fName: '',
 				lName: '',
@@ -59,6 +59,40 @@ const customersStore = observable({
 				city: '',
 				zip: '',
 			});
+		}
+	}),
+
+	// delete Customer
+	deleteCustomer: action(async function (customerId) {
+		try {
+			// Make an HTTP request to delete the customer
+			await axios.delete(`/delete-customer/${customerId}`);
+
+			// Remove the deleted customer from the local store
+			const updatedCustomers = toJS(this.customers).filter(
+				(customer) => customer.id !== customerId
+			);
+			this.customers = updatedCustomers;
+
+			console.log(`Customer with ID ${customerId} deleted successfully`);
+		} catch (error) {
+			console.error('Error deleting customer:', error);
+		}
+	}),
+
+	// edit Customer
+	editCustomer: action(async function (customerData) {
+		try {
+			const response = await axios.put(`/edit-customer`, customerData);
+
+			// Update the customer directly in the array without checking response structure
+			this.customers = this.customers.map((customer) =>
+				customer.id === customerData.id ? response.data.data : customer
+			);
+
+			console.log('Customer updated successfully:', response.data);
+		} catch (error) {
+			console.error('Error updating customer:', error);
 		}
 	}),
 

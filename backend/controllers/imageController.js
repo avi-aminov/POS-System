@@ -4,6 +4,8 @@ const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 const fs = require('fs');
 
+const maxSize = 1 * 1024 * 1024; // 1MB in bytes
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'public/uploads'); // Set the destination folder for uploads
@@ -14,7 +16,12 @@ const storage = multer.diskStorage({
     },
 });
 
-const upload = multer({ storage: storage }).array('files');
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: maxSize,
+    },
+}).array('files');
 
 const uploadFile = async (req, res) => {
     console.log('Received file upload request:', req.body, req.files);

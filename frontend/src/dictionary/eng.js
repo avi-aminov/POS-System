@@ -46,4 +46,5 @@ export default {
     are_you_sure_you_want_to_delete_this_image: "Are you sure you want to delete this image?",
     preview: "Preview",
     something_went_wrong: "Something went wrong",
+    file_size_limit_exceeded: "File size limit exceeded",
 };

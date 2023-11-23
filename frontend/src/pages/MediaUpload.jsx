@@ -41,6 +41,13 @@ const MediaUpload = () => {
 	};
 
 	const beforeUpload = async (file) => {
+		// Check if the file size is within the limit (1MB in bytes)
+		const maxSize = 1 * 1024 * 1024; // 1MB in bytes
+		if (file.size > maxSize) {
+			message.error(dictionaryStore.getString('file_size_limit_exceeded'));
+			return false; // Returning false prevents default upload behavior
+		}
+
 		try {
 			const formData = new FormData();
 			formData.append('files', file);

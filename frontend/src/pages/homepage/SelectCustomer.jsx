@@ -2,7 +2,7 @@ import { observer } from 'mobx-react';
 import customersStore from '../../stores/customersStore';
 import dictionaryStore from '../../stores/dictionaryStore';
 import { Select, Row, Col } from 'antd';
-import { UserAddOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { UserAddOutlined, MinusSquareOutlined } from '@ant-design/icons';
 
 const SelectCustomer = observer(() => {
 
@@ -45,12 +45,12 @@ const SelectCustomer = observer(() => {
                         </div>
                     </Col>
                     <Col span={6}>
-                        <div>
+                        <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
                             <UserAddOutlined
                                 style={{ cursor: 'pointer' }}
                                 onClick={showDrawer}
                             />
-                            <MinusCircleOutlined
+                            <MinusSquareOutlined
                                 style={{ cursor: 'pointer' }}
                                 onClick={() => {
                                     customersStore.clearSelectedCustomers();
@@ -75,6 +75,8 @@ const SelectCustomer = observer(() => {
                         </span>
                     </label>
                 </div>
+
+
             </div>
         </div>
     );

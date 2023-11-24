@@ -211,10 +211,6 @@ const ItemPage = observer(() => {
 
 	return (
 		<>
-			<Button type="primary" onClick={imageModal.openImageModal}>
-				Select Image
-			</Button>
-
 			<ImageSelectionModal
 				open={imageModal.visible}
 				onClose={imageModal.closeImageModal}
@@ -248,9 +244,8 @@ const ItemPage = observer(() => {
 			{/* Replace Modal with Drawer */}
 			{popupModal && (
 				<Drawer
-					title={`${
-						editItem !== null ? 'Edit Product ' : 'Add New Product'
-					}`}
+					title={`${editItem !== null ? 'Edit Product ' : 'Add New Product'
+						}`}
 					open={popupModal}
 					onClose={() => {
 						setEditItem(null);

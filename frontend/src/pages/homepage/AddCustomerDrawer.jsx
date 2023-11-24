@@ -22,9 +22,9 @@ const AddCustomerDrawer = observer(() => {
         });
     };
 
-    const createCutsomer = async (event) => {
+    const createCustomer = async (event) => {
         event.preventDefault();
-        customersStore.createCutsomer();
+        customersStore.createCustomer();
         onClose();
     };
 
@@ -40,7 +40,7 @@ const AddCustomerDrawer = observer(() => {
                         {dictionaryStore.getString('cancel')}
                     </Button>
 
-                    <Button type="primary" onClick={createCutsomer}>
+                    <Button type="primary" onClick={createCustomer}>
                         {dictionaryStore.getString('add')}
                     </Button>
                 </Space>

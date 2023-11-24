@@ -49,9 +49,7 @@ app.post('/update-product', requireAuth, productsController.updateProduct);
 
 // Customers
 app.get('/customers', requireAuth, customersController.fetchCustomers);
-app.post('/customer', requireAuth, customersController.createCustomers);
-app.put('/edit-customer', requireAuth, customersController.editCustomer);
-app.delete('/delete-customer/:id', requireAuth, customersController.deleteCustomer);
+app.post('/customers', requireAuth, customersController.createCustomers);
 
 // Orders
 app.get('/orders', requireAuth, ordersController.fetchOrders);

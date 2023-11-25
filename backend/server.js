@@ -24,10 +24,12 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+const allowedOrigins = [process.env.FRONT_URL];
+
 // use cors with options
 app.use(
 	cors({
-		origin: process.env.FRONT_URL,
+		origin: allowedOrigins,
 		credentials: true,
 	}),
 );

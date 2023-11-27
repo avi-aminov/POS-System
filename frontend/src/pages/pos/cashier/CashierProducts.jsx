@@ -36,13 +36,17 @@ const CashierProducts = observer(() => {
                     cartStore.cart.map((item) => (
                         <TableRow key={item.id} gutter={16}>
                             <ItemCol span={8}>
-                                <Image
-                                    src={`${serverURL}/uploads/${item.image}`}
-                                    alt={item.name}
-                                />
+                                {
+                                    item.id === 9999 ?
+                                        <Image src={`${serverURL}/global/select-all.jpg`} alt="" /> :
+                                        <Image
+                                            src={`${serverURL}/uploads/${item.image}`}
+                                            alt={item.name}
+                                        />
+                                }
                                 <Title>{getTitle(item.name)}</Title>
                             </ItemCol>
-                            <QuantityCol span={8}>
+                            <QuantityCol span={7}>
                                 <StyledInput
                                     type="number"
                                     value={item.quantity}

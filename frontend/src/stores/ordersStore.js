@@ -25,7 +25,7 @@ const ordersStore = observable({
 			cart: cartStore.cart,
 			customerID: customersStore.selectedCustomers,
 			subTotal: cartStore.getSubTotal(),
-			discount: '0',
+			discount: cartStore.discount,
 			tax: cartStore.getTax().toString(),
 			total: cartStore.getTotalPrice(),
 			paymentMethod: 'Cash',

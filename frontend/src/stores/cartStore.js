@@ -3,6 +3,23 @@ import settingStore from '../stores/settingsStore';
 
 const cartStore = observable({
 	cart: [],
+	discount: 0.00,
+
+	setDiscount: action(function (price) {
+		this.discount = price;
+		this.saveDiscountToLocalStorage();
+	}),
+
+	saveDiscountToLocalStorage: action(function () {
+		localStorage.setItem('discount', this.discount.toString());
+	}),
+
+	loadDiscountFromLocalStorage: action(function () {
+		const storedDiscount = localStorage.getItem('discount');
+		if (storedDiscount) {
+			this.discount = parseFloat(storedDiscount);
+		}
+	}),
 
 	addToCart: action(function (item) {
 		const existingItem = this.cart.find(
@@ -73,21 +90,27 @@ const cartStore = observable({
 		if (storedCartData) {
 			this.cart = JSON.parse(storedCartData);
 		}
+
+		// Load the discount from local storage
+		this.loadDiscountFromLocalStorage();
 	}),
 
 	clearCart: action(function () {
 		this.cart = [];
 		this.saveToLocalStorage();
+		this.setDiscount(0.0);
 	}),
 
 	getTotalPrice() {
 		const totalPrice = this.cart.reduce(
-			(total, item) => total + item.price * item.quantity,
-			0,
+			(total, item) => total + item.price * item.quantity, 0
 		);
 
-		// Round the total price to 2 digits after the decimal point
-		return totalPrice.toFixed(2);
+		// Subtract the discount from the total price
+		const discountedTotal = totalPrice - this.discount;
+
+		// Round the discounted total to 2 digits after the decimal point
+		return discountedTotal.toFixed(2);
 	},
 
 	getTax() {

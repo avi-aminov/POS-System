@@ -24,7 +24,7 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-const allowedOrigins = [process.env.FRONT_URL];
+const allowedOrigins = [process.env.FRONT_URL, 'http://127.0.0.1:5173'];
 
 // use cors with options
 app.use(

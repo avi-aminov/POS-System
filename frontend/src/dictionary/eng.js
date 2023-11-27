@@ -47,4 +47,6 @@ export default {
     preview: "Preview",
     something_went_wrong: "Something went wrong",
     file_size_limit_exceeded: "File size limit exceeded",
+    settings: "Settings",
+    reports: "Reports",
 };

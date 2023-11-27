@@ -5,11 +5,11 @@ import { useReactToPrint } from 'react-to-print';
 import { Modal, Button, Table } from 'antd';
 
 import { observer } from 'mobx-react';
-import ordersStore from '../stores/ordersStore';
+import ordersStore from '../../stores/ordersStore';
 
-import '../styles/InvoiceStyles.css';
-import settingsStore from '../stores/settingsStore';
-const BillsPage = observer(() => {
+import '../../styles/InvoiceStyles.css';
+import settingsStore from '../../stores/settingsStore';
+const OrdersPage = observer(() => {
 	const componentRef = useRef();
 	const [popupModal, setPopupModal] = useState(false);
 	const [selectedBill, setSelectedBill] = useState(null);
@@ -240,4 +240,4 @@ const BillsPage = observer(() => {
 	);
 });
 
-export default BillsPage;
+export default OrdersPage;

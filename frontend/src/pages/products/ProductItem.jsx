@@ -2,7 +2,7 @@ import { Card } from 'antd';
 import { observer } from 'mobx-react';
 import cartStore from '../../stores/cartStore';
 import settingStore from '../../stores/settingsStore';
-import { ImageWrap, Img, Price } from './ItemList.style';
+import { ImageWrap, Img, Price } from './ProductItem.style';
 
 const ItemList = observer(({ item }) => {
 	const serverURL = import.meta.env.VITE_SERVER_URL;

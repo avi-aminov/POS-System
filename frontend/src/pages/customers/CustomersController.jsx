@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Table, Button, Drawer, Form, Input, Popconfirm } from 'antd';
 import { observer } from 'mobx-react-lite';
-import customersStore from '../stores/customersStore';
+import customersStore from '../../stores/customersStore';
 
 const CustomersController = observer(() => {
     const [form] = Form.useForm();

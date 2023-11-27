@@ -3,7 +3,7 @@ import { observable, action } from 'mobx';
 
 const categoriesStore = observable({
 	categories: [],
-	selecedCategory: 0,
+	selectedCategory: 0,
 
 	fetchCategories: action(async function () {
 		try {
@@ -18,8 +18,8 @@ const categoriesStore = observable({
 		}
 	}),
 
-	setSelecedCategory: action(function (id) {
-		this.selecedCategory = id;
+	setSelectedCategory: action(function (id) {
+		this.selectedCategory = id;
 	}),
 });
 

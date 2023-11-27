@@ -15,14 +15,14 @@ import {
 } from 'antd';
 
 import { observer } from 'mobx-react';
-import productsStore from '../stores/productsStore';
-import categoriesStore from '../stores/categoriesStore';
-import settingsStore from '../stores/settingsStore';
+import productsStore from '../../stores/productsStore';
+import categoriesStore from '../../stores/categoriesStore';
+import settingsStore from '../../stores/settingsStore';
 
-import useImageModal from '../hooks/useImageModal';
-import ImageSelectionModal from '../components/ImageSelectionModal';
+import useImageModal from '../../hooks/useImageModal';
+import ImageSelectionModal from '../../components/ImageSelectionModal';
 
-const ItemPage = observer(() => {
+const ProductsList = observer(() => {
 	const serverURL = import.meta.env.VITE_SERVER_URL;
 
 	const [popupModal, setPopupModal] = useState(false);
@@ -417,4 +417,4 @@ const ItemPage = observer(() => {
 	);
 });
 
-export default ItemPage;
+export default ProductsList;

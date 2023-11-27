@@ -2,7 +2,7 @@ import { Form, Input, Button } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 import axios from 'axios';
-import authStore from '../stores/authStore';
+import authStore from '../../stores/authStore';
 
 const Login = () => {
 	const navigate = useNavigate();

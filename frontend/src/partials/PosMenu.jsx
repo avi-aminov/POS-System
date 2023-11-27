@@ -7,6 +7,8 @@ import {
 	CopyOutlined,
 	UnorderedListOutlined,
 	PictureOutlined,
+	ControlOutlined,
+	AreaChartOutlined
 } from '@ant-design/icons';
 
 import { observer } from 'mobx-react';
@@ -29,8 +31,8 @@ const PosMenu = observer(() => {
 			<Menu.Item key="/" icon={<HomeOutlined />}>
 				<Link to="/">{dictionaryStore.getString('home')}</Link>
 			</Menu.Item>
-			<Menu.Item key="/bills" icon={<CopyOutlined />}>
-				<Link to="/bills">{dictionaryStore.getString('orders')}</Link>
+			<Menu.Item key="/orders" icon={<CopyOutlined />}>
+				<Link to="/orders">{dictionaryStore.getString('orders')}</Link>
 			</Menu.Item>
 			<Menu.Item key="/items" icon={<UnorderedListOutlined />}>
 				<Link to="/items">{dictionaryStore.getString('items')}</Link>
@@ -40,6 +42,12 @@ const PosMenu = observer(() => {
 			</Menu.Item>
 			<Menu.Item key="/media" icon={<PictureOutlined />}>
 				<Link to="/media">{dictionaryStore.getString('media')}</Link>
+			</Menu.Item>
+			<Menu.Item key="/reports" icon={<AreaChartOutlined />}>
+				<Link to="/reports">{dictionaryStore.getString('reports')}</Link>
+			</Menu.Item>
+			<Menu.Item key="/settings" icon={<ControlOutlined />}>
+				<Link to="/settings">{dictionaryStore.getString('settings')}</Link>
 			</Menu.Item>
 			<Menu.Item
 				key="/logout"

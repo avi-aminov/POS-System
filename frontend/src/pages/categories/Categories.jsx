@@ -18,8 +18,8 @@ const Categories = observer(() => {
 	return (
 		<CategoriesWrap>
 			<CategoryWrapper
-				isSelected={categoriesStore.selecedCategory === 0}
-				onClick={() => categoriesStore.setSelecedCategory(0)} >
+				isSelected={categoriesStore.selectedCategory === 0}
+				onClick={() => categoriesStore.setSelectedCategory(0)} >
 				<CategoriesItem>
 					<h4>{dictionaryStore.getString('all')}</h4>
 					<img src={`${serverURL}/global/select-all.jpg`} alt="" />
@@ -29,9 +29,9 @@ const Categories = observer(() => {
 			{categoriesStore.categories && categoriesStore.categories.map((category) => (
 				<CategoryWrapper
 					key={category.name}
-					isSelected={categoriesStore.selecedCategory === category.id &&
+					isSelected={categoriesStore.selectedCategory === category.id &&
 						'category-active'}
-					onClick={() => categoriesStore.setSelecedCategory(category.id)}
+					onClick={() => categoriesStore.setSelectedCategory(category.id)}
 				>
 					<CategoriesItem>
 						<h4>{category.name}</h4>

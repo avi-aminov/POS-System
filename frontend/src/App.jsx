@@ -1,15 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import CartPage from './pages/CartPage';
-import Homepage from './pages/homepage/Homepage';
-import ItemPage from './pages/ItemPage';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import BillsPage from './pages/BillsPage';
-//import CutomerPage from './pages/CutomerPage';
+import ItemPage from './pages/products/ProductsList';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
+import BillsPage from './pages/orders/OrdersPage';
 import PosLayout from './partials/PosLayout';
 import RequireAuth from './components/RequireAuth';
-import MediaUpload from './pages/MediaUpload';
-import CustomersController from './pages/CustomersController';
+import MediaUpload from './pages/media/MediaUpload';
+import CustomersController from './pages/customers/CustomersController';
+import Pos from './pages/pos/Pos';
 
 const App = () => {
 	return (
@@ -20,7 +18,7 @@ const App = () => {
 						path="/"
 						element={
 							<RequireAuth>
-								<Homepage />
+								<Pos />
 							</RequireAuth>
 						}
 					/>
@@ -33,15 +31,7 @@ const App = () => {
 						}
 					/>
 					<Route
-						path="/cart"
-						element={
-							<RequireAuth>
-								<CartPage />
-							</RequireAuth>
-						}
-					/>
-					<Route
-						path="/bills"
+						path="/orders"
 						element={
 							<RequireAuth>
 								<BillsPage />
@@ -52,7 +42,6 @@ const App = () => {
 						path="/customers"
 						element={
 							<RequireAuth>
-
 								<CustomersController />
 							</RequireAuth>
 						}

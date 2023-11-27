@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import dictionaryStore from '../stores/dictionaryStore';
+import dictionaryStore from '../../stores/dictionaryStore';
 import {
 	Upload,
 	Button,
@@ -16,7 +16,7 @@ import {
 	DeleteOutlined,
 	CopyOutlined,
 } from '@ant-design/icons';
-import { getBase64 } from '../utils/Utility';
+import { getBase64 } from '../../utils/Utility';
 
 const MediaUpload = () => {
 	const serverURL = import.meta.env.VITE_SERVER_URL;

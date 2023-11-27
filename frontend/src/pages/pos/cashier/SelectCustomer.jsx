@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
-import customersStore from '../../stores/customersStore';
-import dictionaryStore from '../../stores/dictionaryStore';
+import customersStore from '../../../stores/customersStore';
+import dictionaryStore from '../../../stores/dictionaryStore';
 import { Select, Row, Col } from 'antd';
 import { UserAddOutlined, MinusSquareOutlined } from '@ant-design/icons';
 

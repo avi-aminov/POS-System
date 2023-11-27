@@ -3,7 +3,7 @@ import { Row, Col } from 'antd';
 import { observer } from 'mobx-react';
 import categoriesStore from '../../stores/categoriesStore';
 import productsStore from '../../stores/productsStore';
-import ItemList from './ItemList';
+import ItemList from './ProductItem';
 
 const Products = observer(() => {
 	useEffect(() => {
@@ -15,8 +15,8 @@ const Products = observer(() => {
 			{productsStore.products && productsStore.products
 				.filter(
 					(item) =>
-						(item.categoryID === categoriesStore.selecedCategory ||
-							categoriesStore.selecedCategory === 0) &&
+						(item.categoryID === categoriesStore.selectedCategory ||
+							categoriesStore.selectedCategory === 0) &&
 						(item.name.toLowerCase().includes(productsStore.searchQuery.toLowerCase()) ||
 							productsStore.searchQuery === ''),
 				)

@@ -3,11 +3,11 @@ import { useEffect } from 'react';
 import { Space, Table, Button } from 'antd';
 const { Column } = Table;
 import { observer } from 'mobx-react';
-import customersStore from '../stores/customersStore';
-import dictionaryStore from '../stores/dictionaryStore';
+import customersStore from '../../stores/customersStore';
+import dictionaryStore from '../../stores/dictionaryStore';
 import AddCustomerDrawer from './homepage/AddCustomerDrawer';
 
-const CutomerPage = observer(() => {
+const CustomersPage = observer(() => {
 	useEffect(() => {
 		customersStore.fetchCustomers();
 	}, []);
@@ -51,4 +51,4 @@ const CutomerPage = observer(() => {
 	);
 });
 
-export default CutomerPage;
+export default CustomersPage;

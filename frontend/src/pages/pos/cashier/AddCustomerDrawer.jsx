@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Button, Drawer, Form, Row, Space, Col, Input } from 'antd';
 import { observer } from 'mobx-react';
-import customersStore from '../../stores/customersStore';
-import dictionaryStore from '../../stores/dictionaryStore';
+import customersStore from '../../../stores/customersStore';
+import dictionaryStore from '../../../stores/dictionaryStore';
 
 const AddCustomerDrawer = observer(() => {
     useEffect(() => {

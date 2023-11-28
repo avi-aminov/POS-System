@@ -17,6 +17,7 @@ import dictionaryStore from '../stores/dictionaryStore';
 
 const PosMenu = observer(() => {
 	const navigate = useNavigate();
+
 	const logout = () => {
 		authStore.logout();
 		navigate('/login');

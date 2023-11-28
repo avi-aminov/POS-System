@@ -49,4 +49,8 @@ export default {
     file_size_limit_exceeded: "File size limit exceeded",
     settings: "Settings",
     reports: "Reports",
+    select_currency_symbol: "Select Currency Symbol:",
+    select_language: "Select Language:",
+    select_direction: "Select Direction:",
+    enter_tax: "Enter Tax:",
 };

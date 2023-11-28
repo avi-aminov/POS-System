@@ -1,12 +1,39 @@
-import { observable } from 'mobx';
+import axios from 'axios';
+import { observable, action } from 'mobx';
 
 const settingsStore = observable({
-	settings: {
-		currencySymbol: '$', // $, ₪
-		direction: 'ltr', // rtl, ltr
-		tax: 17,
-		lang: 'eng' // heb, eng
-	},
+	settings: {},
+
+	fetchSettings: action(async function () {
+		try {
+			const { data } = await axios.get('/settings');
+			if (!data.data) {
+				return;
+			}
+			//this.settings = data.data;
+			console.log('settings', data.data);
+
+			const transformedData = data.data.reduce((acc, { key, value }) => {
+				acc[key] = value;
+				return acc;
+			}, {});
+
+			transformedData.tax = parseInt(transformedData.tax, 10);
+			this.settings = transformedData;
+
+		} catch (error) {
+			console.log(error);
+		}
+	}),
+
+	updateValueByKey: action(async function (key, newValue) {
+		try {
+			await axios.put(`/update-settings/${key}`, { value: newValue });
+			this.settings[key] = newValue;
+		} catch (error) {
+			console.log(error);
+		}
+	}),
 
 	getTax() {
 		return this.settings.tax / 100;

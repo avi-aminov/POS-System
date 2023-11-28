@@ -17,6 +17,7 @@ const productsController = require('./controllers/productsController');
 const customersController = require('./controllers/customersController');
 const ordersController = require('./controllers/ordersController');
 const imageController = require('./controllers/imageController');
+const settingsController = require('./controllers/settingsController');
 
 const app = express();
 app.use(express.json());
@@ -62,6 +63,9 @@ app.post('/upload', imageController.uploadFile);
 app.get('/images', requireAuth, imageController.getImages);
 app.delete('/images/:filename', requireAuth, imageController.deleteImage);
 
+// Settings
+app.get('/settings', requireAuth, settingsController.fetchSettings);
+app.put('/update-settings/:key', requireAuth, settingsController.updateValueByKey);
 
 // Create an async function to start the server.
 const startServer = () => {

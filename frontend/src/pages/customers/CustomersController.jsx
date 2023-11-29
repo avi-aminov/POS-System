@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Table, Button, Drawer, Form, Input, Popconfirm } from 'antd';
 import { observer } from 'mobx-react-lite';
 import customersStore from '../../stores/customersStore';
-
+import dictionaryStore from '../../stores/dictionaryStore';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 const CustomersController = observer(() => {
     const [form] = Form.useForm();
     const [drawerVisible, setDrawerVisible] = useState(false);
@@ -19,31 +20,27 @@ const CustomersController = observer(() => {
     };
 
     const columns = [
-        { title: 'ID', dataIndex: 'id', key: 'id' },
-        { title: 'First Name', dataIndex: 'fName', key: 'fName' },
-        { title: 'Last Name', dataIndex: 'lName', key: 'lName' },
-        { title: 'Email', dataIndex: 'email', key: 'email' },
-        { title: 'Phone', dataIndex: 'phone', key: 'phone' },
-        { title: 'Address', dataIndex: 'address', key: 'address' },
-        { title: 'City', dataIndex: 'city', key: 'city' },
-        { title: 'ZIP', dataIndex: 'zip', key: 'zip' },
+        { title: dictionaryStore.getString('id'), dataIndex: 'id', key: 'id' },
+        { title: dictionaryStore.getString('first_name'), dataIndex: 'fName', key: 'fName' },
+        { title: dictionaryStore.getString('last_name'), dataIndex: 'lName', key: 'lName' },
+        { title: dictionaryStore.getString('email'), dataIndex: 'email', key: 'email' },
+        { title: dictionaryStore.getString('phone_number'), dataIndex: 'phone', key: 'phone' },
+        { title: dictionaryStore.getString('address'), dataIndex: 'address', key: 'address' },
+        { title: dictionaryStore.getString('city'), dataIndex: 'city', key: 'city' },
+        { title: dictionaryStore.getString('zip'), dataIndex: 'zip', key: 'zip' },
         {
-            title: 'Action',
+            title: dictionaryStore.getString('action'),
             key: 'action',
             render: (text, record) => (
                 <span key={`action-${record.id}`}>
-                    <Button type="link" onClick={() => handleEdit(record)}>
-                        Edit
-                    </Button>
+                    <EditOutlined onClick={() => handleEdit(record)} />
                     <Popconfirm
-                        title="Are you sure you want to delete this customer?"
+                        title={dictionaryStore.getString('are_you_sure_you_want_to_delete_this_customer')}
                         onConfirm={() => handleDelete(record.id)}
                         okText="Yes"
                         cancelText="No"
                     >
-                        <Button type="link" danger>
-                            Delete
-                        </Button>
+                        <DeleteOutlined onClick={handleCancel} style={{ marginLeft: 8 }} />
                     </Popconfirm>
                 </span>
             ),
@@ -88,14 +85,14 @@ const CustomersController = observer(() => {
         <div>
             <div style={{ display: 'flex', justifyContent: 'end', marginBottom: 16 }}>
                 <Button type="primary" onClick={showDrawer}>
-                    Add New Customer
+                    {dictionaryStore.getString('add_new_customer')}
                 </Button>
             </div>
 
             <Table dataSource={customersStore.customers} columns={columns} />
 
             <Drawer
-                title={isEditing ? 'Edit Customer' : 'Add New Customer'}
+                title={isEditing ? dictionaryStore.getString('edit_customer') : dictionaryStore.getString('add_new_customer')}
                 placement="right"
                 width={400}
                 onClose={handleCancel}
@@ -107,59 +104,80 @@ const CustomersController = observer(() => {
                     </Form.Item>
                     <Form.Item
                         name="fName"
-                        label="First Name"
-                        rules={[{ required: true, message: 'Please enter first name' }]}
+                        label={dictionaryStore.getString('first_name')}
+                        rules={[{
+                            required: true,
+                            message: dictionaryStore.getString('please_enter_first_name')
+                        }]}
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item
                         name="lName"
-                        label="Last Name"
-                        rules={[{ required: true, message: 'Please enter last name' }]}
+                        label={dictionaryStore.getString('last_name')}
+                        rules={[{
+                            required: true,
+                            message: dictionaryStore.getString('please_enter_last_name')
+                        }]}
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item
                         name="email"
-                        label="Email"
-                        rules={[{ required: true, message: 'Please enter email' }]}
+                        label={dictionaryStore.getString('email')}
+                        rules={[{
+                            required: true,
+                            message: dictionaryStore.getString('please_enter_email')
+                        }]}
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item
                         name="phone"
-                        label="Phone"
-                        rules={[{ required: true, message: 'Please enter phone' }]}
+                        label={dictionaryStore.getString('phone_number')}
+                        rules={[{
+                            required: true,
+                            message: dictionaryStore.getString('please_enter_phone_number')
+                        }]}
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item
                         name="address"
-                        label="Address"
-                        rules={[{ required: true, message: 'Please enter address' }]}
+                        label={dictionaryStore.getString('address')}
+                        rules={[{
+                            required: true,
+                            message: dictionaryStore.getString('please_enter_address')
+                        }]}
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item
                         name="city"
-                        label="City"
-                        rules={[{ required: true, message: 'Please enter city' }]}
+                        label={dictionaryStore.getString('city')}
+                        rules={[{
+                            required: true,
+                            message: dictionaryStore.getString('please_enter_city')
+                        }]}
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item
                         name="zip"
-                        label="ZIP"
-                        rules={[{ required: true, message: 'Please enter ZIP' }]}
+                        label={dictionaryStore.getString('zip')}
+                        rules={[{
+                            required: true,
+                            message: dictionaryStore.getString('please_enter_zip')
+                        }]}
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item>
                         <Button type="primary" onClick={handleSave}>
-                            Save
+                            {dictionaryStore.getString('save')}
                         </Button>
                         <Button onClick={handleCancel} style={{ marginLeft: 8 }}>
-                            Cancel
+                            {dictionaryStore.getString('cancel')}
                         </Button>
                     </Form.Item>
                 </Form>

@@ -18,7 +18,7 @@ import { observer } from 'mobx-react';
 import productsStore from '../../stores/productsStore';
 import categoriesStore from '../../stores/categoriesStore';
 import settingsStore from '../../stores/settingsStore';
-
+import dictionaryStore from '../../stores/dictionaryStore';
 import useImageModal from '../../hooks/useImageModal';
 import ImageSelectionModal from '../../components/ImageSelectionModal';
 
@@ -40,39 +40,34 @@ const ProductsList = observer(() => {
 	const handleCategorySubmit = async (values) => {
 		try {
 			const data = { name: values.name, image: selectedImageUrl };
-			console.log('data', data);
-			const response = await axios.post('/add-category', data);
-			console.log(response.data);
-
-			message.success('Category added successfully');
+			//const response = 
+			await axios.post('/add-category', data);
+			message.success(dictionaryStore.getString('category_added_successfully'));
 			setCategoryPopupVisible(false);
-			// Add logic to refresh the category list if needed
 		} catch (error) {
 			console.error('Error adding category:', error);
-			message.error('Error adding category');
+			message.error(dictionaryStore.getString('error_adding_category'));
 		}
 	};
 
-	//handle deleet
+	//handle delete
 	const handleDelete = async (record) => {
 		console.log('delete product by id', record.id);
-		message.success('Item Deleted Succesfully');
+		message.success(dictionaryStore.getString('item_deleted_successfully'));
 	};
 
 	// handle form  submit
 	const handleSubmit = async (value) => {
 		if (editItem === null) {
 			const data = { ...value, image: selectedImageUrl };
-			console.log('add new product', data);
-
 			try {
 				const response = await axios.post('/add-product', data);
 				console.log(response.data);
 				setCategoryPopupVisible(false);
-				message.success('Product added successfully');
+				message.success(dictionaryStore.getString('product_added_successfully'));
 			} catch (error) {
 				console.error('Error adding category:', error);
-				message.error('Error adding category');
+				message.error(dictionaryStore.getString('error_adding_category'));
 			}
 		} else {
 			const data = { ...value, id: editItem.id, image: selectedImageUrl };
@@ -81,7 +76,7 @@ const ProductsList = observer(() => {
 				const response = await axios.post('/update-product', data);
 				console.log(response.data);
 				setCategoryPopupVisible(false);
-				message.success('Product updated successfully');
+				message.success(dictionaryStore.getString('product_updated_successfully'));
 			} catch (error) {
 				message.error('Error updated category');
 			}
@@ -95,9 +90,9 @@ const ProductsList = observer(() => {
 
 	//able data
 	const columns = [
-		{ title: 'Name', dataIndex: 'name' },
+		{ title: dictionaryStore.getString('name'), dataIndex: 'name' },
 		{
-			title: 'Image',
+			title: dictionaryStore.getString('image'),
 			dataIndex: 'image',
 			render: (image, record) => {
 				return (
@@ -111,14 +106,14 @@ const ProductsList = observer(() => {
 			},
 		},
 		{
-			title: 'Price',
+			title: dictionaryStore.getString('price'),
 			dataIndex: 'price',
 			render: (id, record) =>
 				`${record.price} ${settingsStore.settings.currencySymbol}`,
 		},
 
 		{
-			title: 'Actions',
+			title: dictionaryStore.getString('actions'),
 			dataIndex: 'id',
 			render: (id, record) => (
 				<div>
@@ -143,9 +138,9 @@ const ProductsList = observer(() => {
 
 	//able data
 	const cat_columns = [
-		{ title: 'Name', dataIndex: 'name' },
+		{ title: dictionaryStore.getString('name'), dataIndex: 'name' },
 		{
-			title: 'Image',
+			title: dictionaryStore.getString('image'),
 			dataIndex: 'image',
 			render: (image, record) => (
 				<Image
@@ -156,7 +151,7 @@ const ProductsList = observer(() => {
 			),
 		},
 		{
-			title: 'Actions',
+			title: dictionaryStore.getString('action'),
 			dataIndex: '_id',
 			render: (id, record) => (
 				<div>
@@ -181,7 +176,7 @@ const ProductsList = observer(() => {
 	const tab_items = [
 		{
 			key: '1',
-			label: 'Products List',
+			label: dictionaryStore.getString('products_list'),
 			children: (
 				<Table
 					rowKey="id"
@@ -193,7 +188,7 @@ const ProductsList = observer(() => {
 		},
 		{
 			key: '2',
-			label: 'Categories List',
+			label: dictionaryStore.getString('categories_list'),
 			children: (
 				<Table
 					rowKey="id"
@@ -223,14 +218,14 @@ const ProductsList = observer(() => {
 				<div></div>
 				<div>
 					<Button type="primary" onClick={() => setPopupModal(true)}>
-						Add Product
+						{dictionaryStore.getString('add_product')}
 					</Button>
 					<Button
 						type="primary"
 						style={{ marginLeft: 16 }}
 						onClick={() => setCategoryPopupVisible(true)}
 					>
-						Add Category
+						{dictionaryStore.getString('add_category')}
 					</Button>
 				</div>
 			</div>
@@ -244,7 +239,9 @@ const ProductsList = observer(() => {
 			{/* Replace Modal with Drawer */}
 			{popupModal && (
 				<Drawer
-					title={`${editItem !== null ? 'Edit Product ' : 'Add New Product'
+					title={`${editItem !== null ?
+						dictionaryStore.getString('edit_product') :
+						dictionaryStore.getString('add_new_product')
 						}`}
 					open={popupModal}
 					onClose={() => {
@@ -262,56 +259,58 @@ const ProductsList = observer(() => {
 					>
 						<Form.Item
 							name="name"
-							label="Name"
+							label={dictionaryStore.getString('name')}
 							rules={[
 								{
 									required: true,
-									message: 'Please enter the name',
+									message: dictionaryStore.getString('please_enter_the_name'),
 								},
 							]}
 						>
 							<Input />
 						</Form.Item>
-						<Form.Item name="description" label="Description">
+						<Form.Item
+							name="description"
+							label={dictionaryStore.getString('description')}>
 							<Input.TextArea />
 						</Form.Item>
 						<Form.Item
 							name="price"
-							label="Price"
+							label={dictionaryStore.getString('price')}
 							rules={[
 								{
 									required: true,
-									message: 'Please enter the price',
+									message: dictionaryStore.getString('please_enter_the_price'),
 								},
 							]}
 						>
 							<Input />
 						</Form.Item>
-						<Form.Item name="newPrice" label="New Price">
+						<Form.Item name="newPrice" label={dictionaryStore.getString('new_price')}>
 							<Input />
 						</Form.Item>
 						<Form.Item
 							name="stock"
-							label="Stock"
+							label={dictionaryStore.getString('stock')}
 							rules={[
 								{
 									required: true,
-									message: 'Please enter the stock',
+									message: dictionaryStore.getString('please_enter_the_stock'),
 								},
 							]}
 						>
 							<InputNumber min={0} />
 						</Form.Item>
-						<Form.Item name="barcode" label="Barcode">
+						<Form.Item name="barcode" label={dictionaryStore.getString('barcode')}>
 							<Input />
 						</Form.Item>
 
 						<Form.Item
-							label="Image URL"
+							label={dictionaryStore.getString('image_url')}
 							rules={[
 								{
 									required: true,
-									message: 'Please select the image',
+									message: dictionaryStore.getString('please_select_the_image'),
 								},
 							]}
 						>
@@ -323,7 +322,7 @@ const ProductsList = observer(() => {
 										type="primary"
 										onClick={imageModal.openImageModal}
 									>
-										Select Image
+										{dictionaryStore.getString('select_image')}
 									</Button>
 								}
 							/>
@@ -331,11 +330,11 @@ const ProductsList = observer(() => {
 
 						<Form.Item
 							name="categoryID"
-							label="Category"
+							label={dictionaryStore.getString('category')}
 							rules={[
 								{
 									required: true,
-									message: 'Please select the category',
+									message: dictionaryStore.getString('please_select_the_category'),
 								},
 							]}
 						>
@@ -354,7 +353,7 @@ const ProductsList = observer(() => {
 
 						<div className="d-flex justify-content-end">
 							<Button type="primary" htmlType="submit">
-								Add
+								{dictionaryStore.getString('add')}
 							</Button>
 						</div>
 					</Form>
@@ -362,8 +361,8 @@ const ProductsList = observer(() => {
 			)}
 
 			<Drawer
-				title="Add New Category"
-				visible={categoryPopupVisible}
+				title={dictionaryStore.getString('add_new_category')}
+				open={categoryPopupVisible}
 				onClose={() => setCategoryPopupVisible(false)}
 				width={400}
 				placement="right"
@@ -372,11 +371,11 @@ const ProductsList = observer(() => {
 				<Form layout="vertical" onFinish={handleCategorySubmit}>
 					<Form.Item
 						name="name"
-						label="Category Name"
+						label={dictionaryStore.getString('category_name')}
 						rules={[
 							{
 								required: true,
-								message: 'Please enter the category name',
+								message: dictionaryStore.getString('please_enter_the_category_name'),
 							},
 						]}
 					>
@@ -384,11 +383,11 @@ const ProductsList = observer(() => {
 					</Form.Item>
 
 					<Form.Item
-						label="Image URL"
+						label={dictionaryStore.getString('image_url')}
 						rules={[
 							{
 								required: true,
-								message: 'Please select the image',
+								message: dictionaryStore.getString('please_select_the_image'),
 							},
 						]}
 					>
@@ -400,7 +399,7 @@ const ProductsList = observer(() => {
 									type="primary"
 									onClick={imageModal.openImageModal}
 								>
-									Select Image
+									{dictionaryStore.getString('select_image')}
 								</Button>
 							}
 						/>
@@ -408,7 +407,7 @@ const ProductsList = observer(() => {
 
 					<div className="d-flex justify-content-end">
 						<Button type="primary" htmlType="submit">
-							Add Category
+							{dictionaryStore.getString('add_category')}
 						</Button>
 					</div>
 				</Form>

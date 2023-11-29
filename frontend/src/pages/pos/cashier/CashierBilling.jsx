@@ -37,7 +37,7 @@ const CashierBilling = observer(() => {
         <BillingWrap>
 
             <ModalForGetParameter
-                title="Add Discount"
+                title={dictionaryStore.getString('add_discount')}
                 visible={modalVisible}
                 onCancel={handleCloseModal}
                 onOk={handleModalOk}

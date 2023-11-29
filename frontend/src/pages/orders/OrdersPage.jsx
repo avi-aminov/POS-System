@@ -3,12 +3,12 @@ import { EyeOutlined } from '@ant-design/icons';
 //import ReactToPrint from 'react-to-print';
 import { useReactToPrint } from 'react-to-print';
 import { Modal, Button, Table } from 'antd';
-
 import { observer } from 'mobx-react';
 import ordersStore from '../../stores/ordersStore';
-
 import '../../styles/InvoiceStyles.css';
 import settingsStore from '../../stores/settingsStore';
+import dictionaryStore from '../../stores/dictionaryStore';
+
 const OrdersPage = observer(() => {
 	const componentRef = useRef();
 	const [popupModal, setPopupModal] = useState(false);
@@ -26,31 +26,37 @@ const OrdersPage = observer(() => {
 
 	//able data
 	const columns = [
-		{ title: 'ID ', dataIndex: 'id' },
 		{
-			title: 'Cutomer Name',
+			title: dictionaryStore.getString('id'),
+			dataIndex: 'id'
+		},
+		{
+			title: dictionaryStore.getString('customer_name'),
 			dataIndex: 'fName',
 			render: (text, record) => (
 				<span>{`${record.fName} ${record.lName}`}</span>
 			),
 		},
-		{ title: 'Contact No', dataIndex: 'phone' },
 		{
-			title: 'Subtotal',
+			title: dictionaryStore.getString('contact_no'),
+			dataIndex: 'phone'
+		},
+		{
+			title: dictionaryStore.getString('subtotal'),
 			dataIndex: 'subTotal',
 			render: (text, record) => (
 				<span>{`${record.subTotal} ${settingsStore.settings.currencySymbol}`}</span>
 			),
 		},
 		{
-			title: 'Tax',
+			title: dictionaryStore.getString('tax_2'),
 			dataIndex: 'tax',
 			render: (text, record) => (
 				<span>{`${record.tax} ${settingsStore.settings.currencySymbol}`}</span>
 			),
 		},
 		{
-			title: 'Total Amount',
+			title: dictionaryStore.getString('total_amount'),
 			dataIndex: 'total',
 			render: (text, record) => (
 				<span>{`${record.total} ${settingsStore.settings.currencySymbol}`}</span>
@@ -58,7 +64,7 @@ const OrdersPage = observer(() => {
 		},
 
 		{
-			title: 'Actions',
+			title: dictionaryStore.getString('actions'),
 			dataIndex: '_id',
 			render: (id, record) => (
 				<div>
@@ -77,7 +83,7 @@ const OrdersPage = observer(() => {
 	return (
 		<>
 			<div className="d-flex justify-content-between">
-				<h1>Invoice list</h1>
+				<h1>{dictionaryStore.getString('invoice_list')}</h1>
 			</div>
 
 			<Table

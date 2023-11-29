@@ -30,7 +30,7 @@ const PosMenu = observer(() => {
 			defaultSelectedKeys={window.location.pathname}
 		>
 			<Menu.Item key="/" icon={<HomeOutlined />}>
-				<Link to="/">{dictionaryStore.getString('home')}</Link>
+				<Link to="/">{dictionaryStore.getString('pos')}</Link>
 			</Menu.Item>
 			<Menu.Item key="/orders" icon={<CopyOutlined />}>
 				<Link to="/orders">{dictionaryStore.getString('orders')}</Link>

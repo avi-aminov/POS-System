@@ -11,11 +11,11 @@ const Categories = sequelize.define(
 			primaryKey: true,
 		},
 		name: {
-			type: DataTypes.STRING,
+			type: DataTypes.STRING(20),
 			allowNull: false,
 		},
 		image: {
-			type: DataTypes.STRING,
+			type: DataTypes.STRING(18),
 			allowNull: true,
 		},
 	},

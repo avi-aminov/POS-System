@@ -9,11 +9,11 @@ const Settings = sequelize.define('settings', {
 		primaryKey: true,
 	},
 	key: {
-		type: DataTypes.STRING,
+		type: DataTypes.STRING(30),
 		allowNull: true,
 	},
 	value: {
-		type: DataTypes.STRING,
+		type: DataTypes.STRING(30),
 		allowNull: false,
 	},
 });

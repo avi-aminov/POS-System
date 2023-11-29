@@ -17,19 +17,19 @@ const OrderItems = sequelize.define('orderItems', {
 		allowNull: true,
 	},
 	customerID: {
-		type: DataTypes.STRING,
-		allowNull: true,
-	},
-	price: {
-		type: DataTypes.STRING,
-		allowNull: false,
-	},
-	quantity: {
 		type: DataTypes.INTEGER,
 		allowNull: true,
 	},
+	price: {
+		type: DataTypes.STRING(6),
+		allowNull: false,
+	},
+	quantity: {
+		type: DataTypes.STRING(3),
+		allowNull: true,
+	},
 	totalPrice: {
-		type: DataTypes.STRING,
+		type: DataTypes.STRING(6),
 		allowNull: true,
 	},
 });

@@ -56,7 +56,7 @@ const ProductSearch = observer(() => {
 				/>
 
 				<ModalForGetParameter
-					title="Add Product Price"
+					title={dictionaryStore.getString('add_product_price')}
 					visible={modalVisible}
 					onCancel={handleCloseModal}
 					onOk={handleModalOk}

@@ -13,23 +13,23 @@ const Products = sequelize.define('products', {
 		allowNull: true,
 	},
 	name: {
-		type: DataTypes.STRING,
+		type: DataTypes.STRING(70),
 		allowNull: false,
 	},
 	description: {
-		type: DataTypes.STRING,
+		type: DataTypes.STRING(160),
 		allowNull: true,
 	},
 	image: {
-		type: DataTypes.STRING,
+		type: DataTypes.STRING(20),
 		allowNull: true,
 	},
 	price: {
-		type: DataTypes.STRING,
+		type: DataTypes.STRING(6),
 		allowNull: false,
 	},
 	newPrice: {
-		type: DataTypes.STRING,
+		type: DataTypes.STRING(6),
 		allowNull: true,
 	},
 	stock: {
@@ -37,7 +37,7 @@ const Products = sequelize.define('products', {
 		allowNull: false,
 	},
 	barcode: {
-		type: DataTypes.STRING,
+		type: DataTypes.STRING(10),
 		allowNull: true,
 	},
 });

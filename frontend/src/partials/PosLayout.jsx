@@ -37,7 +37,7 @@ const DefaultLayout = observer(() => {
 	}
 
 	return (
-		<SiteLayout>
+		<SiteLayout direction={settingsStore.settings.direction}>
 			<Layout>
 				{settingsStore.settings.direction === 'ltr' && getSideBar()}
 				<Layout className="site-layout">

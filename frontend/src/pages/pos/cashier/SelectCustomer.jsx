@@ -29,7 +29,7 @@ const SelectCustomer = observer(() => {
             <div>
                 <Row>
                     <Col span={18}>
-                        <div style={{ padding: '0px 0px 5px 15px' }}>
+                        <div style={{ padding: '5px 15px' }}>
                             <Select
                                 style={{ width: '100%' }}
                                 showSearch
@@ -60,7 +60,7 @@ const SelectCustomer = observer(() => {
                     </Col>
                 </Row>
 
-                <div style={{ padding: '0px 0px 5px 15px' }}>
+                <div style={{ padding: '5px 15px' }}>
                     <label>
                         {dictionaryStore.getString('current_customer')}
                         <span

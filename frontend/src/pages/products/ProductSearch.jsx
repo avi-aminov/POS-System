@@ -37,17 +37,16 @@ const ProductSearch = observer(() => {
 	return (
 		<div style={{ display: 'flex' }}>
 			<Input
+				style={{ margin: '0 10px' }}
 				placeholder={dictionaryStore.getString('search_for_a_product')}
 				value={productsStore.searchQuery}
 				onChange={(e) => productsStore.setSearchQuery(e.target.value)}
 			/>
-
 			<div style={{ display: 'flex' }}>
 				<BarcodeOutlined
 					style={{ cursor: 'pointer' }}
 					onClick={() => {
-						console.log('UserAddOutlined');
-
+						console.log('BarcodeOutlined');
 					}}
 				/>
 				<PlusSquareOutlined
@@ -62,7 +61,6 @@ const ProductSearch = observer(() => {
 					onOk={handleModalOk}
 				/>
 			</div>
-
 		</div>
 	);
 });

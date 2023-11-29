@@ -5,6 +5,8 @@ import CashierProducts from './CashierProducts';
 import CashierBilling from './CashierBilling';
 import { Col } from 'antd';
 import dictionaryStore from '../../../stores/dictionaryStore';
+import settingsStore from '../../../stores/settingsStore';
+
 import {
 	OrderPosWrap,
 	RightSideWrap,
@@ -16,7 +18,7 @@ import {
 const Cashier = observer(() => {
 
 	return (
-		<OrderPosWrap>
+		<OrderPosWrap direction={settingsStore.settings.direction}>
 			<Col flex={2}>
 				<AddCustomerDrawer />
 				<div className="order--pos-right">

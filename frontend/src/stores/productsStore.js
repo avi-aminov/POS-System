@@ -12,7 +12,6 @@ const productsStore = observable({
 				return;
 			}
 			this.products = data.data;
-			console.log('products', data.data);
 		} catch (error) {
 			console.log(error);
 		}

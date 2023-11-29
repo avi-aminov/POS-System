@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { observable, action, toJS } from 'mobx';
+import { observable, action } from 'mobx';
 import cartStore from '../stores/cartStore';
 import customersStore from '../stores/customersStore';
 
@@ -13,7 +13,6 @@ const ordersStore = observable({
 				return;
 			}
 			this.orders = data.data;
-			console.log('this.orders', toJS(this.orders));
 		} catch (error) {
 			console.log(error);
 		}
@@ -30,8 +29,7 @@ const ordersStore = observable({
 			total: cartStore.getTotalPrice(),
 			paymentMethod: 'Cash',
 		};
-		const res = await axios.post('/orders', order);
-		console.log('res: ', res);
+		await axios.post('/orders', order);
 		cartStore.clearCart();
 		customersStore.clearSelectedCustomers();
 	}),

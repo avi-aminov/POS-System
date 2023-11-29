@@ -14,8 +14,7 @@ const Login = () => {
 			message.error('One or more of the parameters are empty');
 		} else {
 			try {
-				const res = await axios.post('/login', value);
-				console.log('res:', res);
+				await axios.post('/login', value);
 				authStore.setLoginStatus(true);
 				navigate('/');
 			} catch (error) {

@@ -29,7 +29,7 @@ const ImageSelectionModal = ({ open, onClose, handleImageSelect }) => {
 			footer={null}
 		>
 			<div style={{ display: 'flex', flexWrap: 'wrap' }}>
-				{imageList.map((image) => (
+				{imageList.length > 0 && imageList.map((image) => (
 					<div
 						key={image.filename}
 						style={{ margin: 8, cursor: 'pointer' }}

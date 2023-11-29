@@ -2,8 +2,7 @@ import styled from 'styled-components';
 
 export const CategoriesWrap = styled.div`
     display: flex;
-    align-items: end;
-    margin-bottom: 20px; 
+    padding-bottom: 20px; 
     max-width: 100%;
     overflow: auto;
      
@@ -17,6 +16,12 @@ export const CategoriesItem = styled.div`
 
     h4{
         font-size: 16px;
+        justify-content: center;
+        display: flex;
+        text-align: center;
+        margin: 10px 10px;
+        min-width: 65px;
+        align-items: initial;
     }
 
     img{
@@ -32,4 +37,6 @@ export const CategoryWrapper = styled.div`
   border-radius: 15px;
   background: ${({ isSelected }) => isSelected ? "#1677ff" : "white"};
   color: ${({ isSelected }) => isSelected ? "#ffffff" : "#000000"};
+  margin: 0 8px;
+  border: 2px solid #898989;
 `;

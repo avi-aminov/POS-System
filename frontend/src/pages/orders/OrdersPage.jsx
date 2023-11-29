@@ -79,7 +79,7 @@ const OrdersPage = observer(() => {
 			),
 		},
 	];
-	console.log(selectedBill);
+
 	return (
 		<>
 			<div className="d-flex justify-content-between">

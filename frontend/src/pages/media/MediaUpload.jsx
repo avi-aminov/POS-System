@@ -77,8 +77,6 @@ const MediaUpload = () => {
 	};
 
 	const handleDelete = async (filename) => {
-
-		console.log('-------------', filename);
 		try {
 			await axios.delete(`/images/${filename}`);
 			// Show a success message or update media list.
@@ -130,7 +128,7 @@ const MediaUpload = () => {
 			</Upload>
 
 			<Row style={{ gap: '25px' }}>
-				{imageList.map((item) => (
+				{imageList.length > 0 && imageList.map((item) => (
 					<Col
 						key={item.id}
 						className="gutter-row"
@@ -144,7 +142,7 @@ const MediaUpload = () => {
 						}}
 					>
 						<div style={{ display: 'flex' }}>
-							<Image height={140} src={`${serverURL}/uploads/${item.path}`} />
+							<Image src={`${serverURL}/uploads/${item.path}`} />
 							<div style={{
 								display: 'flex',
 								justifyContent: 'center',

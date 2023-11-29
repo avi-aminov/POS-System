@@ -23,43 +23,34 @@ const PosMenu = observer(() => {
 		navigate('/login');
 	}
 
+	const getItem = (label, key, icon, children, type) => {
+		return {
+			key,
+			icon,
+			children,
+			label,
+			type,
+		};
+	}
+
+	const items = [
+		getItem(<Link to="/">{dictionaryStore.getString('pos')}</Link>, '/', <HomeOutlined />),
+		getItem(<Link to="/orders">{dictionaryStore.getString('orders')}</Link>, '/orders', <CopyOutlined />),
+		getItem(<Link to="/items">{dictionaryStore.getString('items')}</Link>, '/items', <UnorderedListOutlined />),
+		getItem(<Link to="/customers">{dictionaryStore.getString('customers')}</Link>, '/customers', <UserOutlined />),
+		getItem(<Link to="/media">{dictionaryStore.getString('media')}</Link>, '/media', <PictureOutlined />),
+		getItem(<Link to="/settings">{dictionaryStore.getString('settings')}</Link>, '/settings', <ControlOutlined />),
+		getItem(<div onClick={logout}>{dictionaryStore.getString('logout')}</div>, '/logout', <LogoutOutlined />),
+	];
+
 	return (
 		<Menu
 			theme="dark"
 			mode="inline"
-			defaultSelectedKeys={window.location.pathname}
-		>
-			<Menu.Item key="/" icon={<HomeOutlined />}>
-				<Link to="/">{dictionaryStore.getString('pos')}</Link>
-			</Menu.Item>
-			<Menu.Item key="/orders" icon={<CopyOutlined />}>
-				<Link to="/orders">{dictionaryStore.getString('orders')}</Link>
-			</Menu.Item>
-			<Menu.Item key="/items" icon={<UnorderedListOutlined />}>
-				<Link to="/items">{dictionaryStore.getString('items')}</Link>
-			</Menu.Item>
-			<Menu.Item key="/customers" icon={<UserOutlined />}>
-				<Link to="/customers">{dictionaryStore.getString('customers')}</Link>
-			</Menu.Item>
-			<Menu.Item key="/media" icon={<PictureOutlined />}>
-				<Link to="/media">{dictionaryStore.getString('media')}</Link>
-			</Menu.Item>
-			{/*}
-			<Menu.Item key="/reports" icon={<AreaChartOutlined />}>
-				<Link to="/reports">{dictionaryStore.getString('reports')}</Link>
-			</Menu.Item>
-			{*/}
-			<Menu.Item key="/settings" icon={<ControlOutlined />}>
-				<Link to="/settings">{dictionaryStore.getString('settings')}</Link>
-			</Menu.Item>
-			<Menu.Item
-				key="/logout"
-				icon={<LogoutOutlined />}
-				onClick={logout}
-			>
-				{dictionaryStore.getString('logout')}
-			</Menu.Item>
-		</Menu>
+			defaultSelectedKeys={[window.location.pathname]}
+			selectedKeys={[window.location.pathname]} // Add this line to fix the warning
+			items={items}
+		/>
 	);
 });
 

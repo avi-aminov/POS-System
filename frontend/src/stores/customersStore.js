@@ -32,8 +32,6 @@ const customersStore = observable({
 			this.customers = data.data;
 			this.getCustomerSelectData();
 			this.loadFromLocalStorage();
-
-			console.log('this.customers', toJS(this.customers));
 		} catch (error) {
 			console.log(error);
 		}
@@ -61,8 +59,6 @@ const customersStore = observable({
 					city: '',
 					zip: '',
 				});
-
-				console.log('New customer added successfully:', res.data.data);
 			}
 		} catch (error) {
 			console.error('Error creating customer:', error);
@@ -96,8 +92,6 @@ const customersStore = observable({
 			this.customers = this.customers.map((customer) =>
 				customer.id === customerData.id ? response.data.data : customer
 			);
-
-			console.log('Customer updated successfully:', response.data);
 		} catch (error) {
 			console.error('Error updating customer:', error);
 		}

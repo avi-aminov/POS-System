@@ -35,8 +35,6 @@ const cartStore = observable({
 			this.cart.push({ ...item, quantity: 1, totalPrice: item.price });
 		}
 
-		console.log('cart:', toJS(this.cart));
-
 		this.saveToLocalStorage();
 	}),
 

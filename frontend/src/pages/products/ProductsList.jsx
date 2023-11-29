@@ -61,8 +61,7 @@ const ProductsList = observer(() => {
 		if (editItem === null) {
 			const data = { ...value, image: selectedImageUrl };
 			try {
-				const response = await axios.post('/add-product', data);
-				console.log(response.data);
+				await axios.post('/add-product', data);
 				setCategoryPopupVisible(false);
 				message.success(dictionaryStore.getString('product_added_successfully'));
 			} catch (error) {
@@ -73,8 +72,7 @@ const ProductsList = observer(() => {
 			const data = { ...value, id: editItem.id, image: selectedImageUrl };
 
 			try {
-				const response = await axios.post('/update-product', data);
-				console.log(response.data);
+				await axios.post('/update-product', data);
 				setCategoryPopupVisible(false);
 				message.success(dictionaryStore.getString('product_updated_successfully'));
 			} catch (error) {
@@ -84,7 +82,6 @@ const ProductsList = observer(() => {
 	};
 
 	const handleImageSelect = (url) => {
-		console.log('url:', url);
 		setSelectedImageUrl(url);
 	};
 
@@ -96,7 +93,7 @@ const ProductsList = observer(() => {
 			dataIndex: 'image',
 			render: (image, record) => {
 				return (
-					<Image
+					image && <Image
 						data-imgurl={image}
 						width={60}
 						alt={record.name}
@@ -143,6 +140,7 @@ const ProductsList = observer(() => {
 			title: dictionaryStore.getString('image'),
 			dataIndex: 'image',
 			render: (image, record) => (
+				image &&
 				<Image
 					width={60}
 					alt={record.name}

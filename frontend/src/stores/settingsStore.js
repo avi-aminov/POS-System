@@ -47,8 +47,6 @@ const settingsStore = observable({
 					"lang": "eng"
 				};
 			}
-
-			console.log('this.settings', this.settings)
 		} catch (error) {
 			console.log(error);
 		}

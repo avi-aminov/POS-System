@@ -38,8 +38,10 @@ const SettingsPage = observer(() => {
                     style={{ width: 120 }}
                     onChange={handleCurrencySymbolChange}
                 >
-                    <Option value="$">$</Option>
-                    <Option value="₪">₪</Option>
+                    <Option value="$">USD ($)</Option>
+                    <Option value="₪">ILS (₪)</Option>
+                    <Option value="£">GBP (£)</Option>
+                    <Option value="€">EUR (€)</Option>
                 </Select>
             </div>
 

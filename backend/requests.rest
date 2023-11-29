@@ -120,3 +120,22 @@ Content-Type: application/json
     "city": "Or Yeuda",
     "zip": "123456"
 }
+
+
+
+
+###
+POST http://localhost:3003/add-product
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "name": "test",
+    "description": "test",
+    "price": "10",
+    "newPrice": "",
+    "stock": 100,
+    "barcode": "000",
+    "categoryID": 1,
+    "image": "empty"
+}

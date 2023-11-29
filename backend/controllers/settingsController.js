@@ -3,39 +3,62 @@ const answer = require('../utils/answer');
 
 const fetchSettings = async (req, res) => {
 	try {
-		const settings = await Settings.findAll();
+		if (!req.user.id) return answer(401, 'User Not Exist', res);
 
-		if (!settings) {
-			answer(404, 'No categories found', res);
+		const userID = req.user.id;
+		const settings = await Settings.findAll({
+			where: { userID },
+		});
+
+		if (!settings || settings.length === 0) {
+			return answer(200, 'No settings found', res, []);
 		}
-		answer(200, 'fetchCategories successfully', res, settings);
+
+		return answer(200, 'fetchSettings successfully', res, settings);
 	} catch (error) {
-		answer(500, 'Internal Server Error', res);
+		return answer(500, 'Internal Server Error', res);
 	}
 };
 
 const updateValueByKey = async (req, res) => {
+	if (!req.user.id) {
+		return answer(401, 'User Not Exist', res);
+	}
+
+	const userID = req.user.id;
 	const { key } = req.params; // Assuming the key is part of the route parameters
 	const { value } = req.body;
 
 	try {
 		// Check if the setting with the provided key exists
-		const existingSetting = await Settings.findOne({ where: { key } });
+		const existingSetting = await Settings.findOne({
+			where: {
+				key,
+				userID,
+			},
+		});
 
-		if (!existingSetting) {
-			answer(404, 'Setting not found', res);
-			return;
+		if (existingSetting) {
+			// Update the value of the existing setting
+			await existingSetting.update({ value });
+			return answer(200, 'Setting updated successfully', res, existingSetting);
 		}
 
-		// Update the value of the existing setting
-		await existingSetting.update({ value });
+		// If the setting doesn't exist, create a new setting
+		const newSetting = await Settings.create({
+			key,
+			value,
+			userID,
+		});
 
-		answer(200, 'Setting updated successfully', res, existingSetting);
+		return answer(201, 'Setting created successfully', res, newSetting);
+
 	} catch (error) {
 		console.error(error);
-		answer(500, 'Internal Server Error', res);
+		return answer(500, 'Internal Server Error', res);
 	}
 };
+
 
 module.exports = {
 	fetchSettings,

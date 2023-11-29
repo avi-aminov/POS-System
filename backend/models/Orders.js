@@ -11,16 +11,20 @@ const Orders = sequelize.define(
 			allowNull: false,
 			primaryKey: true,
 		},
+		userID: {
+			type: DataTypes.INTEGER,
+			allowNull: true,
+		},
 		customerID: {
 			type: DataTypes.INTEGER,
 			allowNull: true,
 		},
 		subTotal: {
-			type: DataTypes.STRING(6),
+			type: DataTypes.STRING(8),
 			allowNull: false,
 		},
 		discount: {
-			type: DataTypes.STRING(6),
+			type: DataTypes.STRING(8),
 			allowNull: true,
 		},
 		tax: {
@@ -28,11 +32,11 @@ const Orders = sequelize.define(
 			allowNull: true,
 		},
 		total: {
-			type: DataTypes.STRING(6),
+			type: DataTypes.STRING(8),
 			allowNull: true,
 		},
 		paymentMethod: {
-			type: DataTypes.STRING(14),
+			type: DataTypes.STRING(128),
 			allowNull: true,
 		},
 	},

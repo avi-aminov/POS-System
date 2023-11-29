@@ -30,11 +30,10 @@ const MediaUpload = () => {
 		fetchImageList();
 	}, []);
 
-
 	const fetchImageList = async () => {
 		try {
 			const response = await axios.get('/images');
-			setImageList(response.data);
+			setImageList(response.data.data);
 		} catch (error) {
 			message.error(dictionaryStore.getString('something_went_wrong'));
 		}
@@ -78,6 +77,8 @@ const MediaUpload = () => {
 	};
 
 	const handleDelete = async (filename) => {
+
+		console.log('-------------', filename);
 		try {
 			await axios.delete(`/images/${filename}`);
 			// Show a success message or update media list.
@@ -131,7 +132,7 @@ const MediaUpload = () => {
 			<Row style={{ gap: '25px' }}>
 				{imageList.map((item) => (
 					<Col
-						key={item.filename}
+						key={item.id}
 						className="gutter-row"
 						span={3}
 						style={{
@@ -143,7 +144,7 @@ const MediaUpload = () => {
 						}}
 					>
 						<div style={{ display: 'flex' }}>
-							<Image height={140} src={`${serverURL}/uploads/${item.filename}`} />
+							<Image height={140} src={`${serverURL}/uploads/${item.path}`} />
 							<div style={{
 								display: 'flex',
 								justifyContent: 'center',
@@ -152,12 +153,12 @@ const MediaUpload = () => {
 							}}>
 								<CopyOutlined
 									onClick={() =>
-										handleCopyUrl(`${serverURL}/uploads/${item.filename}`)}
+										handleCopyUrl(`${serverURL}/uploads/${item.path}`)}
 								/>
 
 								<Popconfirm
 									title={dictionaryStore.getString('are_you_sure_you_want_to_delete_this_image')}
-									onConfirm={() => handleDelete(item.filename)}
+									onConfirm={() => handleDelete(item.path)}
 									okText="Yes"
 									cancelText="No"
 								>

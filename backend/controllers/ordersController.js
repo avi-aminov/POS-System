@@ -5,11 +5,18 @@ const answer = require('../utils/answer');
 
 const fetchOrders = async (req, res) => {
 	try {
-		// Fetch orders
-		const orders = await Orders.findAll();
+		if (!req.user.id) return answer(401, 'User Not Exist', res);
+		const userID = req.user.id; // Assuming user ID is available in req.user
 
-		if (!orders) {
-			answer(404, 'No orders found', res);
+		// Fetch orders where userID matches the authenticated user's ID
+		const orders = await Orders.findAll({
+			where: {
+				userID,
+			},
+		});
+
+		if (!orders || orders.length === 0) {
+			return answer(404, 'No orders found', res, []);
 		}
 
 		// Fetch customers based on customerID from orders
@@ -18,6 +25,7 @@ const fetchOrders = async (req, res) => {
 			attributes: ['id', 'fName', 'lName', 'phone'],
 			where: {
 				id: customerIDs,
+				userID
 			},
 		});
 
@@ -43,19 +51,22 @@ const fetchOrders = async (req, res) => {
 			updatedAt: order.updatedAt,
 		}));
 
-		answer(200, 'fetchOrders successfully', res, formattedOrders);
+		return answer(200, 'fetchOrders successfully', res, formattedOrders);
 	} catch (error) {
-		answer(500, 'Internal Server Error', res);
 		console.error(error);
+		return answer(500, 'Internal Server Error', res);
 	}
 };
 
-
 const createOrders = async (req, res) => {
+	if (!req.user.id) return answer(401, 'User Not Exist', res);
+	const userID = req.user.id; // Assuming user ID is available in req.user
+
 	const { cart, customerID, subTotal, discount, tax, total, paymentMethod } =
 		req.body;
 
 	console.log(
+		userID,
 		cart,
 		customerID,
 		subTotal,
@@ -67,6 +78,7 @@ const createOrders = async (req, res) => {
 
 	try {
 		const createdOrder = await Orders.create({
+			userID,
 			customerID,
 			subTotal,
 			discount,
@@ -79,6 +91,7 @@ const createOrders = async (req, res) => {
 
 		// Now, create order items for each product in the cart
 		const orderItemsData = cart.map((cartItem) => ({
+			userID,
 			orderID,
 			productID: cartItem.id,
 			customerID: customerID,
@@ -91,13 +104,13 @@ const createOrders = async (req, res) => {
 			individualHooks: true, // This enables individual hooks for each row
 		});
 
-		answer(200, 'Order and order items created successfully', res, {
+		return answer(200, 'Order and order items created successfully', res, {
 			order: createdOrder,
 			orderItems: createdOrderItems,
 		});
 	} catch (error) {
 		// Handle any errors that may occur during the creation of the order
-		answer(500, 'Failed to create the order', res);
+		return answer(500, 'Failed to create the order', res);
 	}
 };
 

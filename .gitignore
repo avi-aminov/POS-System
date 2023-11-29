@@ -1,6 +1,9 @@
 docker-mysql/my-db
+
 backend/node_modules
 backend/.env
+backend/nodemon.json
+
 frontend/node_modules
 frontend/.env
 

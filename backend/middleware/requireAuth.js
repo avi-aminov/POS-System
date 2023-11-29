@@ -14,16 +14,16 @@ const requireAuth = async (req, res, next) => {
 			});
 
 			if (!user) {
-				answer(401, 'User Not Exist', res);
+				return answer(401, 'User Not Exist', res);
 			}
 
 			req.user = user;
 			next();
 		} else {
-			answer(401, 'Token Empty', res);
+			return answer(401, 'Token Empty', res);
 		}
 	} catch (e) {
-		answer(401, `requireAuth error ${this.toString(e)}`);
+		return answer(401, `requireAuth error ${this.toString(e)}`);
 	}
 };
 

@@ -2,7 +2,12 @@ import axios from 'axios';
 import { observable, action } from 'mobx';
 
 const settingsStore = observable({
-	settings: {},
+	settings: {
+		"currencySymbol": "$",
+		"direction": "ltr",
+		"tax": "17",
+		"lang": "eng"
+	},
 
 	fetchSettings: action(async function () {
 		try {
@@ -10,17 +15,40 @@ const settingsStore = observable({
 			if (!data.data) {
 				return;
 			}
-			//this.settings = data.data;
-			console.log('settings', data.data);
 
-			const transformedData = data.data.reduce((acc, { key, value }) => {
-				acc[key] = value;
-				return acc;
-			}, {});
+			if (data.data.length > 0) {
+				const transformedData = data.data.reduce((acc, { key, value }) => {
+					acc[key] = value;
+					return acc;
+				}, {});
 
-			transformedData.tax = parseInt(transformedData.tax, 10);
-			this.settings = transformedData;
+				// Set default values for missing keys
+				const defaultSettings = {
+					"currencySymbol": "$",
+					"direction": "ltr",
+					"tax": "17",
+					"lang": "eng"
+				};
 
+				// Assign default values for missing keys
+				this.settings = {
+					...defaultSettings,
+					...transformedData
+				};
+
+				// Ensure that 'tax' is an integer
+				this.settings.tax = parseInt(this.settings.tax, 10);
+			} else {
+				// No data received, use default settings
+				this.settings = {
+					"currencySymbol": "$",
+					"direction": "ltr",
+					"tax": "17",
+					"lang": "eng"
+				};
+			}
+
+			console.log('this.settings', this.settings)
 		} catch (error) {
 			console.log(error);
 		}

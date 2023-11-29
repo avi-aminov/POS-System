@@ -53,14 +53,16 @@ app.post('/update-product', requireAuth, productsController.updateProduct);
 // Customers
 app.get('/customers', requireAuth, customersController.fetchCustomers);
 app.post('/customers', requireAuth, customersController.createCustomers);
+app.put('/edit-customer', requireAuth, customersController.editCustomer);
+app.delete('/delete-customer/:id', requireAuth, customersController.deleteCustomer);
 
 // Orders
 app.get('/orders', requireAuth, ordersController.fetchOrders);
 app.post('/orders', requireAuth, ordersController.createOrders);
 
 // Images
-app.post('/upload', imageController.uploadFile);
-app.get('/images', requireAuth, imageController.getImages);
+app.post('/upload', requireAuth, imageController.uploadFile);
+app.get('/images', requireAuth, imageController.fetchImages);
 app.delete('/images/:filename', requireAuth, imageController.deleteImage);
 
 // Settings

@@ -8,28 +8,32 @@ const Products = sequelize.define('products', {
 		allowNull: false,
 		primaryKey: true,
 	},
+	userID: {
+		type: DataTypes.INTEGER,
+		allowNull: true,
+	},
 	categoryID: {
 		type: DataTypes.INTEGER,
 		allowNull: true,
 	},
 	name: {
-		type: DataTypes.STRING(70),
+		type: DataTypes.STRING(128),
 		allowNull: false,
 	},
 	description: {
-		type: DataTypes.STRING(160),
+		type: DataTypes.STRING(500),
 		allowNull: true,
 	},
 	image: {
-		type: DataTypes.STRING(20),
+		type: DataTypes.STRING(60),
 		allowNull: true,
 	},
 	price: {
-		type: DataTypes.STRING(6),
+		type: DataTypes.STRING(8),
 		allowNull: false,
 	},
 	newPrice: {
-		type: DataTypes.STRING(6),
+		type: DataTypes.STRING(8),
 		allowNull: true,
 	},
 	stock: {
@@ -37,7 +41,7 @@ const Products = sequelize.define('products', {
 		allowNull: false,
 	},
 	barcode: {
-		type: DataTypes.STRING(10),
+		type: DataTypes.STRING(30),
 		allowNull: true,
 	},
 });

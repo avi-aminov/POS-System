@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import customersStore from '../../stores/customersStore';
 import dictionaryStore from '../../stores/dictionaryStore';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+
 const CustomersController = observer(() => {
     const [form] = Form.useForm();
     const [drawerVisible, setDrawerVisible] = useState(false);
@@ -66,6 +67,7 @@ const CustomersController = observer(() => {
         try {
             const values = await form.validateFields();
             customersStore.setCreateForm(values);
+
             if (isEditing) {
                 await customersStore.editCustomer(values);
             } else {
@@ -96,7 +98,7 @@ const CustomersController = observer(() => {
                 placement="right"
                 width={400}
                 onClose={handleCancel}
-                visible={drawerVisible}
+                open={drawerVisible}
             >
                 <Form form={form} layout="vertical" name="editCustomerForm">
                     <Form.Item name="id" hidden>

@@ -10,12 +10,16 @@ const Categories = sequelize.define(
 			allowNull: false,
 			primaryKey: true,
 		},
+		userID: {
+			type: DataTypes.INTEGER,
+			allowNull: true,
+		},
 		name: {
-			type: DataTypes.STRING(20),
+			type: DataTypes.STRING(124),
 			allowNull: false,
 		},
 		image: {
-			type: DataTypes.STRING(18),
+			type: DataTypes.STRING(60),
 			allowNull: true,
 		},
 	},

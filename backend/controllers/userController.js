@@ -22,7 +22,7 @@ const signup = async (req, res) => {
 			name,
 			email,
 			password: hashPass,
-			verified: false,
+			verified: true,
 		});
 		answer(200, 'User created successfully', res);
 	} catch (error) {

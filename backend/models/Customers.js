@@ -10,28 +10,32 @@ const Customers = sequelize.define(
 			allowNull: false,
 			primaryKey: true,
 		},
+		userID: {
+			type: DataTypes.INTEGER,
+			allowNull: true,
+		},
 		fName: {
-			type: DataTypes.STRING(12),
+			type: DataTypes.STRING(128),
 			allowNull: true,
 		},
 		lName: {
-			type: DataTypes.STRING(12),
+			type: DataTypes.STRING(128),
 			allowNull: true,
 		},
 		phone: {
-			type: DataTypes.STRING(14),
+			type: DataTypes.STRING(20),
 			allowNull: true,
 		},
 		email: {
-			type: DataTypes.STRING(30),
+			type: DataTypes.STRING(128),
 			allowNull: true,
 		},
 		address: {
-			type: DataTypes.STRING(50),
+			type: DataTypes.STRING(300),
 			allowNull: true,
 		},
 		city: {
-			type: DataTypes.STRING(20),
+			type: DataTypes.STRING(128),
 			allowNull: true,
 		},
 		zip: {

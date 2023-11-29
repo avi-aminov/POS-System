@@ -16,30 +16,34 @@ const Categories = observer(() => {
 	}, []);
 
 	return (
-		<CategoriesWrap>
-			<CategoryWrapper
-				isSelected={categoriesStore.selectedCategory === 0}
-				onClick={() => categoriesStore.setSelectedCategory(0)} >
-				<CategoriesItem>
-					<h4>{dictionaryStore.getString('all')}</h4>
-					<img src={`${serverURL}/global/select-all.jpg`} alt="" />
-				</CategoriesItem>
-			</CategoryWrapper>
+		<>
+			{
+				categoriesStore.categories.length > 0 ? <CategoriesWrap>
+					<CategoryWrapper
+						isSelected={categoriesStore.selectedCategory === 0}
+						onClick={() => categoriesStore.setSelectedCategory(0)} >
+						<CategoriesItem>
+							<h4>{dictionaryStore.getString('all')}</h4>
+							<img src={`${serverURL}/global/select-all.jpg`} alt="" />
+						</CategoriesItem>
+					</CategoryWrapper>
 
-			{categoriesStore.categories && categoriesStore.categories.map((category) => (
-				<CategoryWrapper
-					key={category.name}
-					isSelected={categoriesStore.selectedCategory === category.id &&
-						'category-active'}
-					onClick={() => categoriesStore.setSelectedCategory(category.id)}
-				>
-					<CategoriesItem>
-						<h4>{category.name}</h4>
-						<img src={`${serverURL}/uploads/${category.image}`} alt="" />
-					</CategoriesItem>
-				</CategoryWrapper>
-			))}
-		</CategoriesWrap>
+					{categoriesStore.categories && categoriesStore.categories.map((category) => (
+						<CategoryWrapper
+							key={category.name}
+							isSelected={categoriesStore.selectedCategory === category.id &&
+								'category-active'}
+							onClick={() => categoriesStore.setSelectedCategory(category.id)}
+						>
+							<CategoriesItem>
+								<h4>{category.name}</h4>
+								<img src={`${serverURL}/uploads/${category.image}`} alt="" />
+							</CategoriesItem>
+						</CategoryWrapper>
+					))}
+				</CategoriesWrap> : ''
+			}
+		</>
 	);
 });
 

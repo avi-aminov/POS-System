@@ -3,18 +3,29 @@ const answer = require('../utils/answer');
 
 const fetchProducts = async (req, res) => {
 	try {
-		const products = await Products.findAll();
+		if (!req.user.id) return answer(401, 'User Not Exist', res);
 
-		if (!products) {
-			answer(404, 'No products found', res);
+		const userID = req.user.id;
+		const products = await Products.findAll({
+			where: { userID },
+		});
+
+		if (!products || products.length === 0) {
+			return answer(200, 'fetchProducts empty products', res, []);
 		}
-		answer(200, 'fetchProducts successfully', res, products);
+
+		return answer(200, 'fetchProducts successfully', res, products);
 	} catch (error) {
-		answer(500, 'Internal Server Error', res);
+		console.error('Error fetching products:', error);
+		return answer(500, 'Internal Server Error', res);
 	}
 };
 
 const addProduct = async (req, res) => {
+
+	if (!req.user.id) return answer(401, 'User Not Exist', res);
+
+	const userID = req.user.id;
 	const {
 		name,
 		description,
@@ -28,6 +39,7 @@ const addProduct = async (req, res) => {
 
 	try {
 		const category = await Products.create({
+			userID,
 			name,
 			description,
 			price,
@@ -38,13 +50,17 @@ const addProduct = async (req, res) => {
 			image,
 		});
 
-		answer(200, 'Product added successfully', res, category);
+		return answer(200, 'Product added successfully', res, category);
 	} catch (error) {
-		answer(500, 'Failed to create the product', res);
+		return answer(500, 'Failed to create the product', res);
 	}
+
 };
 
 const updateProduct = async (req, res) => {
+	if (!req.user.id) return answer(401, 'User Not Exist', res);
+	const userID = req.user.id;
+
 	const {
 		id,
 		name,
@@ -65,6 +81,11 @@ const updateProduct = async (req, res) => {
 			return answer(404, 'Product not found', res);
 		}
 
+		// Check if the product belongs to the authenticated user
+		if (product.userID !== userID) {
+			return answer(403, 'Unauthorized: Product does not belong to the user', res);
+		}
+
 		// Update the product's attributes
 		await product.update({
 			name,
@@ -77,10 +98,10 @@ const updateProduct = async (req, res) => {
 			image,
 		});
 
-		answer(200, 'Product updated successfully', res, product);
+		return answer(200, 'Product updated successfully', res, product);
 	} catch (error) {
 		console.error(error);
-		answer(500, 'Failed to update the product', res);
+		return answer(500, 'Failed to update the product', res);
 	}
 };
 

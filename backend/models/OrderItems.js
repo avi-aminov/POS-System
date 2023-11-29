@@ -8,6 +8,10 @@ const OrderItems = sequelize.define('orderItems', {
 		allowNull: false,
 		primaryKey: true,
 	},
+	userID: {
+		type: DataTypes.INTEGER,
+		allowNull: true,
+	},
 	orderID: {
 		type: DataTypes.INTEGER,
 		allowNull: false,
@@ -21,7 +25,7 @@ const OrderItems = sequelize.define('orderItems', {
 		allowNull: true,
 	},
 	price: {
-		type: DataTypes.STRING(6),
+		type: DataTypes.STRING(8),
 		allowNull: false,
 	},
 	quantity: {
@@ -29,7 +33,7 @@ const OrderItems = sequelize.define('orderItems', {
 		allowNull: true,
 	},
 	totalPrice: {
-		type: DataTypes.STRING(6),
+		type: DataTypes.STRING(8),
 		allowNull: true,
 	},
 });

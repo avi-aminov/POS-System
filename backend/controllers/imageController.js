@@ -1,8 +1,10 @@
-
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 const fs = require('fs');
+const answer = require('../utils/answer');
+const Media = require('../models/Media'); // Adjust the path based on your project structure
+
 
 const maxSize = 1 * 1024 * 1024; // 1MB in bytes
 
@@ -24,55 +26,91 @@ const upload = multer({
 }).array('files');
 
 const uploadFile = async (req, res) => {
-    console.log('Received file upload request:', req.body, req.files);
+    if (!req.user.id) return answer(401, 'User Not Exist', res);
 
-    upload(req, res, (err) => {
+    const userID = req.user.id; // Assuming the user ID is available in req.user
+
+    upload(req, res, async (err) => {
         if (err) {
             console.error('Error handling file upload:', err);
-            return res.status(500).json({ error: 'Internal Server Error' });
+            return answer(500, 'Internal Server Error', res);
         }
 
-        // Handle the uploaded files here
-        res.status(200).json({ message: 'Files uploaded successfully' });
+        // Extract the file paths from req.files
+        const filePaths = req.files.map((file) => {
+            return file.filename;
+        });
+
+        // Insert file paths into the database with associated userID
+        try {
+            await Media.bulkCreate(filePaths.map((path) => ({ path, userID })));
+            console.log('Files added to the database successfully');
+            return answer(200, 'Files uploaded and added to the database successfully', res);
+        } catch (error) {
+            console.error('Error adding files to the database:', error);
+            return answer(500, 'Internal Server Error', res);
+        }
     });
 };
 
-const getImages = async (req, res) => {
-    const uploadDirectory = 'public/uploads/';
+const fetchImages = async (req, res) => {
+    try {
+        if (!req.user.id) return answer(401, 'User Not Exist', res);
 
-    fs.readdir(uploadDirectory, (err, files) => {
-        if (err) {
-            console.error('Error reading upload directory:', err);
-            res.status(500).json({ error: 'Internal Server Error' });
-            return;
+        const userID = req.user.id;
+        const media = await Media.findAll({
+            where: { userID },
+        });
+
+        if (!media || media.length === 0) {
+            return answer(200, 'fetchImages empty media', res, []);
         }
 
-        const imageFiles = files.filter(file => /\.(jpg|jpeg|png|gif|webp|svg|avif)$/i.test(file));
-        const imageList = imageFiles.map(filename => ({ filename }));
-
-        res.json(imageList);
-    });
+        return answer(200, 'fetchImages successfully', res, media);
+    } catch (error) {
+        console.error(error);
+        return answer(500, 'Failed to fetch customers', res);
+    }
 };
 
 const deleteImage = async (req, res) => {
+    if (!req.user.id) return answer(401, 'User Not Exist', res);
+
+    const userID = req.user.id;
     const filename = req.params.filename;
     const filePath = path.join(__dirname, '../public/uploads/', filename);
 
     // Delete the file from the uploads directory
-    fs.unlink(filePath, (err) => {
+    fs.unlink(filePath, async (err) => {
         if (err) {
             console.error('Error deleting file:', err);
-            res.status(500).json({ error: 'Internal Server Error' });
-            return;
+            return answer(500, 'Internal Server Error', res);
         }
 
-        res.json({ success: true });
+        // Delete the corresponding record from the database
+        try {
+            const deletedCount = await Media.destroy({
+                where: {
+                    path: filename,
+                    userID: userID,
+                },
+            });
+
+            if (deletedCount === 1) {
+                return answer(200, 'File and database record deleted successfully', res);
+            } else {
+                return answer(404, 'File not found in the database', res);
+            }
+        } catch (error) {
+            console.error('Error deleting file from the database:', error);
+            return answer(500, 'Internal Server Error', res);
+        }
     });
 };
 
 
 module.exports = {
     uploadFile,
-    getImages,
     deleteImage,
+    fetchImages,
 };

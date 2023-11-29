@@ -46,19 +46,26 @@ const customersStore = observable({
 
 	// create new Customer
 	createCustomer: action(async function () {
-		const res = await axios.post('/customer', this.createForm);
+		try {
+			const res = await axios.post('/customers', this.createForm);
+			if (res && res.data.data) {
+				this.customers = [...this.customers, res.data.data];
 
-		if (res) {
-			this.customers = [...this.customers, res.data.customer];
-			this.setCreateForm({
-				fName: '',
-				lName: '',
-				email: '',
-				phone: '',
-				address: '',
-				city: '',
-				zip: '',
-			});
+				// Reset the form
+				this.setCreateForm({
+					fName: '',
+					lName: '',
+					email: '',
+					phone: '',
+					address: '',
+					city: '',
+					zip: '',
+				});
+
+				console.log('New customer added successfully:', res.data.data);
+			}
+		} catch (error) {
+			console.error('Error creating customer:', error);
 		}
 	}),
 

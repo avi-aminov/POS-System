@@ -8,7 +8,7 @@ import {
 	UnorderedListOutlined,
 	PictureOutlined,
 	ControlOutlined,
-	AreaChartOutlined
+	//AreaChartOutlined
 } from '@ant-design/icons';
 
 import { observer } from 'mobx-react';
@@ -44,9 +44,11 @@ const PosMenu = observer(() => {
 			<Menu.Item key="/media" icon={<PictureOutlined />}>
 				<Link to="/media">{dictionaryStore.getString('media')}</Link>
 			</Menu.Item>
+			{/*}
 			<Menu.Item key="/reports" icon={<AreaChartOutlined />}>
 				<Link to="/reports">{dictionaryStore.getString('reports')}</Link>
 			</Menu.Item>
+			{*/}
 			<Menu.Item key="/settings" icon={<ControlOutlined />}>
 				<Link to="/settings">{dictionaryStore.getString('settings')}</Link>
 			</Menu.Item>

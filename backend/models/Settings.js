@@ -8,12 +8,16 @@ const Settings = sequelize.define('settings', {
 		allowNull: false,
 		primaryKey: true,
 	},
+	userID: {
+		type: DataTypes.INTEGER,
+		allowNull: true,
+	},
 	key: {
-		type: DataTypes.STRING(30),
+		type: DataTypes.STRING(128),
 		allowNull: true,
 	},
 	value: {
-		type: DataTypes.STRING(30),
+		type: DataTypes.STRING(128),
 		allowNull: false,
 	},
 });

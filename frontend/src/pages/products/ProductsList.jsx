@@ -19,17 +19,13 @@ import productsStore from '../../stores/productsStore';
 import categoriesStore from '../../stores/categoriesStore';
 import settingsStore from '../../stores/settingsStore';
 import dictionaryStore from '../../stores/dictionaryStore';
-import useImageModal from '../../hooks/useImageModal';
-import ImageSelectionModal from '../../components/ImageSelectionModal';
+import ImageUploader from '../media/ImageUploader';
 
 const ProductsList = observer(() => {
 	const serverURL = import.meta.env.VITE_SERVER_URL;
-
 	const [popupModal, setPopupModal] = useState(false);
 	const [editItem, setEditItem] = useState(null);
-	const [selectedImageUrl, setSelectedImageUrl] = useState();
 	const [categoryPopupVisible, setCategoryPopupVisible] = useState(false);
-	const imageModal = useImageModal();
 
 	//useEffect
 	useEffect(() => {
@@ -39,7 +35,7 @@ const ProductsList = observer(() => {
 
 	const handleCategorySubmit = async (values) => {
 		try {
-			const data = { name: values.name, image: selectedImageUrl };
+			const data = { name: values.name, image: values.image };
 			//const response = 
 			await axios.post('/add-category', data);
 			message.success(dictionaryStore.getString('category_added_successfully'));
@@ -59,7 +55,10 @@ const ProductsList = observer(() => {
 	// handle form  submit
 	const handleSubmit = async (value) => {
 		if (editItem === null) {
-			const data = { ...value, image: selectedImageUrl };
+			const data = { ...value };
+
+			console.log('data:', data);
+
 			try {
 				await axios.post('/add-product', data);
 				setCategoryPopupVisible(false);
@@ -69,7 +68,7 @@ const ProductsList = observer(() => {
 				message.error(dictionaryStore.getString('error_adding_category'));
 			}
 		} else {
-			const data = { ...value, id: editItem.id, image: selectedImageUrl };
+			const data = { ...value, id: editItem.id };
 
 			try {
 				await axios.post('/update-product', data);
@@ -79,10 +78,6 @@ const ProductsList = observer(() => {
 				message.error('Error updated category');
 			}
 		}
-	};
-
-	const handleImageSelect = (url) => {
-		setSelectedImageUrl(url);
 	};
 
 	//able data
@@ -118,7 +113,6 @@ const ProductsList = observer(() => {
 						style={{ cursor: 'pointer' }}
 						onClick={() => {
 							setEditItem(record);
-							setSelectedImageUrl(record.image);
 							setPopupModal(true);
 						}}
 					/>
@@ -150,7 +144,7 @@ const ProductsList = observer(() => {
 		},
 		{
 			title: dictionaryStore.getString('action'),
-			dataIndex: '_id',
+			dataIndex: 'id',
 			render: (id, record) => (
 				<div>
 					<EditOutlined
@@ -202,18 +196,30 @@ const ProductsList = observer(() => {
 		console.log(key);
 	};
 
+
+	const [drawerVisible, setDrawerVisible] = useState(false);
+
+	const showDrawer = () => {
+		setDrawerVisible(true);
+	};
+
+	const closeDrawer = () => {
+		setDrawerVisible(false);
+	};
+
 	return (
 		<>
-			<ImageSelectionModal
-				open={imageModal.visible}
-				onClose={imageModal.closeImageModal}
-				handleImageSelect={(img) => {
-					handleImageSelect(img);
-				}}
-			/>
+			<Drawer
+				title="Image Uploader"
+				width={'60%'}
+				onClose={closeDrawer}
+				open={drawerVisible}
+				style={{ zIndex: '9000' }}
+			>
+				<ImageUploader onClose={closeDrawer} />
+			</Drawer>
 
 			<div className="d-flex justify-content-between">
-				<div></div>
 				<div>
 					<Button type="primary" onClick={() => setPopupModal(true)}>
 						{dictionaryStore.getString('add_product')}
@@ -302,29 +308,21 @@ const ProductsList = observer(() => {
 						<Form.Item name="barcode" label={dictionaryStore.getString('barcode')}>
 							<Input />
 						</Form.Item>
-
 						<Form.Item
-							label={dictionaryStore.getString('image_url')}
+							name="image"
+							label={dictionaryStore.getString('select_image')}
 							rules={[
 								{
 									required: true,
-									message: dictionaryStore.getString('please_select_the_image'),
+									message: dictionaryStore.getString('please_enter_the_name'),
 								},
 							]}
 						>
-							{selectedImageUrl}
-							<Input
-								value={selectedImageUrl}
-								addonAfter={
-									<Button
-										type="primary"
-										onClick={imageModal.openImageModal}
-									>
-										{dictionaryStore.getString('select_image')}
-									</Button>
-								}
-							/>
+							<Input />
 						</Form.Item>
+						<Button type="primary" onClick={showDrawer}>
+							{dictionaryStore.getString('select_image')}
+						</Button>
 
 						<Form.Item
 							name="categoryID"
@@ -381,27 +379,20 @@ const ProductsList = observer(() => {
 					</Form.Item>
 
 					<Form.Item
-						label={dictionaryStore.getString('image_url')}
+						name="image"
+						label={dictionaryStore.getString('select_image')}
 						rules={[
 							{
 								required: true,
-								message: dictionaryStore.getString('please_select_the_image'),
+								message: dictionaryStore.getString('please_enter_the_name'),
 							},
 						]}
 					>
-						{selectedImageUrl}
-						<Input
-							value={selectedImageUrl}
-							addonAfter={
-								<Button
-									type="primary"
-									onClick={imageModal.openImageModal}
-								>
-									{dictionaryStore.getString('select_image')}
-								</Button>
-							}
-						/>
+						<Input />
 					</Form.Item>
+					<Button type="primary" onClick={showDrawer}>
+						{dictionaryStore.getString('select_image')}
+					</Button>
 
 					<div className="d-flex justify-content-end">
 						<Button type="primary" htmlType="submit">

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Modal, Button, Image } from 'antd';
 import PropTypes from 'prop-types';
+import dictionaryStore from '../stores/dictionaryStore';
 
 const ImageSelectionModal = ({ open, onClose, handleImageSelect }) => {
 	const serverURL = import.meta.env.VITE_SERVER_URL;
@@ -15,7 +16,7 @@ const ImageSelectionModal = ({ open, onClose, handleImageSelect }) => {
 	const fetchImageList = async () => {
 		try {
 			const response = await axios.get('/images');
-			setImageList(response.data);
+			setImageList(response.data.data);
 		} catch (error) {
 			console.error('Error fetching image list:', error);
 		}
@@ -36,10 +37,10 @@ const ImageSelectionModal = ({ open, onClose, handleImageSelect }) => {
 					>
 						<Image
 							width={80}
-							src={`${serverURL}/uploads/${image.filename}`}
+							src={`${serverURL}/uploads/${image.path}`}
 						/>
-						<div onClick={() => handleImageSelect(image.filename)}>
-							<Button type="primary">Select Image</Button>
+						<div onClick={() => handleImageSelect(image.path)}>
+							<Button type="primary">{dictionaryStore.getString('select_image')}</Button>
 						</div>
 					</div>
 				))}

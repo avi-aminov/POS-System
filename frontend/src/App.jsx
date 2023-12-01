@@ -5,10 +5,11 @@ import Register from './pages/auth/Register';
 import BillsPage from './pages/orders/OrdersPage';
 import PosLayout from './partials/PosLayout';
 import RequireAuth from './components/RequireAuth';
-import MediaUpload from './pages/media/MediaUpload';
+//import MediaUpload from './pages/media/MediaUpload';
 import CustomersController from './pages/customers/CustomersController';
 import Pos from './pages/pos/Pos';
 import SettingsPage from './pages/settings/SettingsPage';
+import ImageUploader from './pages/media/ImageUploader';
 
 const App = () => {
 	return (
@@ -51,7 +52,7 @@ const App = () => {
 						path="/media"
 						element={
 							<RequireAuth>
-								<MediaUpload />
+								<ImageUploader />
 							</RequireAuth>
 						}
 					/>

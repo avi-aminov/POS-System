@@ -28,7 +28,7 @@ const upload = multer({
 const uploadFile = async (req, res) => {
     if (!req.user.id) return answer(401, 'User Not Exist', res);
 
-    const userID = req.user.id; // Assuming the user ID is available in req.user
+    const userID = req.user.id;
 
     upload(req, res, async (err) => {
         if (err) {
@@ -36,14 +36,19 @@ const uploadFile = async (req, res) => {
             return answer(500, 'Internal Server Error', res);
         }
 
-        // Extract the file paths from req.files
-        const filePaths = req.files.map((file) => {
-            return file.filename;
+        console.log('req.files', req.files);
+
+        // Extract the file information from req.files
+        const fileData = req.files.map((file) => {
+            return {
+                path: file.filename,
+                size: file.size, // Add the size information
+            };
         });
 
-        // Insert file paths into the database with associated userID
+        // Insert file information into the database with associated userID
         try {
-            await Media.bulkCreate(filePaths.map((path) => ({ path, userID })));
+            await Media.bulkCreate(fileData.map((data) => ({ ...data, userID })));
             console.log('Files added to the database successfully');
             return answer(200, 'Files uploaded and added to the database successfully', res);
         } catch (error) {
@@ -52,6 +57,7 @@ const uploadFile = async (req, res) => {
         }
     });
 };
+
 
 const fetchImages = async (req, res) => {
     try {
@@ -79,6 +85,7 @@ const deleteImage = async (req, res) => {
     const userID = req.user.id;
     const filename = req.params.filename;
     const filePath = path.join(__dirname, '../public/uploads/', filename);
+
 
     // Delete the file from the uploads directory
     fs.unlink(filePath, async (err) => {

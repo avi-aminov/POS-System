@@ -16,6 +16,10 @@ const Media = sequelize.define('media', {
 		type: DataTypes.STRING(60),
 		allowNull: true,
 	},
+	size: {
+		type: DataTypes.INTEGER,
+		allowNull: true,
+	},
 });
 
 Media.sync({ alter: true })

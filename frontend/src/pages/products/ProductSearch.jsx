@@ -22,7 +22,7 @@ const ProductSearch = observer(() => {
 
 		const globalProduct = {
 			id: 9999, // You can use a unique identifier
-			name: 'Global',
+			name: dictionaryStore.getString('global'),
 			price: inputValue,
 			quantity: 1,
 			totalPrice: inputValue,

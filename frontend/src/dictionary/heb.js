@@ -99,4 +99,6 @@ export default {
     add_new_category: "הוסף קטגוריה חדשה",
     category_name: "שם קטגוריה",
     please_enter_the_category_name: "נא להזין את שם הקטגוריה",
+    global: "כללי",
+    the_order_was_successfully_placed: "ההזמנה בוצע בהצלחה",
 };

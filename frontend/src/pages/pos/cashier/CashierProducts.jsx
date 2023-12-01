@@ -39,10 +39,10 @@ const CashierProducts = observer(() => {
                                 {
                                     item.id === 9999 ?
                                         <Image src={`${serverURL}/global/select-all.jpg`} alt="" /> :
-                                        <Image
+                                        item.image ? <Image
                                             src={`${serverURL}/uploads/${item.image}`}
                                             alt={item.name}
-                                        />
+                                        /> : ''
                                 }
                                 <Title>{getTitle(item.name)}</Title>
                             </ItemCol>

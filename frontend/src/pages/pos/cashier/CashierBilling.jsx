@@ -4,7 +4,7 @@ import cartStore from '../../../stores/cartStore';
 import settingStore from '../../../stores/settingsStore';
 import ordersStore from '../../../stores/ordersStore';
 import dictionaryStore from '../../../stores/dictionaryStore';
-import { Button, Row, Col } from 'antd';
+import { Button, Row, Col, message } from 'antd';
 import { PlusSquareOutlined, DeleteOutlined } from '@ant-design/icons';
 import { BillingWrap } from './CashierBilling.style';
 import ModalForGetParameter from '../../../components/ModalForGetParameter';
@@ -30,7 +30,9 @@ const CashierBilling = observer(() => {
     }
 
     const placeOrder = () => {
-        ordersStore.createOrder();
+        ordersStore.createOrder(() => {
+            message.success(dictionaryStore.getString('the_order_was_successfully_placed'));
+        });
     };
 
     return (

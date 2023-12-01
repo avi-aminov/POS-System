@@ -19,7 +19,7 @@ const ordersStore = observable({
 	}),
 
 	// create new order
-	createOrder: action(async function () {
+	createOrder: action(async function (cb) {
 		const order = {
 			cart: cartStore.cart,
 			customerID: customersStore.selectedCustomers,
@@ -32,6 +32,7 @@ const ordersStore = observable({
 		await axios.post('/orders', order);
 		cartStore.clearCart();
 		customersStore.clearSelectedCustomers();
+		cb();
 	}),
 });
 

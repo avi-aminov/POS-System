@@ -65,7 +65,7 @@ const OrdersPage = observer(() => {
 
 		{
 			title: dictionaryStore.getString('actions'),
-			dataIndex: '_id',
+			dataIndex: 'id',
 			render: (id, record) => (
 				<div>
 					<EyeOutlined

@@ -23,7 +23,10 @@ const ItemList = observer(({ item }) => {
 				}}
 				cover={
 					<ImageWrap>
-						<Img alt={item.name} src={`${serverURL}/uploads/${item.image}`} />
+						{
+							item.image ?
+								<Img alt={item.name} src={`${serverURL}/uploads/${item.image}`} /> : item.name
+						}
 					</ImageWrap>
 				}
 			>

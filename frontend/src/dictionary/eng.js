@@ -99,4 +99,6 @@ export default {
     add_new_category: "Add New Category",
     category_name: "Category Name",
     please_enter_the_category_name: "Please enter the category name",
+    global: "Global",
+    the_order_was_successfully_placed: "The order was successfully placed",
 };

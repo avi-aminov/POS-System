@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import {
+	DeleteOutlined,
+	EditOutlined,
+	SkinOutlined,
+	SisternodeOutlined
+} from '@ant-design/icons';
 import {
 	Drawer,
 	Button,
@@ -168,7 +173,12 @@ const ProductsList = observer(() => {
 	const tab_items = [
 		{
 			key: '1',
-			label: dictionaryStore.getString('products_list'),
+			label: (
+				<span>
+					<SkinOutlined />
+					{dictionaryStore.getString('products_list')}
+				</span>
+			),
 			children: (
 				<Table
 					rowKey="id"
@@ -180,7 +190,12 @@ const ProductsList = observer(() => {
 		},
 		{
 			key: '2',
-			label: dictionaryStore.getString('categories_list'),
+			label: (
+				<span>
+					<SisternodeOutlined />
+					{dictionaryStore.getString('categories_list')}
+				</span>
+			),
 			children: (
 				<Table
 					rowKey="id"

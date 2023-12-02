@@ -26,8 +26,6 @@ const addCategory = async (req, res) => {
 	const userID = req.user.id;
 	const { name, image } = req.body;
 
-	console.log('============', req.body)
-
 	try {
 		const category = await Categories.create({
 			userID,

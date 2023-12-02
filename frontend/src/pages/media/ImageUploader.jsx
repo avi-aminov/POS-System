@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, Upload, Button, message, Popconfirm } from 'antd';
+import { Table, Upload, Button, message, Popconfirm, Image } from 'antd';
 import dictionaryStore from '../../stores/dictionaryStore';
 import { UploadOutlined } from '@ant-design/icons';
 import {
@@ -47,9 +47,13 @@ const ImageUploader = () => {
             dataIndex: 'path',
             key: 'path',
             render: (path) =>
-                <div>
-                    <img src={`${serverURL}/uploads/${path}`} alt="uploaded" style={{ width: '120px', height: '120px', objectFit: 'contain' }} />
-                </div>
+                <Image
+                    style={{ width: '120px', height: '120px', objectFit: 'contain' }}
+                    data-imgurl={path}
+                    width={60}
+                    alt={path}
+                    src={`${serverURL}/uploads/${path}`}
+                />
         },
         {
             title: 'Name',

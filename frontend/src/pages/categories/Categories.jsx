@@ -18,17 +18,14 @@ const Categories = observer(() => {
 	return (
 		<>
 			{
-				categoriesStore.categories.length > 0 ?
-
+				categoriesStore.categories.length > 0
+					?
 					<CategoriesWrap>
 						<CategoryWrapper
 							isSelected={categoriesStore.selectedCategory === 0}
 							onClick={() => categoriesStore.setSelectedCategory(0)} >
 							<CategoriesItem>
 								<h4>{dictionaryStore.getString('all')}</h4>
-								{/*}
-							<img src={`${serverURL}/global/select-all.jpg`} alt="" />
-							{*/}
 							</CategoriesItem>
 						</CategoryWrapper>
 
@@ -45,7 +42,8 @@ const Categories = observer(() => {
 								</CategoriesItem>
 							</CategoryWrapper>
 						))}
-					</CategoriesWrap> : ''
+					</CategoriesWrap>
+					: ''
 			}
 		</>
 	);

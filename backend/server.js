@@ -36,7 +36,7 @@ app.use(
 );
 
 // auth
-app.post('/sigup', userController.signup);
+app.post('/registration', userController.signup);
 app.post('/login', userController.login);
 app.get('/logout', userController.logout);
 app.get('/check-auth', requireAuth, userController.checkAuth);
@@ -81,11 +81,9 @@ const startServer = () => {
 /**
  * Initialize the application by establishing the database connection.
  */
-initDatabaseConnection(db)
-	.then(() => {
-		// Connection successful, start the server
-		startServer();
-	})
-	.catch((error) => {
-		console.error('Unable to connect to the database:', error);
-	});
+initDatabaseConnection(db).then(() => {
+	// Connection successful, start the server
+	startServer();
+}).catch((error) => {
+	console.error('Unable to connect to the database:', error);
+});

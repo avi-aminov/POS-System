@@ -8,10 +8,7 @@ const User = sequelize.define('users', {
 		allowNull: false,
 		primaryKey: true,
 	},
-	name: {
-		type: DataTypes.STRING(128),
-		allowNull: true,
-	},
+	name: DataTypes.STRING(128),
 	email: {
 		type: DataTypes.STRING(128),
 		unique: true,
@@ -21,10 +18,7 @@ const User = sequelize.define('users', {
 		type: DataTypes.STRING(128),
 		allowNull: false,
 	},
-	verified: {
-		type: DataTypes.BOOLEAN,
-		allowNull: true,
-	},
+	verified: DataTypes.BOOLEAN,
 });
 
 User.sync({ alter: true })

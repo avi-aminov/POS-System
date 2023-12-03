@@ -1,5 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const Products = require('./Products'); // Import the Products model
+
 
 const Categories = sequelize.define(
 	'categories',
@@ -12,18 +14,18 @@ const Categories = sequelize.define(
 		},
 		userID: {
 			type: DataTypes.INTEGER,
-			allowNull: true,
+			allowNull: false,
 		},
 		name: {
 			type: DataTypes.STRING(124),
 			allowNull: false,
 		},
-		image: {
-			type: DataTypes.STRING(60),
-			allowNull: true,
-		},
+		image: DataTypes.STRING(60),
 	},
 );
+
+// Define association with Products model
+Categories.hasMany(Products, { foreignKey: 'categoryID' });
 
 // { alter: true }
 Categories.sync({ alter: true })

@@ -13,8 +13,8 @@ const Register = () => {
 			message.error('One or more of the parameters are empty');
 		} else {
 			try {
-				await axios.post('/sigup', value);
-				message.success('Register Succesfully');
+				await axios.post('/registration', value);
+				message.success('Register Successfully');
 				navigate('/login');
 			} catch (error) {
 				message.error('Something Went Wrong');
@@ -27,7 +27,7 @@ const Register = () => {
 			className="register"
 			style={{ maxWidth: '400px', margin: 'auto', marginTop: '35px' }}
 		>
-			<div className="regsiter-form">
+			<div className="register-form">
 				<h1>POS System</h1>
 				<h3>Registration</h3>
 				<Form layout="vertical" onFinish={handleSubmit}>

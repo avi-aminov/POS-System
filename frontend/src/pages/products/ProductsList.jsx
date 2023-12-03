@@ -259,7 +259,6 @@ const ProductsList = observer(() => {
 							label={dictionaryStore.getString('select_image')}
 							rules={[
 								{
-									required: true,
 									message: dictionaryStore.getString('please_enter_the_name'),
 								},
 							]}

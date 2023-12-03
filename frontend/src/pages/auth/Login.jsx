@@ -29,7 +29,7 @@ const Login = () => {
 			className="register"
 			style={{ maxWidth: '400px', margin: 'auto', marginTop: '35px' }}
 		>
-			<div className="regsiter-form">
+			<div className="login-form">
 				<h1>POS System</h1>
 				<h3>Login</h3>
 				<Form layout="vertical" onFinish={handleSubmit}>

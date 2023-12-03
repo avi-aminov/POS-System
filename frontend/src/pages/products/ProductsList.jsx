@@ -25,31 +25,17 @@ import categoriesStore from '../../stores/categoriesStore';
 import settingsStore from '../../stores/settingsStore';
 import dictionaryStore from '../../stores/dictionaryStore';
 import ImageUploader from '../media/ImageUploader';
+import CategoriesList from '../categories/CategoriesList';
 
 const ProductsList = observer(() => {
 	const serverURL = import.meta.env.VITE_SERVER_URL;
 	const [popupModal, setPopupModal] = useState(false);
 	const [editItem, setEditItem] = useState(null);
-	const [categoryPopupVisible, setCategoryPopupVisible] = useState(false);
 
 	//useEffect
 	useEffect(() => {
 		productsStore.fetchProducts();
-		categoriesStore.fetchCategories();
 	}, []);
-
-	const handleCategorySubmit = async (values) => {
-		try {
-			const data = { name: values.name, image: values.image };
-			//const response = 
-			await axios.post('/add-category', data);
-			message.success(dictionaryStore.getString('category_added_successfully'));
-			setCategoryPopupVisible(false);
-		} catch (error) {
-			console.error('Error adding category:', error);
-			message.error(dictionaryStore.getString('error_adding_category'));
-		}
-	};
 
 	//handle delete
 	const handleDelete = async (record) => {
@@ -61,12 +47,9 @@ const ProductsList = observer(() => {
 	const handleSubmit = async (value) => {
 		if (editItem === null) {
 			const data = { ...value };
-
-			console.log('data:', data);
-
 			try {
 				await axios.post('/add-product', data);
-				setCategoryPopupVisible(false);
+				//setCategoryPopupVisible(false);
 				message.success(dictionaryStore.getString('product_added_successfully'));
 			} catch (error) {
 				console.error('Error adding category:', error);
@@ -77,7 +60,7 @@ const ProductsList = observer(() => {
 
 			try {
 				await axios.post('/update-product', data);
-				setCategoryPopupVisible(false);
+				//setCategoryPopupVisible(false);
 				message.success(dictionaryStore.getString('product_updated_successfully'));
 			} catch (error) {
 				message.error('Error updated category');
@@ -88,6 +71,7 @@ const ProductsList = observer(() => {
 	//able data
 	const columns = [
 		{ title: dictionaryStore.getString('name'), dataIndex: 'name' },
+
 		{
 			title: dictionaryStore.getString('image'),
 			dataIndex: 'image',
@@ -132,44 +116,6 @@ const ProductsList = observer(() => {
 		},
 	];
 
-	//able data
-	const cat_columns = [
-		{ title: dictionaryStore.getString('name'), dataIndex: 'name' },
-		{
-			title: dictionaryStore.getString('image'),
-			dataIndex: 'image',
-			render: (image, record) => (
-				image &&
-				<Image
-					width={60}
-					alt={record.name}
-					src={`${serverURL}/uploads/${image}`}
-				/>
-			),
-		},
-		{
-			title: dictionaryStore.getString('action'),
-			dataIndex: 'id',
-			render: (id, record) => (
-				<div>
-					<EditOutlined
-						style={{ cursor: 'pointer' }}
-						onClick={() => {
-							setEditItem(record);
-							setPopupModal(true);
-						}}
-					/>
-					<DeleteOutlined
-						style={{ cursor: 'pointer' }}
-						onClick={() => {
-							handleDelete(record);
-						}}
-					/>
-				</div>
-			),
-		},
-	];
-
 	const tab_items = [
 		{
 			key: '1',
@@ -180,12 +126,17 @@ const ProductsList = observer(() => {
 				</span>
 			),
 			children: (
-				<Table
-					rowKey="id"
-					columns={columns}
-					dataSource={productsStore.products}
-					bordered
-				/>
+				<>
+					<Button type="primary" onClick={() => setPopupModal(true)}>
+						{dictionaryStore.getString('add_product')}
+					</Button>
+					<Table
+						rowKey="id"
+						columns={columns}
+						dataSource={productsStore.products}
+						bordered
+					/>
+				</>
 			),
 		},
 		{
@@ -197,12 +148,7 @@ const ProductsList = observer(() => {
 				</span>
 			),
 			children: (
-				<Table
-					rowKey="id"
-					columns={cat_columns}
-					dataSource={categoriesStore.categories}
-					bordered
-				/>
+				<CategoriesList />
 			),
 		},
 	];
@@ -233,21 +179,6 @@ const ProductsList = observer(() => {
 			>
 				<ImageUploader onClose={closeDrawer} />
 			</Drawer>
-
-			<div className="d-flex justify-content-between">
-				<div>
-					<Button type="primary" onClick={() => setPopupModal(true)}>
-						{dictionaryStore.getString('add_product')}
-					</Button>
-					<Button
-						type="primary"
-						style={{ marginLeft: 16 }}
-						onClick={() => setCategoryPopupVisible(true)}
-					>
-						{dictionaryStore.getString('add_category')}
-					</Button>
-				</div>
-			</div>
 
 			<Tabs
 				defaultActiveKey="1"
@@ -370,52 +301,6 @@ const ProductsList = observer(() => {
 					</Form>
 				</Drawer>
 			)}
-
-			<Drawer
-				title={dictionaryStore.getString('add_new_category')}
-				open={categoryPopupVisible}
-				onClose={() => setCategoryPopupVisible(false)}
-				width={400}
-				placement="right"
-				footer={null}
-			>
-				<Form layout="vertical" onFinish={handleCategorySubmit}>
-					<Form.Item
-						name="name"
-						label={dictionaryStore.getString('category_name')}
-						rules={[
-							{
-								required: true,
-								message: dictionaryStore.getString('please_enter_the_category_name'),
-							},
-						]}
-					>
-						<Input />
-					</Form.Item>
-
-					<Form.Item
-						name="image"
-						label={dictionaryStore.getString('select_image')}
-						rules={[
-							{
-								required: true,
-								message: dictionaryStore.getString('please_enter_the_name'),
-							},
-						]}
-					>
-						<Input />
-					</Form.Item>
-					<Button type="primary" onClick={showDrawer}>
-						{dictionaryStore.getString('select_image')}
-					</Button>
-
-					<div className="d-flex justify-content-end">
-						<Button type="primary" htmlType="submit">
-							{dictionaryStore.getString('add_category')}
-						</Button>
-					</div>
-				</Form>
-			</Drawer>
 		</>
 	);
 });

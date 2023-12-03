@@ -23,11 +23,6 @@ const Categories = sequelize.define(
 			allowNull: true,
 		},
 	},
-	{
-		/**
-		 * Other model options go here
-		 */
-	},
 );
 
 // { alter: true }

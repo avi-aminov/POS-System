@@ -1,3 +1,5 @@
+import { toJS } from 'mobx';
+
 export const getBase64 = (file) => new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);

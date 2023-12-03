@@ -12,6 +12,7 @@ const categoriesStore = observable({
 				return;
 			}
 			this.categories = data.data;
+			console.log('categories:', data.data)
 		} catch (error) {
 			console.log(error);
 		}

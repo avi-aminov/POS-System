@@ -25,7 +25,7 @@ const ImageUploader = () => {
             const response = await axios.get('/images');
             setImageList(response.data.data);
 
-            console.log('response', response.data.data)
+            console.log('images - response', response.data.data)
         } catch (error) {
             message.error(dictionaryStore.getString('something_went_wrong'));
         }
@@ -71,8 +71,8 @@ const ImageUploader = () => {
         },
         {
             title: dictionaryStore.getString('actions'),
-            dataIndex: 'id',
-            render: (id, record) => (
+            dataIndex: '_id',
+            render: (_id, record) => (
                 <div>
                     <CopyOutlined onClick={() => {
                         handleCopyClick(record.path)
@@ -178,7 +178,11 @@ const ImageUploader = () => {
             >
                 <Button icon={<UploadOutlined />}>Upload Image</Button>
             </Upload>
-            <Table dataSource={imageList} columns={columns} />
+
+            <Table
+                dataSource={imageList.map(item => ({ ...item, key: item._id }))}
+                columns={columns}
+            />
         </div>
     );
 };

@@ -1,13 +1,15 @@
 import axios from 'axios';
 import { observable, action } from 'mobx';
 
+const defaultSetting = {
+	"currencySymbol": "$",
+	"direction": "ltr",
+	"tax": "17",
+	"lang": "eng"
+};
+
 const settingsStore = observable({
-	settings: {
-		"currencySymbol": "$",
-		"direction": "ltr",
-		"tax": "17",
-		"lang": "eng"
-	},
+	settings: defaultSetting,
 
 	fetchSettings: action(async function () {
 		try {
@@ -23,12 +25,7 @@ const settingsStore = observable({
 				}, {});
 
 				// Set default values for missing keys
-				const defaultSettings = {
-					"currencySymbol": "$",
-					"direction": "ltr",
-					"tax": "17",
-					"lang": "eng"
-				};
+				const defaultSettings = defaultSetting;
 
 				// Assign default values for missing keys
 				this.settings = {
@@ -40,12 +37,7 @@ const settingsStore = observable({
 				this.settings.tax = parseInt(this.settings.tax, 10);
 			} else {
 				// No data received, use default settings
-				this.settings = {
-					"currencySymbol": "$",
-					"direction": "ltr",
-					"tax": "17",
-					"lang": "eng"
-				};
+				this.settings = defaultSetting;
 			}
 		} catch (error) {
 			console.log(error);
@@ -56,6 +48,21 @@ const settingsStore = observable({
 		try {
 			await axios.put(`/update-settings/${key}`, { value: newValue });
 			this.settings[key] = newValue;
+		} catch (error) {
+			console.log(error);
+		}
+	}),
+
+	// New action to save multiple keys
+	saveMultipleKeys: action(async function (keyValuePairs) {
+		try {
+			// Use Promise.all to perform multiple asynchronous updates
+			await axios.put('/save-multiple-keys', keyValuePairs);
+
+			// Update local state based on the response (if needed)
+			Object.entries(keyValuePairs).forEach(([key, value]) => {
+				this.settings[key] = value;
+			});
 		} catch (error) {
 			console.log(error);
 		}

@@ -1,17 +1,20 @@
 // connection.js
-const initDatabaseConnection = async (db) => {
-	console.log('Testing the database connection..');
-	try {
-		// Test the connection.
-		await db.authenticate();
-		console.log('Connection has been established successfully.');
+const mongoose = require('mongoose');
 
-		return true;
+const initDatabaseConnection = async () => {
+	try {
+		await mongoose.connect(process.env.MONGODB_URI, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+		});
+		console.log('Connected to MongoDB');
 	} catch (error) {
-		throw error; // Throw the error if the connection fails
+		console.error('Unable to connect to MongoDB:', error);
+		throw error;
 	}
 };
 
 module.exports = {
 	initDatabaseConnection,
 };
+

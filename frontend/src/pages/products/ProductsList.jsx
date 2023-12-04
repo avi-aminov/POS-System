@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
 	DeleteOutlined,
 	EditOutlined,
@@ -10,68 +10,57 @@ import {
 	Drawer,
 	Button,
 	Table,
-	Form,
-	Input,
-	Select,
 	message,
 	Image,
-	InputNumber,
 	Tabs,
 } from 'antd';
 
 import { observer } from 'mobx-react';
 import productsStore from '../../stores/productsStore';
-import categoriesStore from '../../stores/categoriesStore';
+
 import settingsStore from '../../stores/settingsStore';
 import dictionaryStore from '../../stores/dictionaryStore';
 import ImageUploader from '../media/ImageUploader';
 import CategoriesList from '../categories/CategoriesList';
+import AddProductDrawer from './AddProductDrawer';
+import categoriesStore from '../../stores/categoriesStore';
 
 const ProductsList = observer(() => {
 	const serverURL = import.meta.env.VITE_SERVER_URL;
-	const [popupModal, setPopupModal] = useState(false);
-	const [editItem, setEditItem] = useState(null);
 
 	//useEffect
 	useEffect(() => {
 		productsStore.fetchProducts();
+		categoriesStore.fetchCategories();
 	}, []);
 
 	//handle delete
 	const handleDelete = async (record) => {
-		console.log('delete product by id', record.id);
-		message.success(dictionaryStore.getString('item_deleted_successfully'));
-	};
 
-	// handle form  submit
-	const handleSubmit = async (value) => {
-		if (editItem === null) {
-			const data = { ...value };
-			try {
-				await axios.post('/add-product', data);
-				//setCategoryPopupVisible(false);
-				message.success(dictionaryStore.getString('product_added_successfully'));
-			} catch (error) {
-				console.error('Error adding category:', error);
-				message.error(dictionaryStore.getString('error_adding_category'));
-			}
-		} else {
-			const data = { ...value, id: editItem.id };
+		try {
+			// Make a POST request to update the product isDelete status
+			const response = await axios.post(`/delete-product/${record._id}`);
 
-			try {
-				await axios.post('/update-product', data);
-				//setCategoryPopupVisible(false);
-				message.success(dictionaryStore.getString('product_updated_successfully'));
-			} catch (error) {
-				message.error('Error updated category');
+			// Check the response status
+			if (response.status === 200) {
+				console.log('Product isDelete updated successfully:', response.data);
+				productsStore.fetchProducts();
+				// Handle success, if needed
+			} else {
+				console.error('Unexpected response:', response);
+				// Handle unexpected response, if needed
 			}
+		} catch (error) {
+			console.error('Error updating product isDelete:', error);
+			// Handle error, if needed
 		}
+
+		message.success(dictionaryStore.getString('item_deleted_successfully'));
 	};
 
 	//able data
 	const columns = [
 		{ title: dictionaryStore.getString('name'), dataIndex: 'name' },
-
 		{
 			title: dictionaryStore.getString('image'),
 			dataIndex: 'image',
@@ -89,20 +78,19 @@ const ProductsList = observer(() => {
 		{
 			title: dictionaryStore.getString('price'),
 			dataIndex: 'price',
-			render: (id, record) =>
+			render: (_id, record) =>
 				`${record.price} ${settingsStore.settings.currencySymbol}`,
 		},
-
 		{
 			title: dictionaryStore.getString('actions'),
-			dataIndex: 'id',
-			render: (id, record) => (
+			dataIndex: '_id',
+			render: (_id, record) => (
 				<div>
 					<EditOutlined
 						style={{ cursor: 'pointer' }}
 						onClick={() => {
-							setEditItem(record);
-							setPopupModal(true);
+							productsStore.setEditItem(record);
+							productsStore.setPopupModal(true)
 						}}
 					/>
 					<DeleteOutlined
@@ -127,11 +115,11 @@ const ProductsList = observer(() => {
 			),
 			children: (
 				<>
-					<Button type="primary" onClick={() => setPopupModal(true)}>
+					<Button type="primary" onClick={() => productsStore.setPopupModal(true)}>
 						{dictionaryStore.getString('add_product')}
 					</Button>
 					<Table
-						rowKey="id"
+						rowKey="_id"
 						columns={columns}
 						dataSource={productsStore.products}
 						bordered
@@ -157,15 +145,8 @@ const ProductsList = observer(() => {
 		console.log(key);
 	};
 
-
-	const [drawerVisible, setDrawerVisible] = useState(false);
-
-	const showDrawer = () => {
-		setDrawerVisible(true);
-	};
-
 	const closeDrawer = () => {
-		setDrawerVisible(false);
+		productsStore.setDrawerVisible(false);
 	};
 
 	return (
@@ -174,7 +155,7 @@ const ProductsList = observer(() => {
 				title="Image Uploader"
 				width={'60%'}
 				onClose={closeDrawer}
-				open={drawerVisible}
+				open={productsStore.drawerVisible}
 				style={{ zIndex: '9000' }}
 			>
 				<ImageUploader onClose={closeDrawer} />
@@ -187,119 +168,7 @@ const ProductsList = observer(() => {
 			/>
 
 			{/* Replace Modal with Drawer */}
-			{popupModal && (
-				<Drawer
-					title={`${editItem !== null ?
-						dictionaryStore.getString('edit_product') :
-						dictionaryStore.getString('add_new_product')
-						}`}
-					open={popupModal}
-					onClose={() => {
-						setEditItem(null);
-						setPopupModal(false);
-					}}
-					width={400} // Set the width according to your design
-					placement="right" // Adjust placement as needed
-					footer={null} // Remove footer if not needed
-				>
-					<Form
-						layout="vertical"
-						initialValues={editItem}
-						onFinish={handleSubmit}
-					>
-						<Form.Item
-							name="name"
-							label={dictionaryStore.getString('name')}
-							rules={[
-								{
-									required: true,
-									message: dictionaryStore.getString('please_enter_the_name'),
-								},
-							]}
-						>
-							<Input />
-						</Form.Item>
-						<Form.Item
-							name="description"
-							label={dictionaryStore.getString('description')}>
-							<Input.TextArea />
-						</Form.Item>
-						<Form.Item
-							name="price"
-							label={dictionaryStore.getString('price')}
-							rules={[
-								{
-									required: true,
-									message: dictionaryStore.getString('please_enter_the_price'),
-								},
-							]}
-						>
-							<Input />
-						</Form.Item>
-						<Form.Item name="newPrice" label={dictionaryStore.getString('new_price')}>
-							<Input />
-						</Form.Item>
-						<Form.Item
-							name="stock"
-							label={dictionaryStore.getString('stock')}
-							rules={[
-								{
-									required: true,
-									message: dictionaryStore.getString('please_enter_the_stock'),
-								},
-							]}
-						>
-							<InputNumber min={0} />
-						</Form.Item>
-						<Form.Item name="barcode" label={dictionaryStore.getString('barcode')}>
-							<Input />
-						</Form.Item>
-						<Form.Item
-							name="image"
-							label={dictionaryStore.getString('select_image')}
-							rules={[
-								{
-									message: dictionaryStore.getString('please_enter_the_name'),
-								},
-							]}
-						>
-							<Input />
-						</Form.Item>
-						<Button type="primary" onClick={showDrawer}>
-							{dictionaryStore.getString('select_image')}
-						</Button>
-
-						<Form.Item
-							name="categoryID"
-							label={dictionaryStore.getString('category')}
-							rules={[
-								{
-									required: true,
-									message: dictionaryStore.getString('please_select_the_category'),
-								},
-							]}
-						>
-							<Select>
-								{categoriesStore.categories &&
-									categoriesStore.categories.map((item) => (
-										<Select.Option
-											value={item.id}
-											key={item.id}
-										>
-											{item.name}
-										</Select.Option>
-									))}
-							</Select>
-						</Form.Item>
-
-						<div className="d-flex justify-content-end">
-							<Button type="primary" htmlType="submit">
-								{dictionaryStore.getString('add')}
-							</Button>
-						</div>
-					</Form>
-				</Drawer>
-			)}
+			<AddProductDrawer />
 		</>
 	);
 });

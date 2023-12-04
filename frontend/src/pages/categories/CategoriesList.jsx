@@ -24,14 +24,13 @@ const CategoriesList = observer(() => {
 
 	const [categoryPopupVisible, setCategoryPopupVisible] = useState(false);
 
-
 	useEffect(() => {
 		categoriesStore.fetchCategories();
 	}, []);
 
 	//handle delete
 	const handleDelete = async (record) => {
-		console.log('delete product by id', record.id);
+		console.log('delete product by id', record._id);
 		message.success(dictionaryStore.getString('item_deleted_successfully'));
 	};
 
@@ -52,8 +51,8 @@ const CategoriesList = observer(() => {
 		},
 		{
 			title: dictionaryStore.getString('action'),
-			dataIndex: 'id',
-			render: (id, record) => (
+			dataIndex: '_id',
+			render: (_id, record) => (
 				<div>
 					<EditOutlined
 						style={{ cursor: 'pointer' }}
@@ -75,9 +74,9 @@ const CategoriesList = observer(() => {
 	const handleCategorySubmit = async (values) => {
 		try {
 			const data = { name: values.name, image: values.image };
-			//const response = 
 			await axios.post('/add-category', data);
 			message.success(dictionaryStore.getString('category_added_successfully'));
+			categoriesStore.fetchCategories();
 			setCategoryPopupVisible(false);
 		} catch (error) {
 			console.error('Error adding category:', error);
@@ -139,12 +138,13 @@ const CategoriesList = observer(() => {
 			>
 				{dictionaryStore.getString('add_category')}
 			</Button>
+
 			<Table
-				rowKey="id"
+				dataSource={categoriesStore.categories.map(item => ({ ...item, key: item._id }))}
 				columns={cat_columns}
-				dataSource={categoriesStore.categories}
 				bordered
 			/>
+
 		</>
 	);
 });

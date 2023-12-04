@@ -73,7 +73,7 @@ const customersStore = observable({
 
 			// Remove the deleted customer from the local store
 			const updatedCustomers = toJS(this.customers).filter(
-				(customer) => customer.id !== customerId
+				(customer) => customer._id !== customerId
 			);
 			this.customers = updatedCustomers;
 
@@ -83,15 +83,19 @@ const customersStore = observable({
 		}
 	}),
 
-	// edit Customer
 	editCustomer: action(async function (customerData) {
 		try {
 			const response = await axios.put(`/edit-customer`, customerData);
 
-			// Update the customer directly in the array without checking response structure
-			this.customers = this.customers.map((customer) =>
-				customer.id === customerData.id ? response.data.data : customer
-			);
+			if (response.data && response.data.data) {
+				// Update the customer directly in the array
+				this.customers.map((customer) =>
+					customer._id === customerData._id ? response.data.data : customer
+				);
+				//this.customers = new_data;
+			} else {
+				console.error('Invalid response structure:', response);
+			}
 		} catch (error) {
 			console.error('Error updating customer:', error);
 		}
@@ -99,8 +103,8 @@ const customersStore = observable({
 
 	getCustomerSelectData: action(async function () {
 		this.customerSelectData = this.customers.map(
-			({ id, fName, lName }) => ({
-				value: id,
+			({ _id, fName, lName }) => ({
+				value: _id,
 				label: `${fName} ${lName}`,
 			}),
 		);
@@ -110,7 +114,7 @@ const customersStore = observable({
 		this.selectedCustomers = id;
 
 		this.customerSelectedData = this.customers.find(
-			(item) => item.id === id,
+			(item) => item._id === id,
 		);
 		this.saveToLocalStorage(id);
 	}),

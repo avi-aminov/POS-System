@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const User = require('../models/mongoose/userModel'); // Assuming you've exported your Mongoose model from userModel.js
 const answer = require('../utils/answer');
 
 const requireAuth = async (req, res, next) => {
@@ -9,9 +9,7 @@ const requireAuth = async (req, res, next) => {
 		if (token) {
 			const decoded = jwt.verify(token, process.env.SECRET);
 
-			const user = await User.findOne({
-				where: { id: decoded.sub },
-			});
+			const user = await User.findOne({ _id: decoded.sub });
 
 			if (!user) {
 				return answer(401, 'User Not Exist', res);
@@ -23,7 +21,7 @@ const requireAuth = async (req, res, next) => {
 			return answer(401, 'Token Empty', res);
 		}
 	} catch (e) {
-		return answer(401, `requireAuth error ${this.toString(e)}`);
+		return answer(401, `requireAuth error ${e.toString()}`, res);
 	}
 };
 

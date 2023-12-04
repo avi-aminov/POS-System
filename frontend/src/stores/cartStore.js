@@ -39,12 +39,12 @@ const cartStore = observable({
 	}),
 
 	removeFromCart: action(function (itemId) {
-		this.cart = this.cart.filter((item) => item.id !== itemId);
+		this.cart = this.cart.filter((item) => item._id !== itemId);
 		this.saveToLocalStorage();
 	}),
 
 	updateQuantity: action(function (itemId, newQuantity) {
-		const itemToUpdate = this.cart.find((item) => item.id === itemId);
+		const itemToUpdate = this.cart.find((item) => item._id === itemId);
 		const newQ = parseFloat(newQuantity);
 
 		if (itemToUpdate) {
@@ -56,10 +56,11 @@ const cartStore = observable({
 	}),
 
 	updateQuantityByDirection: action(function (itemId, direction = 'minus') {
-		const itemToUpdate = this.cart.find((item) => item.id === itemId);
+		const itemToUpdate = this.cart.find((item) => item._id === itemId);
 
 		if (itemToUpdate) {
 			if (direction === 'plus') {
+
 				itemToUpdate.quantity += 1;
 			} else if (direction === 'minus' && itemToUpdate.quantity > 1) {
 				itemToUpdate.quantity -= 1;

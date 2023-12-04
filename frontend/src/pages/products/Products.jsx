@@ -21,8 +21,8 @@ const Products = observer(() => {
 							productsStore.searchQuery === ''),
 				)
 				.map((item) => (
-					<Col key={item.id} xs={24} lg={6} md={12} sm={6}>
-						<ItemList key={item.id} item={item} />
+					<Col key={item._id} xs={24} lg={6} md={12} sm={6}>
+						<ItemList key={item._id} item={item} />
 					</Col>
 				))}
 		</Row>

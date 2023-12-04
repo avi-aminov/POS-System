@@ -21,7 +21,7 @@ const CustomersController = observer(() => {
     };
 
     const columns = [
-        { title: dictionaryStore.getString('id'), dataIndex: 'id', key: 'id' },
+        //{ title: dictionaryStore.getString('id'), dataIndex: '_id', key: '_id' },
         { title: dictionaryStore.getString('first_name'), dataIndex: 'fName', key: 'fName' },
         { title: dictionaryStore.getString('last_name'), dataIndex: 'lName', key: 'lName' },
         { title: dictionaryStore.getString('email'), dataIndex: 'email', key: 'email' },
@@ -33,11 +33,11 @@ const CustomersController = observer(() => {
             title: dictionaryStore.getString('action'),
             key: 'action',
             render: (text, record) => (
-                <span key={`action-${record.id}`}>
+                <span key={`action-${record._id}`}>
                     <EditOutlined onClick={() => handleEdit(record)} />
                     <Popconfirm
                         title={dictionaryStore.getString('are_you_sure_you_want_to_delete_this_customer')}
-                        onConfirm={() => handleDelete(record.id)}
+                        onConfirm={() => handleDelete(record._id)}
                         okText="Yes"
                         cancelText="No"
                     >
@@ -70,10 +70,12 @@ const CustomersController = observer(() => {
 
             if (isEditing) {
                 await customersStore.editCustomer(values);
+                customersStore.fetchCustomers();
             } else {
                 await customersStore.createCustomer();
             }
             setDrawerVisible(false);
+
         } catch (error) {
             console.error('Error editing/adding customer:', error);
         }
@@ -91,7 +93,10 @@ const CustomersController = observer(() => {
                 </Button>
             </div>
 
-            <Table dataSource={customersStore.customers} columns={columns} />
+            <Table
+                dataSource={customersStore.customers.map(item => ({ ...item, key: item._id }))}
+                columns={columns}
+            />
 
             <Drawer
                 title={isEditing ? dictionaryStore.getString('edit_customer') : dictionaryStore.getString('add_new_customer')}
@@ -101,7 +106,7 @@ const CustomersController = observer(() => {
                 open={drawerVisible}
             >
                 <Form form={form} layout="vertical" name="editCustomerForm">
-                    <Form.Item name="id" hidden>
+                    <Form.Item name="_id" hidden>
                         <Input />
                     </Form.Item>
                     <Form.Item

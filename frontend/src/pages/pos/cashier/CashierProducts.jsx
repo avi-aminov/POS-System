@@ -51,17 +51,17 @@ const CashierProducts = observer(() => {
                                     type="number"
                                     value={item.quantity}
                                     onChange={(e) => {
-                                        cartStore.updateQuantity(item.id, e.target.value);
+                                        cartStore.updateQuantity(item._id, e.target.value);
                                     }}
                                 />
                                 <PlusMinusWrap>
                                     <PlusSquareOutlined
                                         onClick={() => {
-                                            cartStore.updateQuantityByDirection(item.id, 'plus');
+                                            cartStore.updateQuantityByDirection(item._id, 'plus');
                                         }}
                                     />
                                     <MinusSquareOutlined onClick={() => {
-                                        cartStore.updateQuantityByDirection(item.id, 'minus');
+                                        cartStore.updateQuantityByDirection(item._id, 'minus');
                                     }}
                                     />
                                 </PlusMinusWrap>
@@ -72,7 +72,7 @@ const CashierProducts = observer(() => {
                             </PriceCol>
                             <DeleteCol span={4}>
                                 <DeleteOutlined onClick={() => {
-                                    cartStore.removeFromCart(item.id);
+                                    cartStore.removeFromCart(item._id);
                                 }} />
                             </DeleteCol>
                         </TableRow>

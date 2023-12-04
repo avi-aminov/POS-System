@@ -1,40 +1,44 @@
-const Categories = require('../models/Categories');
+const Category = require('../models/mongoose/categoriesModel');
 const answer = require('../utils/answer');
 
 const fetchCategories = async (req, res) => {
 	try {
-		if (!req.user.id) return answer(401, 'User Not Exist', res);
+		if (!req.user._id) {
+			return answer(401, 'User Not Exist', res);
+		}
 
-		const userID = req.user.id;
-		const categories = await Categories.findAll({
-			where: { userID },
-		});
+		const userID = req.user._id;
+		const categories = await Category.find({ userID });
 
 		if (!categories || categories.length === 0) {
 			return answer(200, 'fetchCategories empty Categories', res, []);
 		}
+
 		return answer(200, 'fetchCategories successfully', res, categories);
 	} catch (error) {
+		console.error(error);
 		return answer(500, 'Internal Server Error', res);
 	}
 };
 
 const addCategory = async (req, res) => {
-
-	if (!req.user.id) return answer(401, 'User Not Exist', res);
-
-	const userID = req.user.id;
-	const { name, image } = req.body;
-
 	try {
-		const category = await Categories.create({
+		if (!req.user._id) {
+			return answer(401, 'User Not Exist', res);
+		}
+
+		const userID = req.user._id;
+		const { name, image } = req.body;
+
+		const category = await Category.create({
 			userID,
 			name,
 			image,
 		});
 
-		return answer(200, 'category added successfully', res, category);
+		return answer(200, 'Category added successfully', res, category);
 	} catch (error) {
+		console.error(error);
 		return answer(500, 'Failed to create the category', res);
 	}
 };

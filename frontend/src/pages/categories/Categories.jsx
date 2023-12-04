@@ -22,7 +22,7 @@ const Categories = observer(() => {
 					?
 					<CategoriesWrap>
 						<CategoryWrapper
-							isSelected={categoriesStore.selectedCategory === 0}
+							isSelectedCategory={categoriesStore.selectedCategory === 0}
 							onClick={() => categoriesStore.setSelectedCategory(0)} >
 							<CategoriesItem>
 								<h4>{dictionaryStore.getString('all')}</h4>
@@ -32,9 +32,9 @@ const Categories = observer(() => {
 						{categoriesStore.categories && categoriesStore.categories.map((category) => (
 							<CategoryWrapper
 								key={category.name}
-								isSelected={categoriesStore.selectedCategory === category.id &&
+								isSelectedCategory={categoriesStore.selectedCategory === category._id &&
 									'category-active'}
-								onClick={() => categoriesStore.setSelectedCategory(category.id)}
+								onClick={() => categoriesStore.setSelectedCategory(category._id)}
 							>
 								<CategoriesItem>
 									<h4>{category.name}</h4>

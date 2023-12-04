@@ -21,6 +21,11 @@ const categoriesStore = observable({
 	setSelectedCategory: action(function (id) {
 		this.selectedCategory = id;
 	}),
+
+	// New action to add a product
+	addCategory: action(function (category) {
+		this.categories = [...this.categories, category];
+	}),
 });
 
 export default categoriesStore;

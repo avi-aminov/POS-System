@@ -3,8 +3,10 @@ const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 const fs = require('fs');
 const answer = require('../utils/answer');
-const Media = require('../models/Media'); // Adjust the path based on your project structure
+const Media = require('../models/mongoose/mediaModel'); // Assuming you've exported your Mongoose model from mediaModel.js
 
+const { promisify } = require('util');
+const unlinkAsync = promisify(fs.unlink);
 
 const maxSize = 1 * 1024 * 1024; // 1MB in bytes
 
@@ -26,47 +28,54 @@ const upload = multer({
 }).array('files');
 
 const uploadFile = async (req, res) => {
-    if (!req.user.id) return answer(401, 'User Not Exist', res);
-
-    const userID = req.user.id;
-
-    upload(req, res, async (err) => {
-        if (err) {
-            console.error('Error handling file upload:', err);
-            return answer(500, 'Internal Server Error', res);
+    try {
+        if (!req.user._id) {
+            return answer(401, 'User Not Exist', res);
         }
 
-        console.log('req.files', req.files);
+        const userID = req.user._id;
 
-        // Extract the file information from req.files
-        const fileData = req.files.map((file) => {
-            return {
-                path: file.filename,
-                size: file.size, // Add the size information
-            };
+        upload(req, res, async (err) => {
+            if (err) {
+                console.error('Error handling file upload:', err);
+                return answer(500, 'Internal Server Error', res);
+            }
+
+            console.log('req.files', req.files);
+
+            // Extract the file information from req.files
+            const fileData = req.files.map((file) => {
+                return {
+                    path: file.filename,
+                    size: file.size, // Add the size information
+                };
+            });
+
+            // Insert file information into the database with associated userID
+            try {
+                await Media.insertMany(fileData.map((data) => ({ ...data, userID })));
+                console.log('Files added to the database successfully');
+                return answer(200, 'Files uploaded and added to the database successfully', res);
+            } catch (error) {
+                console.error('Error adding files to the database:', error);
+                return answer(500, 'Internal Server Error', res);
+            }
         });
-
-        // Insert file information into the database with associated userID
-        try {
-            await Media.bulkCreate(fileData.map((data) => ({ ...data, userID })));
-            console.log('Files added to the database successfully');
-            return answer(200, 'Files uploaded and added to the database successfully', res);
-        } catch (error) {
-            console.error('Error adding files to the database:', error);
-            return answer(500, 'Internal Server Error', res);
-        }
-    });
+    } catch (error) {
+        console.error(error);
+        return answer(500, 'Internal Server Error', res);
+    }
 };
 
 
 const fetchImages = async (req, res) => {
     try {
-        if (!req.user.id) return answer(401, 'User Not Exist', res);
+        if (!req.user._id) {
+            return answer(401, 'User Not Exist', res);
+        }
 
-        const userID = req.user.id;
-        const media = await Media.findAll({
-            where: { userID },
-        });
+        const userID = req.user._id;
+        const media = await Media.find({ userID });
 
         if (!media || media.length === 0) {
             return answer(200, 'fetchImages empty media', res, []);
@@ -75,44 +84,38 @@ const fetchImages = async (req, res) => {
         return answer(200, 'fetchImages successfully', res, media);
     } catch (error) {
         console.error(error);
-        return answer(500, 'Failed to fetch customers', res);
+        return answer(500, 'Failed to fetch images', res);
     }
 };
 
 const deleteImage = async (req, res) => {
-    if (!req.user.id) return answer(401, 'User Not Exist', res);
-
-    const userID = req.user.id;
-    const filename = req.params.filename;
-    const filePath = path.join(__dirname, '../public/uploads/', filename);
-
-
-    // Delete the file from the uploads directory
-    fs.unlink(filePath, async (err) => {
-        if (err) {
-            console.error('Error deleting file:', err);
-            return answer(500, 'Internal Server Error', res);
+    try {
+        if (!req.user._id) {
+            return answer(401, 'User Not Exist', res);
         }
+
+        const userID = req.user._id;
+        const filename = req.params.filename;
+        const filePath = path.join(__dirname, '../public/uploads/', filename);
+
+        // Delete the file from the uploads directory
+        await unlinkAsync(filePath);
 
         // Delete the corresponding record from the database
-        try {
-            const deletedCount = await Media.destroy({
-                where: {
-                    path: filename,
-                    userID: userID,
-                },
-            });
+        const deletedMedia = await Media.findOneAndDelete({
+            path: filename,
+            userID: userID,
+        });
 
-            if (deletedCount === 1) {
-                return answer(200, 'File and database record deleted successfully', res);
-            } else {
-                return answer(404, 'File not found in the database', res);
-            }
-        } catch (error) {
-            console.error('Error deleting file from the database:', error);
-            return answer(500, 'Internal Server Error', res);
+        if (deletedMedia) {
+            return answer(200, 'File and database record deleted successfully', res);
+        } else {
+            return answer(404, 'File not found in the database', res);
         }
-    });
+    } catch (error) {
+        console.error('Error deleting file:', error);
+        return answer(500, 'Internal Server Error', res);
+    }
 };
 
 

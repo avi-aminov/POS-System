@@ -130,7 +130,7 @@ const MediaUpload = () => {
 			<Row style={{ gap: '25px' }}>
 				{imageList.length > 0 && imageList.map((item) => (
 					<Col
-						key={item.id}
+						key={item._id}
 						className="gutter-row"
 						span={3}
 						style={{

@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Select, Input } from 'antd';
+import { useEffect, useState } from 'react';
+import { Select, Input, Button } from 'antd';
 import { observer } from 'mobx-react-lite';
 import settingsStore from '../../stores/settingsStore';
 import dictionaryStore from '../../stores/dictionaryStore';
@@ -7,25 +7,23 @@ import dictionaryStore from '../../stores/dictionaryStore';
 const { Option } = Select;
 
 const SettingsPage = observer(() => {
+    const [settingsData, setSettingsData] = useState(settingsStore.settings);
+
     useEffect(() => {
         settingsStore.fetchSettings();
+        setSettingsData(settingsStore.settings);
     }, []);
 
-    const handleCurrencySymbolChange = (value) => {
-        settingsStore.updateValueByKey('currencySymbol', value);
+    const handleInputChange = (fieldName, value) => {
+        setSettingsData(prevState => ({
+            ...prevState,
+            [fieldName]: value
+        }));
     };
 
-    const handleDirectionChange = (value) => {
-        settingsStore.updateValueByKey('direction', value);
-    };
-
-    const handleTaxChange = (value) => {
-        settingsStore.updateValueByKey('tax', value);
-    };
-
-    const handleLanguageChange = (value) => {
-        settingsStore.updateValueByKey('lang', value);
-    };
+    const handleSaveClick = () => {
+        settingsStore.saveMultipleKeys(settingsData);
+    }
 
     return (
         <div style={{ margin: 16 }}>
@@ -34,9 +32,9 @@ const SettingsPage = observer(() => {
             <div style={{ margin: '15px 0' }}>
                 <span>{dictionaryStore.getString('select_currency_symbol')}</span>
                 <Select
-                    defaultValue={settingsStore.settings.currencySymbol}
+                    value={settingsData.currencySymbol}
                     style={{ width: 120 }}
-                    onChange={handleCurrencySymbolChange}
+                    onChange={(value) => handleInputChange('currencySymbol', value)}
                 >
                     <Option value="$">USD ($)</Option>
                     <Option value="₪">ILS (₪)</Option>
@@ -50,17 +48,17 @@ const SettingsPage = observer(() => {
                 <Input
                     type="number"
                     name="tax"
-                    value={settingsStore.settings.tax}
-                    onChange={(e) => handleTaxChange(e.target.value)}
+                    value={settingsData.tax}
+                    onChange={(e) => handleInputChange('tax', e.target.value)}
                 />
             </div>
 
             <div style={{ margin: '15px 0' }}>
                 <span>{dictionaryStore.getString('select_direction')} </span>
                 <Select
-                    defaultValue={settingsStore.settings.direction}
+                    value={settingsData.direction}
                     style={{ width: 180 }}
-                    onChange={handleDirectionChange}
+                    onChange={(value) => handleInputChange('direction', value)}
                 >
                     <Option value="ltr">LTR</Option>
                     <Option value="rtl">RTL</Option>
@@ -70,12 +68,18 @@ const SettingsPage = observer(() => {
             <div style={{ margin: '15px 0' }}>
                 <span>{dictionaryStore.getString('select_language')}</span>
                 <Select
-                    defaultValue={settingsStore.settings.lang}
+                    value={settingsData.lang}
                     style={{ width: 180 }}
-                    onChange={handleLanguageChange}>
+                    onChange={(value) => handleInputChange('lang', value)}>
                     <Option value="eng">English</Option>
                     <Option value="heb">עברית</Option>
                 </Select>
+            </div>
+
+            <div style={{ margin: '15px 0' }}>
+                <Button type="primary" onClick={handleSaveClick}>
+                    {dictionaryStore.getString('save')}
+                </Button>
             </div>
         </div>
     );

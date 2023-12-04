@@ -28,7 +28,7 @@ const OrdersPage = observer(() => {
 	const columns = [
 		{
 			title: dictionaryStore.getString('id'),
-			dataIndex: 'id'
+			dataIndex: '_id'
 		},
 		{
 			title: dictionaryStore.getString('customer_name'),
@@ -65,8 +65,8 @@ const OrdersPage = observer(() => {
 
 		{
 			title: dictionaryStore.getString('actions'),
-			dataIndex: 'id',
-			render: (id, record) => (
+			dataIndex: '_id',
+			render: (_id, record) => (
 				<div>
 					<EyeOutlined
 						style={{ cursor: 'pointer' }}
@@ -87,7 +87,7 @@ const OrdersPage = observer(() => {
 			</div>
 
 			<Table
-				rowKey="id"
+				rowKey="_id"
 				columns={columns}
 				dataSource={ordersStore.orders}
 				bordered

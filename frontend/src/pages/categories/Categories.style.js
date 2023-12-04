@@ -35,8 +35,8 @@ export const CategoryWrapper = styled.div`
   justify-content: center;
   cursor: pointer;
   border-radius: 15px;
-  background: ${({ isSelected }) => isSelected ? "#1677ff" : "white"};
-  color: ${({ isSelected }) => isSelected ? "#ffffff" : "#000000"};
+  background: ${({ isSelectedCategory }) => isSelectedCategory ? "#1677ff" : "white"};
+  color: ${({ isSelectedCategory }) => isSelectedCategory ? "#ffffff" : "#000000"};
   margin: 0 8px;
   border: 2px solid #898989;
 `;

@@ -17,7 +17,6 @@ import {
 
 import { observer } from 'mobx-react';
 import productsStore from '../../stores/productsStore';
-
 import settingsStore from '../../stores/settingsStore';
 import dictionaryStore from '../../stores/dictionaryStore';
 import ImageUploader from '../media/ImageUploader';
@@ -36,7 +35,6 @@ const ProductsList = observer(() => {
 
 	//handle delete
 	const handleDelete = async (record) => {
-
 		try {
 			// Make a POST request to update the product isDelete status
 			const response = await axios.post(`/delete-product/${record._id}`);
@@ -46,16 +44,18 @@ const ProductsList = observer(() => {
 				console.log('Product isDelete updated successfully:', response.data);
 				productsStore.fetchProducts();
 				// Handle success, if needed
+
+				message.success(dictionaryStore.getString('item_deleted_successfully'));
 			} else {
 				console.error('Unexpected response:', response);
 				// Handle unexpected response, if needed
+				message.error('Error product delete');
 			}
 		} catch (error) {
 			console.error('Error updating product isDelete:', error);
 			// Handle error, if needed
+			message.error('Error product delete');
 		}
-
-		message.success(dictionaryStore.getString('item_deleted_successfully'));
 	};
 
 	//able data

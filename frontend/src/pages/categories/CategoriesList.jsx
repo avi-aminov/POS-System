@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
 import { observer } from 'mobx-react';
 import categoriesStore from '../../stores/categoriesStore';
@@ -9,20 +9,16 @@ import {
 	Image,
 	message,
 	Button,
-	Drawer,
-	Form,
-	Input
 } from 'antd';
 
 import {
 	DeleteOutlined,
 	EditOutlined,
 } from '@ant-design/icons';
+import AddCategoryDrawer from './AddCategoryDrawer';
 
 const CategoriesList = observer(() => {
 	const serverURL = import.meta.env.VITE_SERVER_URL;
-
-	const [categoryPopupVisible, setCategoryPopupVisible] = useState(false);
 
 	useEffect(() => {
 		categoriesStore.fetchCategories();
@@ -30,8 +26,23 @@ const CategoriesList = observer(() => {
 
 	//handle delete
 	const handleDelete = async (record) => {
-		console.log('delete product by id', record._id);
-		message.success(dictionaryStore.getString('item_deleted_successfully'));
+		try {
+			// Make a POST request to update the product isDelete status
+			const response = await axios.post(`/delete-category/${record._id}`);
+
+			// Check the response status
+			if (response.status === 200) {
+				console.log('Category isDelete updated successfully:', response.data);
+				categoriesStore.fetchCategories();
+				message.success(dictionaryStore.getString('item_deleted_successfully'));
+			} else {
+				console.error('Unexpected response:', response);
+				message.error('Category delete failed');
+			}
+		} catch (error) {
+			console.error('Error updating product isDelete:', error);
+			message.error('Category delete failed');
+		}
 	};
 
 	//able data
@@ -58,6 +69,7 @@ const CategoriesList = observer(() => {
 						style={{ cursor: 'pointer' }}
 						onClick={() => {
 							console.log("EditOutlined");
+							categoriesStore.setCategoryPopupVisible(true);
 						}}
 					/>
 					<DeleteOutlined
@@ -71,70 +83,12 @@ const CategoriesList = observer(() => {
 		},
 	];
 
-	const handleCategorySubmit = async (values) => {
-		try {
-			const data = { name: values.name, image: values.image };
-			await axios.post('/add-category', data);
-			message.success(dictionaryStore.getString('category_added_successfully'));
-			categoriesStore.fetchCategories();
-			setCategoryPopupVisible(false);
-		} catch (error) {
-			console.error('Error adding category:', error);
-			message.error(dictionaryStore.getString('error_adding_category'));
-		}
-	};
-
 	return (
 		<>
-			<Drawer
-				title={dictionaryStore.getString('add_new_category')}
-				open={categoryPopupVisible}
-				onClose={() => setCategoryPopupVisible(false)}
-				width={400}
-				placement="right"
-				footer={null}
-			>
-				<Form layout="vertical" onFinish={handleCategorySubmit}>
-					<Form.Item
-						name="name"
-						label={dictionaryStore.getString('category_name')}
-						rules={[
-							{
-								required: true,
-								message: dictionaryStore.getString('please_enter_the_category_name'),
-							},
-						]}
-					>
-						<Input />
-					</Form.Item>
-
-					<Form.Item
-						name="image"
-						label={dictionaryStore.getString('select_image')}
-						rules={[
-							{
-								message: dictionaryStore.getString('please_enter_the_name'),
-							},
-						]}
-					>
-						<Input />
-					</Form.Item>
-					<Button type="primary" onClick={() => {
-						console.log('setDrawerVisible');
-					}}>
-						{dictionaryStore.getString('select_image')}
-					</Button>
-
-					<div className="d-flex justify-content-end">
-						<Button type="primary" htmlType="submit">
-							{dictionaryStore.getString('add_category')}
-						</Button>
-					</div>
-				</Form>
-			</Drawer>
+			<AddCategoryDrawer />
 			<Button
 				type="primary"
-				onClick={() => setCategoryPopupVisible(true)}
+				onClick={() => categoriesStore.setCategoryPopupVisible(true)}
 			>
 				{dictionaryStore.getString('add_category')}
 			</Button>
@@ -144,7 +98,6 @@ const CategoriesList = observer(() => {
 				columns={cat_columns}
 				bordered
 			/>
-
 		</>
 	);
 });

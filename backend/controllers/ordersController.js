@@ -43,9 +43,9 @@ const fetchOrders = async (req, res) => {
 			tax: order.tax,
 			total: order.total,
 			paymentMethod: order.paymentMethod,
-			fName: customerMap[order.customerID.toString()] ? customerMap[order.customerID.toString()].fName : '',
-			lName: customerMap[order.customerID.toString()] ? customerMap[order.customerID.toString()].lName : '',
-			phone: customerMap[order.customerID.toString()] ? customerMap[order.customerID.toString()].phone : '',
+			fName: order.customerID && customerMap[order.customerID.toString()] ? customerMap[order.customerID.toString()].fName : '',
+			lName: order.customerID && customerMap[order.customerID.toString()] ? customerMap[order.customerID.toString()].lName : '',
+			phone: order.customerID && customerMap[order.customerID.toString()] ? customerMap[order.customerID.toString()].phone : '',
 			createdAt: order.createdAt,
 			updatedAt: order.updatedAt,
 		}));
@@ -94,7 +94,7 @@ const createOrders = async (req, res) => {
 		const orderItemsData = cart.map((cartItem) => ({
 			userID,
 			orderID,
-			productID: cartItem.id,
+			productID: cartItem.id === 9999 ? null : cartItem._id,
 			customerID,
 			price: cartItem.price,
 			quantity: cartItem.quantity,

@@ -11,6 +11,7 @@ const categorySchema = new mongoose.Schema({
         required: true,
     },
     image: String,
+    isDelete: Boolean,
 });
 
 const Category = mongoose.model('Category', categorySchema);

@@ -26,7 +26,7 @@ const AddProductDrawer = observer(() => {
             try {
                 await axios.post('/add-product', data);
                 message.success(dictionaryStore.getString('product_added_successfully'));
-                productsStore.addProduct(data);
+                productsStore.fetchProducts();
                 productsStore.setPopupModal(false);
             } catch (error) {
                 console.error('Error adding category:', error);

@@ -87,9 +87,8 @@ const OrdersPage = observer(() => {
 			</div>
 
 			<Table
-				rowKey="_id"
+				dataSource={ordersStore.orders.map(item => ({ ...item, key: item.id }))}
 				columns={columns}
-				dataSource={ordersStore.orders}
 				bordered
 			/>
 

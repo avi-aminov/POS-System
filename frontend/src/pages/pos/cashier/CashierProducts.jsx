@@ -34,7 +34,7 @@ const CashierProducts = observer(() => {
             <div>
                 {cartStore.cart &&
                     cartStore.cart.map((item) => (
-                        <TableRow key={item.id} gutter={16}>
+                        <TableRow key={item._id} gutter={16}>
                             <ItemCol span={8}>
                                 {
                                     item.id === 9999 ?

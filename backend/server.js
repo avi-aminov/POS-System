@@ -63,6 +63,7 @@ app.delete('/images/:filename', requireAuth, imageController.deleteImage);
 // categories
 app.get('/categories', requireAuth, categoriesController.fetchCategories);
 app.post('/add-category', requireAuth, categoriesController.addCategory);
+app.post('/delete-category/:categoryId', requireAuth, categoriesController.updateCategoryIsDelete);
 
 // Customers
 app.get('/customers', requireAuth, customersController.fetchCustomers);

@@ -4,6 +4,12 @@ import { observable, action } from 'mobx';
 const categoriesStore = observable({
 	categories: [],
 	selectedCategory: 0,
+	editItem: null,
+	categoryPopupVisible: false,
+
+	setCategoryPopupVisible: action(function (value) {
+		this.categoryPopupVisible = value;
+	}),
 
 	fetchCategories: action(async function () {
 		try {

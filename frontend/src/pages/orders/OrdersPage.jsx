@@ -26,10 +26,7 @@ const OrdersPage = observer(() => {
 
 	//able data
 	const columns = [
-		{
-			title: dictionaryStore.getString('id'),
-			dataIndex: '_id'
-		},
+		{ title: dictionaryStore.getString('order_number'), dataIndex: 'id', key: 'id' },
 		{
 			title: dictionaryStore.getString('customer_name'),
 			dataIndex: 'fName',

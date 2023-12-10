@@ -38,7 +38,7 @@ const Categories = observer(() => {
 							>
 								<CategoriesItem>
 									<h4>{category.name}</h4>
-									<img src={`${serverURL}/uploads/${category.image}`} alt="" />
+									{category.image && <img src={`${serverURL}/uploads/${category.image}`} alt="" />}
 								</CategoriesItem>
 							</CategoryWrapper>
 						))}

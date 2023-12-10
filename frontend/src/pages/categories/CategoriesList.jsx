@@ -5,6 +5,7 @@ import categoriesStore from '../../stores/categoriesStore';
 import dictionaryStore from '../../stores/dictionaryStore';
 
 import {
+	Drawer,
 	Table,
 	Image,
 	message,
@@ -16,6 +17,7 @@ import {
 	EditOutlined,
 } from '@ant-design/icons';
 import AddCategoryDrawer from './AddCategoryDrawer';
+import ImageUploader from '../media/ImageUploader';
 
 const CategoriesList = observer(() => {
 	const serverURL = import.meta.env.VITE_SERVER_URL;
@@ -68,8 +70,8 @@ const CategoriesList = observer(() => {
 					<EditOutlined
 						style={{ cursor: 'pointer' }}
 						onClick={() => {
-							console.log("EditOutlined");
-							categoriesStore.setCategoryPopupVisible(true);
+							categoriesStore.setEditItem(record);
+							categoriesStore.setCategoryPopupVisible(true)
 						}}
 					/>
 					<DeleteOutlined
@@ -83,8 +85,22 @@ const CategoriesList = observer(() => {
 		},
 	];
 
+	const closeDrawer = () => {
+		categoriesStore.setDrawerVisible(false);
+	};
+
 	return (
 		<>
+			<Drawer
+				title="Image Uploader"
+				width={'60%'}
+				onClose={closeDrawer}
+				open={categoriesStore.drawerVisible}
+				style={{ zIndex: '9000' }}
+			>
+				<ImageUploader onClose={closeDrawer} />
+			</Drawer>
+
 			<AddCategoryDrawer />
 			<Button
 				type="primary"

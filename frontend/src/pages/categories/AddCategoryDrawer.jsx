@@ -14,27 +14,45 @@ import {
 const AddCategoryDrawer = observer(() => {
 
     const handleCategorySubmit = async (values) => {
-        try {
-            const data = { name: values.name, image: values.image };
-            await axios.post('/add-category', data);
-            message.success(dictionaryStore.getString('category_added_successfully'));
-            categoriesStore.fetchCategories();
-            categoriesStore.setCategoryPopupVisible(false);
-        } catch (error) {
-            console.error('Error adding category:', error);
-            message.error(dictionaryStore.getString('error_adding_category'));
+        if (categoriesStore.editItem === null) {
+            try {
+                const data = { name: values.name, image: values.image };
+                await axios.post('/add-category', data);
+                message.success(dictionaryStore.getString('category_added_successfully'));
+                categoriesStore.fetchCategories();
+                categoriesStore.setCategoryPopupVisible(false);
+            } catch (error) {
+                console.error('Error adding category:', error);
+                message.error(dictionaryStore.getString('error_adding_category'));
+            }
+        } else {
+            const data = { ...values, _id: categoriesStore.editItem._id };
+
+            try {
+                await axios.post('/update-category', data);
+                message.success(dictionaryStore.getString('product_updated_successfully'));
+
+                // Update the MobX store's categories array
+                const updatedCategories = categoriesStore.categories.map((category) =>
+                    category._id === categoriesStore.editItem._id ? { ...category, ...data } : category
+                );
+                categoriesStore.categories = updatedCategories;
+                categoriesStore.setCategoryPopupVisible(false);
+            } catch (error) {
+                message.error('Error updating category');
+            }
         }
     };
 
     return <Drawer
-        title={dictionaryStore.getString('add_new_category')}
+        title={categoriesStore.editItem === null ? dictionaryStore.getString('add_new_category') : dictionaryStore.getString('edit_category')}
         open={categoriesStore.categoryPopupVisible}
         onClose={() => categoriesStore.setCategoryPopupVisible(false)}
         width={400}
         placement="right"
         footer={null}
     >
-        <Form layout="vertical" onFinish={handleCategorySubmit}>
+        <Form layout="vertical" initialValues={categoriesStore.editItem} onFinish={handleCategorySubmit}>
             <Form.Item
                 name="name"
                 label={dictionaryStore.getString('category_name')}
@@ -60,14 +78,18 @@ const AddCategoryDrawer = observer(() => {
                 <Input />
             </Form.Item>
             <Button type="primary" onClick={() => {
-                console.log('setDrawerVisible');
+                categoriesStore.setDrawerVisible(true);
             }}>
                 {dictionaryStore.getString('select_image')}
             </Button>
 
             <div className="d-flex justify-content-end">
                 <Button type="primary" htmlType="submit">
-                    {dictionaryStore.getString('add_category')}
+                    {
+                        categoriesStore.editItem === null
+                            ? dictionaryStore.getString('add_category')
+                            : dictionaryStore.getString('update_category')
+                    }
                 </Button>
             </div>
         </Form>

@@ -18,8 +18,10 @@ const useImageModal = () => {
 	};
 
 	const handleImageSelect = (image) => {
-		const fullImageURL = `${serverURL}/uploads/${image}`;
-		setSelectedImage(fullImageURL);
+		if (image) {
+			const fullImageURL = `${serverURL}/uploads/${image}`;
+			setSelectedImage(fullImageURL);
+		}
 		// Close the modal
 		closeImageModal();
 	};

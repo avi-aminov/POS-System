@@ -35,10 +35,11 @@ const ImageSelectionModal = ({ open, onClose, handleImageSelect }) => {
 						key={image.filename}
 						style={{ margin: 8, cursor: 'pointer' }}
 					>
-						<Image
-							width={80}
-							src={`${serverURL}/uploads/${image.path}`}
-						/>
+						{image.path &&
+							<Image
+								width={80}
+								src={`${serverURL}/uploads/${image.path}`}
+							/>}
 						<div onClick={() => handleImageSelect(image.path)}>
 							<Button type="primary">{dictionaryStore.getString('select_image')}</Button>
 						</div>

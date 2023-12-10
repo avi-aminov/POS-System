@@ -115,7 +115,9 @@ const ProductsList = observer(() => {
 			),
 			children: (
 				<>
-					<Button type="primary" onClick={() => productsStore.setPopupModal(true)}>
+					<Button type="primary" onClick={() =>
+						productsStore.setPopupModal(true)
+					}>
 						{dictionaryStore.getString('add_product')}
 					</Button>
 					<Table

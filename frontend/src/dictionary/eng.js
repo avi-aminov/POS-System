@@ -101,4 +101,7 @@ export default {
     please_enter_the_category_name: "Please enter the category name",
     global: "Global",
     the_order_was_successfully_placed: "The order was successfully placed",
+    update_category: "Update Category",
+    edit_category: "Edit Category",
+    order_number: "Order ID",
 };

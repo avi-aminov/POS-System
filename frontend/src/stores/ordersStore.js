@@ -13,6 +13,8 @@ const ordersStore = observable({
 				return;
 			}
 			this.orders = data.data;
+			console.log(' data.data', data.data);
+
 		} catch (error) {
 			console.log(error);
 		}

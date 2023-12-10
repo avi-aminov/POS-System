@@ -6,6 +6,15 @@ const categoriesStore = observable({
 	selectedCategory: 0,
 	editItem: null,
 	categoryPopupVisible: false,
+	drawerVisible: false,
+
+	setEditItem: action(function (value) {
+		this.editItem = value;
+	}),
+
+	setDrawerVisible: action(function (value) {
+		this.drawerVisible = value;
+	}),
 
 	setCategoryPopupVisible: action(function (value) {
 		this.categoryPopupVisible = value;

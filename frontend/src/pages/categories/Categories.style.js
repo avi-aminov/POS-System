@@ -26,6 +26,8 @@ export const CategoriesItem = styled.div`
 
     img{
         width: 80px;
+        max-width: 40px;
+        object-fit: contain;
     }
 `;
 
@@ -35,8 +37,8 @@ export const CategoryWrapper = styled.div`
   justify-content: center;
   cursor: pointer;
   border-radius: 15px;
-  background: ${({ isSelectedCategory }) => isSelectedCategory ? "#1677ff" : "white"};
-  color: ${({ isSelectedCategory }) => isSelectedCategory ? "#ffffff" : "#000000"};
+  //background: ${({ isSelectedCategory }) => isSelectedCategory ? "#1677ff" : "white"};
+  color: ${({ isSelectedCategory }) => isSelectedCategory ? "#1677ff" : "#000000"};
   margin: 0 8px;
-  border: 2px solid #898989;
+  border: 2px solid ${({ isSelectedCategory }) => isSelectedCategory ? "#1677ff" : "#000000"};;
 `;

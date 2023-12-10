@@ -81,8 +81,42 @@ const updateCategoryIsDelete = async (req, res) => {
 	}
 };
 
+const updateCategory = async (req, res) => {
+	try {
+		if (!req.user._id) {
+			return answer(401, 'User Not Exist', res);
+		}
+
+		const userID = req.user._id;
+		const { _id, name, image } = req.body;
+
+		// Check if the category exists
+		const existingCategory = await Category.findById(_id);
+
+		if (!existingCategory) {
+			return answer(404, 'Category not found', res);
+		}
+
+		// Check if the category belongs to the authenticated user
+		if (existingCategory.userID.toString() !== userID.toString()) {
+			return answer(403, 'Unauthorized: You do not have permission to edit this category', res);
+		}
+
+		// Update the category
+		existingCategory.name = name;
+		existingCategory.image = image;
+		const updatedCategory = await existingCategory.save();
+
+		return answer(200, 'Category updated successfully', res, updatedCategory);
+	} catch (error) {
+		console.error(error);
+		return answer(500, 'Failed to update the category', res);
+	}
+};
+
 module.exports = {
 	fetchCategories,
 	addCategory,
-	updateCategoryIsDelete
+	updateCategoryIsDelete,
+	updateCategory
 };

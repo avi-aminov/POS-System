@@ -32,7 +32,6 @@ app.use(
 	}),
 );
 
-
 // auth
 app.post('/registration', userController.signup);
 app.post('/login', userController.login);
@@ -63,6 +62,7 @@ app.delete('/images/:filename', requireAuth, imageController.deleteImage);
 // categories
 app.get('/categories', requireAuth, categoriesController.fetchCategories);
 app.post('/add-category', requireAuth, categoriesController.addCategory);
+app.post('/update-category', requireAuth, categoriesController.updateCategory);
 app.post('/delete-category/:categoryId', requireAuth, categoriesController.updateCategoryIsDelete);
 
 // Customers

@@ -46,7 +46,9 @@ const ImageUploader = () => {
             title: 'Image',
             dataIndex: 'path',
             key: 'path',
+            sorter: (a, b) => a.path.localeCompare(b.path),
             render: (path) =>
+                path &&
                 <Image
                     style={{ width: '120px', height: '120px', objectFit: 'contain' }}
                     data-imgurl={path}
@@ -182,6 +184,7 @@ const ImageUploader = () => {
             <Table
                 dataSource={imageList.map(item => ({ ...item, key: item._id }))}
                 columns={columns}
+                sortOrder="ascend"
             />
         </div>
     );

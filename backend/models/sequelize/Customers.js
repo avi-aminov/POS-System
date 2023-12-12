@@ -30,6 +30,10 @@ const Customers = sequelize.define(
 			type: DataTypes.STRING(128),
 			allowNull: true,
 		},
+		dateOfBirth: {
+			type: DataTypes.STRING(30),
+			allowNull: true,
+		},
 		address: {
 			type: DataTypes.STRING(300),
 			allowNull: true,

@@ -11,6 +11,7 @@ const customersStore = observable({
 		fName: '',
 		lName: '',
 		email: '',
+		dateOfBirth: '',
 		phone: '',
 		address: '',
 		city: '',
@@ -30,6 +31,8 @@ const customersStore = observable({
 				return;
 			}
 			this.customers = data.data;
+			console.log('customers:', data.data);
+
 			this.getCustomerSelectData();
 			this.loadFromLocalStorage();
 		} catch (error) {
@@ -39,6 +42,7 @@ const customersStore = observable({
 
 	// set create form data
 	setCreateForm: action(function (newData) {
+		console.log('newData:', newData);
 		this.createForm = newData;
 	}),
 
@@ -54,6 +58,7 @@ const customersStore = observable({
 					fName: '',
 					lName: '',
 					email: '',
+					dateOfBirth: '',
 					phone: '',
 					address: '',
 					city: '',

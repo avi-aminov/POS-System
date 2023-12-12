@@ -3,24 +3,20 @@ import { useEffect } from 'react';
 import {
 	DeleteOutlined,
 	EditOutlined,
-	SkinOutlined,
-	SisternodeOutlined
 } from '@ant-design/icons';
 import {
-	Drawer,
+	//Drawer,
 	Button,
 	Table,
 	message,
 	Image,
-	Tabs,
 } from 'antd';
 
 import { observer } from 'mobx-react';
 import productsStore from '../../stores/productsStore';
 import settingsStore from '../../stores/settingsStore';
 import dictionaryStore from '../../stores/dictionaryStore';
-import ImageUploader from '../media/ImageUploader';
-import CategoriesList from '../categories/CategoriesList';
+//import ImageUploader from '../media/ImageUploader';
 import AddProductDrawer from './AddProductDrawer';
 import categoriesStore from '../../stores/categoriesStore';
 
@@ -60,7 +56,6 @@ const ProductsList = observer(() => {
 
 	//able data
 	const columns = [
-		{ title: dictionaryStore.getString('name'), dataIndex: 'name' },
 		{
 			title: dictionaryStore.getString('image'),
 			dataIndex: 'image',
@@ -68,13 +63,14 @@ const ProductsList = observer(() => {
 				return (
 					image && <Image
 						data-imgurl={image}
-						width={60}
+						width={40}
 						alt={record.name}
 						src={`${serverURL}/uploads/${image}`}
 					/>
 				);
 			},
 		},
+		{ title: dictionaryStore.getString('name'), dataIndex: 'name' },
 		{
 			title: dictionaryStore.getString('price'),
 			dataIndex: 'price',
@@ -104,74 +100,21 @@ const ProductsList = observer(() => {
 		},
 	];
 
-	const tab_items = [
-		{
-			key: '1',
-			label: (
-				<span>
-					<SkinOutlined />
-					{dictionaryStore.getString('products_list')}
-				</span>
-			),
-			children: (
-				<>
-					<Button type="primary" onClick={() =>
-						productsStore.setPopupModal(true)
-					}>
-						{dictionaryStore.getString('add_product')}
-					</Button>
-					<Table
-						rowKey="_id"
-						columns={columns}
-						dataSource={productsStore.products}
-						bordered
-					/>
-				</>
-			),
-		},
-		{
-			key: '2',
-			label: (
-				<span>
-					<SisternodeOutlined />
-					{dictionaryStore.getString('categories_list')}
-				</span>
-			),
-			children: (
-				<CategoriesList />
-			),
-		},
-	];
-
-	const onTabChange = (key) => {
-		console.log(key);
-	};
-
-	const closeDrawer = () => {
-		productsStore.setDrawerVisible(false);
-	};
-
 	return (
-		<>
-			<Drawer
-				title="Image Uploader"
-				width={'60%'}
-				onClose={closeDrawer}
-				open={productsStore.drawerVisible}
-				style={{ zIndex: '9000' }}
-			>
-				<ImageUploader onClose={closeDrawer} />
-			</Drawer>
-
-			<Tabs
-				defaultActiveKey="1"
-				items={tab_items}
-				onChange={onTabChange}
+		<div style={{ padding: '15px' }}>
+			<Button type="primary" onClick={() => productsStore.setPopupModal(true)}>
+				{dictionaryStore.getString('add_product')}
+			</Button>
+			<Table
+				dataSource={productsStore.products.map(item => ({ ...item, key: item._id }))}
+				columns={columns}
+				bordered
+				pagination={{
+					pageSize: 20,
+				}}
 			/>
-
-			{/* Replace Modal with Drawer */}
 			<AddProductDrawer />
-		</>
+		</div>
 	);
 });
 

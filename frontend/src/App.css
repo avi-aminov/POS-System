@@ -1,9 +1,0 @@
-.category-active {
-	background: #ececec;
-}
-
-:where(.css-dev-only-do-not-override-2i2tap).ant-card .ant-card-meta-detail {
-	overflow: hidden;
-	flex: 1;
-	text-align: center;
-}

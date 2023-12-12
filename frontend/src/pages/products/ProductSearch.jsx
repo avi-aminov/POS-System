@@ -6,6 +6,7 @@ import dictionaryStore from '../../stores/dictionaryStore';
 import { BarcodeOutlined, PlusSquareOutlined } from '@ant-design/icons';
 import cartStore from '../../stores/cartStore';
 import ModalForGetParameter from '../../components/ModalForGetParameter';
+import { generateRandomID } from '../../utils/Utility';
 
 const ProductSearch = observer(() => {
 	const [modalVisible, setModalVisible] = useState(false);
@@ -19,9 +20,8 @@ const ProductSearch = observer(() => {
 	};
 
 	const handleModalOk = (inputValue) => {
-
 		const globalProduct = {
-			id: 9999, // You can use a unique identifier
+			_id: generateRandomID(), // You can use a unique identifier
 			name: dictionaryStore.getString('global'),
 			price: inputValue,
 			quantity: 1,
@@ -30,7 +30,6 @@ const ProductSearch = observer(() => {
 		};
 
 		cartStore.addToCart(globalProduct)
-
 		setModalVisible(false);
 	};
 
@@ -53,7 +52,6 @@ const ProductSearch = observer(() => {
 					style={{ cursor: 'pointer' }}
 					onClick={handleOpenModal}
 				/>
-
 				<ModalForGetParameter
 					title={dictionaryStore.getString('add_product_price')}
 					visible={modalVisible}

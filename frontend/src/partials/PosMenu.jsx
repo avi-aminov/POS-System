@@ -36,17 +36,20 @@ const PosMenu = observer(() => {
 	const items = [
 		getItem(<Link to="/">{dictionaryStore.getString('pos')}</Link>, '/', <HomeOutlined />),
 		getItem(<Link to="/orders">{dictionaryStore.getString('orders')}</Link>, '/orders', <CopyOutlined />),
-		getItem(<Link to="/items">{dictionaryStore.getString('items')}</Link>, '/items', <UnorderedListOutlined />),
+		getItem(dictionaryStore.getString('inventory'), '', <UnorderedListOutlined />, [
+			getItem(<Link to="/products">{dictionaryStore.getString('products')}</Link>, '/products', <CopyOutlined />),
+			getItem(<Link to="/categories">{dictionaryStore.getString('categories')}</Link>, '/categories', <CopyOutlined />),
+		]),
 		getItem(<Link to="/customers">{dictionaryStore.getString('customers')}</Link>, '/customers', <UserOutlined />),
 		getItem(<Link to="/media">{dictionaryStore.getString('media')}</Link>, '/media', <PictureOutlined />),
 		getItem(<Link to="/settings">{dictionaryStore.getString('settings')}</Link>, '/settings', <ControlOutlined />),
-		getItem(<div onClick={logout}>{dictionaryStore.getString('logout')}</div>, '/logout', <LogoutOutlined />),
+		getItem(<Link onClick={logout}>{dictionaryStore.getString('logout')}</Link>, '/logout', <LogoutOutlined />),
 	];
 
 	return (
 		<Menu
 			theme="dark"
-			mode="inline"
+			mode="vertical"
 			defaultSelectedKeys={[window.location.pathname]}
 			selectedKeys={[window.location.pathname]} // Add this line to fix the warning
 			items={items}

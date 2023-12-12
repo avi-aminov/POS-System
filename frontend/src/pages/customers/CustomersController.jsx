@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Table, Button, Drawer, Form, Input, Popconfirm } from 'antd';
+import { Table, Button, Drawer, Form, Input, Popconfirm, DatePicker } from 'antd';
 import { observer } from 'mobx-react-lite';
 import customersStore from '../../stores/customersStore';
 import dictionaryStore from '../../stores/dictionaryStore';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 const CustomersController = observer(() => {
     const [form] = Form.useForm();
@@ -25,6 +26,12 @@ const CustomersController = observer(() => {
         { title: dictionaryStore.getString('first_name'), dataIndex: 'fName', key: 'fName' },
         { title: dictionaryStore.getString('last_name'), dataIndex: 'lName', key: 'lName' },
         { title: dictionaryStore.getString('email'), dataIndex: 'email', key: 'email' },
+        {
+            title: dictionaryStore.getString('date_of_birth'),
+            render: (text) => (
+                <>{moment(text).format('DD-MM-YYYY')}</>
+            ), dataIndex: 'dateOfBirth', key: 'dateOfBirth'
+        },
         { title: dictionaryStore.getString('phone_number'), dataIndex: 'phone', key: 'phone' },
         { title: dictionaryStore.getString('address'), dataIndex: 'address', key: 'address' },
         { title: dictionaryStore.getString('city'), dataIndex: 'city', key: 'city' },
@@ -58,7 +65,21 @@ const CustomersController = observer(() => {
     };
 
     const handleEdit = (customer) => {
-        form.setFieldsValue(customer);
+        console.log('customer.dateOfBirth', customer.dateOfBirth);
+
+        const dateOfBirthMoment = customer.dateOfBirth
+            ? moment(customer.dateOfBirth, 'DD-MM-YYYY')
+            : null;
+
+        console.log('dateOfBirthMoment', dateOfBirthMoment);
+
+        // Set the formatted date in the DatePicker
+        form.setFieldsValue({
+            ...customer,
+            dateOfBirth: dateOfBirthMoment,
+        });
+
+        //form.setFieldsValue(customer);
         setDrawerVisible(true);
         setIsEditing(true);
     };
@@ -75,7 +96,6 @@ const CustomersController = observer(() => {
                 await customersStore.createCustomer();
             }
             setDrawerVisible(false);
-
         } catch (error) {
             console.error('Error editing/adding customer:', error);
         }
@@ -86,7 +106,7 @@ const CustomersController = observer(() => {
     };
 
     return (
-        <div>
+        <div style={{ padding: '15px' }}>
             <div style={{ display: 'flex', justifyContent: 'end', marginBottom: 16 }}>
                 <Button type="primary" onClick={showDrawer}>
                     {dictionaryStore.getString('add_new_customer')}
@@ -138,6 +158,18 @@ const CustomersController = observer(() => {
                         }]}
                     >
                         <Input />
+                    </Form.Item>
+                    <Form.Item
+                        name="dateOfBirth"
+                        label={dictionaryStore.getString('date_of_birth')}
+                        rules={[
+                            {
+                                required: false,
+                                message: dictionaryStore.getString('please_select_date_of_birth'),
+                            },
+                        ]}
+                    >
+                        <DatePicker format="DD-MM-YYYY" style={{ width: '100%' }} />
                     </Form.Item>
                     <Form.Item
                         name="phone"

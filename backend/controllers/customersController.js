@@ -28,13 +28,14 @@ const createCustomers = async (req, res) => {
 		}
 
 		const userID = req.user._id;
-		const { fName, lName, email, phone, address, city, zip } = req.body;
+		const { fName, lName, email, dateOfBirth, phone, address, city, zip } = req.body;
 
 		const customer = await Customer.create({
 			userID,
 			fName,
 			lName,
 			email,
+			dateOfBirth,
 			phone,
 			address,
 			city,
@@ -49,12 +50,13 @@ const createCustomers = async (req, res) => {
 };
 
 const editCustomer = async (req, res) => {
+
 	try {
 		if (!req.user._id) {
 			return answer(401, 'User Not Exist', res);
 		}
 
-		const { _id, fName, lName, email, phone, address, city, zip } = req.body;
+		const { _id, fName, lName, email, dateOfBirth, phone, address, city, zip } = req.body;
 
 		// Check if the customer with the given ID exists
 		const existingCustomer = await Customer.findById(_id);
@@ -69,6 +71,7 @@ const editCustomer = async (req, res) => {
 			fName,
 			lName,
 			email,
+			dateOfBirth,
 			phone,
 			address,
 			city,

@@ -5,7 +5,6 @@ import categoriesStore from '../../stores/categoriesStore';
 import dictionaryStore from '../../stores/dictionaryStore';
 
 import {
-	Drawer,
 	Table,
 	Image,
 	message,
@@ -17,7 +16,6 @@ import {
 	EditOutlined,
 } from '@ant-design/icons';
 import AddCategoryDrawer from './AddCategoryDrawer';
-import ImageUploader from '../media/ImageUploader';
 
 const CategoriesList = observer(() => {
 	const serverURL = import.meta.env.VITE_SERVER_URL;
@@ -49,19 +47,19 @@ const CategoriesList = observer(() => {
 
 	//able data
 	const cat_columns = [
-		{ title: dictionaryStore.getString('name'), dataIndex: 'name' },
 		{
 			title: dictionaryStore.getString('image'),
 			dataIndex: 'image',
 			render: (image, record) => (
 				image &&
 				<Image
-					width={60}
+					width={40}
 					alt={record.name}
 					src={`${serverURL}/uploads/${image}`}
 				/>
 			),
 		},
+		{ title: dictionaryStore.getString('name'), dataIndex: 'name' },
 		{
 			title: dictionaryStore.getString('action'),
 			dataIndex: '_id',
@@ -85,36 +83,19 @@ const CategoriesList = observer(() => {
 		},
 	];
 
-	const closeDrawer = () => {
-		categoriesStore.setDrawerVisible(false);
-	};
-
 	return (
-		<>
-			<Drawer
-				title="Image Uploader"
-				width={'60%'}
-				onClose={closeDrawer}
-				open={categoriesStore.drawerVisible}
-				style={{ zIndex: '9000' }}
-			>
-				<ImageUploader onClose={closeDrawer} />
-			</Drawer>
-
+		<div style={{ padding: '15px' }}>
 			<AddCategoryDrawer />
 			<Button
-				type="primary"
-				onClick={() => categoriesStore.setCategoryPopupVisible(true)}
-			>
+				type="primary" onClick={() => categoriesStore.setCategoryPopupVisible(true)}>
 				{dictionaryStore.getString('add_category')}
 			</Button>
-
 			<Table
 				dataSource={categoriesStore.categories.map(item => ({ ...item, key: item._id }))}
 				columns={cat_columns}
 				bordered
 			/>
-		</>
+		</div>
 	);
 });
 

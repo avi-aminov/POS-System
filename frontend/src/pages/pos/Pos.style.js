@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const CategoriesAndProductSearchWrap = styled.div`
-    padding: 10px 0; 
+    padding: 0 0 10px 0; 
     position: sticky;
     top: 0;
     z-index: 99;

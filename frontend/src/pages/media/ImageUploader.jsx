@@ -50,9 +50,9 @@ const ImageUploader = () => {
             render: (path) =>
                 path &&
                 <Image
-                    style={{ width: '120px', height: '120px', objectFit: 'contain' }}
+                    style={{ width: '40px', height: '40px', objectFit: 'contain' }}
                     data-imgurl={path}
-                    width={60}
+                    width={40}
                     alt={path}
                     src={`${serverURL}/uploads/${path}`}
                 />
@@ -166,7 +166,7 @@ const ImageUploader = () => {
     };
 
     return (
-        <div>
+        <div style={{ padding: '15px' }}>
             <Upload
                 customRequest={customRequest}
                 onChange={handleChange}
@@ -185,6 +185,9 @@ const ImageUploader = () => {
                 dataSource={imageList.map(item => ({ ...item, key: item._id }))}
                 columns={columns}
                 sortOrder="ascend"
+                pagination={{
+                    pageSize: 20,
+                }}
             />
         </div>
     );

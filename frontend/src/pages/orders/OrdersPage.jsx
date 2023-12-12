@@ -78,7 +78,7 @@ const OrdersPage = observer(() => {
 	];
 
 	return (
-		<>
+		<div style={{ padding: '15px' }}>
 			<div className="d-flex justify-content-between">
 				<h1>{dictionaryStore.getString('invoice_list')}</h1>
 			</div>
@@ -238,7 +238,7 @@ const OrdersPage = observer(() => {
 					{/* ============ invoice modal ends ==============  */}
 				</Modal>
 			)}
-		</>
+		</div>
 	);
 });
 

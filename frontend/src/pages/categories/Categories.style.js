@@ -36,7 +36,6 @@ export const CategoryWrapper = styled.div`
   display: flex;
   justify-content: center;
   cursor: pointer;
-  border-radius: 15px;
   //background: ${({ isSelectedCategory }) => isSelectedCategory ? "#1677ff" : "white"};
   color: ${({ isSelectedCategory }) => isSelectedCategory ? "#1677ff" : "#000000"};
   margin: 0 8px;

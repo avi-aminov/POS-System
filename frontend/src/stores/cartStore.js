@@ -22,16 +22,26 @@ const cartStore = observable({
 	}),
 
 	addToCart: action(function (item) {
+
 		const existingItem = this.cart.find(
-			(cartItem) => cartItem.id === item.id,
+			(cartItem) => {
+				console.log(cartItem._id);
+				console.log(item._id);
+
+				return cartItem._id === item._id
+			}
 		);
 
 		if (existingItem) {
+
+			console.log("a");
+
 			existingItem.quantity += 1;
 			existingItem.totalPrice = (
 				existingItem.price * existingItem.quantity
 			).toFixed(2);
 		} else {
+			console.log("b");
 			this.cart.push({ ...item, quantity: 1, totalPrice: item.price });
 		}
 

@@ -11,7 +11,7 @@ export const TableHeaderRow = styled(Row)`
 `;
 
 export const OrderPosWrap = styled.div`
-    flex: 2 2 auto;OrderPosWrap
+    flex: 2 2 auto;
     max-width: 39%;
     margin-${props => props.direction === 'ltr' ? 'left' : 'right'}: 1%; 
     @media (max-width: 900px) {

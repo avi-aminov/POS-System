@@ -104,4 +104,9 @@ export default {
     update_category: "Update Category",
     edit_category: "Edit Category",
     order_number: "Order ID",
+    inventory: "Inventory",
+    products: "Products",
+    categories: "Categories",
+    date_of_birth: "Date of Birth",
+    please_select_date_of_birth: "Please Add Date of Birth",
 };

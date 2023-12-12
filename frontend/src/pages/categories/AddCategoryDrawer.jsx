@@ -10,6 +10,7 @@ import {
     Input,
     message
 } from 'antd';
+import ImageUploader from '../media/ImageUploader';
 
 const AddCategoryDrawer = observer(() => {
 
@@ -42,6 +43,10 @@ const AddCategoryDrawer = observer(() => {
                 message.error('Error updating category');
             }
         }
+    };
+
+    const closeDrawer = () => {
+        categoriesStore.setDrawerVisible(false);
     };
 
     return <Drawer
@@ -93,6 +98,16 @@ const AddCategoryDrawer = observer(() => {
                 </Button>
             </div>
         </Form>
+
+        <Drawer
+            title="Image Uploader"
+            width={'50%'}
+            onClose={closeDrawer}
+            open={categoriesStore.drawerVisible}
+            style={{ zIndex: '9000' }}
+        >
+            <ImageUploader onClose={closeDrawer} />
+        </Drawer>
     </Drawer>
 });
 

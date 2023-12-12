@@ -22,6 +22,10 @@ const customerSchema = new mongoose.Schema({
         type: String,
         allowNull: true,
     },
+    dateOfBirth: {
+        type: String,
+        allowNull: true,
+    },
     address: {
         type: String,
         allowNull: true,

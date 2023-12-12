@@ -13,6 +13,7 @@ import {
 import categoriesStore from '../../stores/categoriesStore';
 import dictionaryStore from '../../stores/dictionaryStore';
 import productsStore from '../../stores/productsStore';
+import ImageUploader from '../media/ImageUploader';
 
 const AddProductDrawer = observer(() => {
     const showDrawer = () => {
@@ -51,6 +52,9 @@ const AddProductDrawer = observer(() => {
         }
     };
 
+    const closeDrawer = () => {
+        productsStore.setDrawerVisible(false);
+    };
 
     return <>
         {productsStore.productPopupModal && (
@@ -167,6 +171,16 @@ const AddProductDrawer = observer(() => {
                         </Button>
                     </div>
                 </Form>
+
+                <Drawer
+                    title="Image Uploader"
+                    width={'60%'}
+                    onClose={closeDrawer}
+                    open={productsStore.drawerVisible}
+                    style={{ zIndex: '9000' }}
+                >
+                    <ImageUploader onClose={closeDrawer} />
+                </Drawer>
             </Drawer>
         )}
     </>;

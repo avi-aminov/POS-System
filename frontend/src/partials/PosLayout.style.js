@@ -43,7 +43,7 @@ export const SiteLayout = styled.div`
 	
 			&.ant-layout-content {
 				margin: 24px 16px;
-				padding: 5px;
+				padding: 0;
 				min-height: 280px
 			}
 		}

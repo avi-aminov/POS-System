@@ -1,9 +1,11 @@
 const Spinner = () => {
 	return (
-		<div className="spinner">
-			<div className="spinner-border" role="status">
-				<span className="visually-hidden">Loading...</span>
-			</div>
+		<div
+			className="animate-spin inline-block w-10 h-10 border-[3px] border-current border-t-transparent text-yellow-1000 rounded-full"
+			role="status"
+			aria-label="loading"
+		>
+			<span className="sr-only">Loading...</span>
 		</div>
 	);
 };

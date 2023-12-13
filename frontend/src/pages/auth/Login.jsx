@@ -1,57 +1,91 @@
-import { Form, Input, Button } from 'antd';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { message } from 'antd';
 import axios from 'axios';
 import authStore from '../../stores/authStore';
+import ToastService from '../../components/Toast/ToastService';
 
 const Login = () => {
 	const navigate = useNavigate();
+	const Toast = ToastService();
+	const [formData, setFormData] = useState({
+		email: '',
+		password: '',
+	});
 
-	const handleSubmit = async (value) => {
-		const { password, email } = value;
+	const handleChange = (e) => {
+		setFormData({ ...formData, [e.target.name]: e.target.value });
+	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		const { password, email } = formData;
 
 		if (!password || !email) {
-			message.error('One or more of the parameters are empty');
+			Toast.error('One or more of the parameters are empty');
 		} else {
 			try {
-				await axios.post('/login', value);
+				await axios.post('/login', formData);
 				authStore.setLoginStatus(true);
 				navigate('/');
 			} catch (error) {
-				message.error('Something Went Wrong');
+				Toast.error('Something Went Wrong');
 				console.log(error);
 			}
 		}
 	};
 
 	return (
-		<div
-			className="register"
-			style={{ maxWidth: '400px', margin: 'auto', marginTop: '35px' }}
-		>
-			<div className="login-form">
-				<h1>POS System</h1>
-				<h3>Login</h3>
-				<Form layout="vertical" onFinish={handleSubmit}>
-					<Form.Item name="email" label="Email">
-						<Input />
-					</Form.Item>
-					<Form.Item name="password" label="Password">
-						<Input type="password" />
-					</Form.Item>
-
-					<div className="d-flex justify-content-between">
-						<p>
-							not a user Please
-							<Link to="/register"> Register Here !</Link>
-						</p>
-						<Button type="primary" htmlType="submit">
-							Login
-						</Button>
-					</div>
-				</Form>
+		<>
+			<div className="register max-w-md mx-auto mt-8 p-6 bg-white border rounded-md shadow-md">
+				<div className="login-form">
+					<h1 className="text-2xl font-bold mb-4">POS System</h1>
+					<h3 className="text-xl font-semibold mb-4">Login</h3>
+					<form onSubmit={handleSubmit} className="mt-4 space-y-4">
+						<div className="mb-4">
+							<label htmlFor="email" className="block text-sm font-medium text-gray-600">
+								Email
+							</label>
+							<input
+								type="text"
+								id="email"
+								name="email"
+								value={formData.email}
+								onChange={handleChange}
+								className="mt-1 p-2 w-full border rounded-md"
+							/>
+						</div>
+						<div className="mb-4">
+							<label htmlFor="password" className="block text-sm font-medium text-gray-600">
+								Password
+							</label>
+							<input
+								type="password"
+								id="password"
+								name="password"
+								value={formData.password}
+								onChange={handleChange}
+								className="mt-1 p-2 w-full border rounded-md"
+							/>
+						</div>
+						<div className="flex justify-between items-center">
+							<p>
+								Not a user? Please{' '}
+								<Link to="/register" className="text-blue-500 hover:underline">
+									Register Here!
+								</Link>
+							</p>
+							<button
+								type="submit"
+								className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
+							>
+								Login
+							</button>
+						</div>
+					</form>
+				</div>
 			</div>
-		</div>
+			{Toast.ToastComponent}
+		</>
 	);
 };
 

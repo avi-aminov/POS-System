@@ -105,6 +105,7 @@ const ProductsList = observer(() => {
 			<Button type="primary" onClick={() => productsStore.setPopupModal(true)}>
 				{dictionaryStore.getString('add_product')}
 			</Button>
+
 			<Table
 				dataSource={productsStore.products.map(item => ({ ...item, key: item._id }))}
 				columns={columns}

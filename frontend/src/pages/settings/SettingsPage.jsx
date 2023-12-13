@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Select, Input, Button } from 'antd';
 import { observer } from 'mobx-react-lite';
 import settingsStore from '../../stores/settingsStore';
 import dictionaryStore from '../../stores/dictionaryStore';
-
-const { Option } = Select;
 
 const SettingsPage = observer(() => {
     const [settingsData, setSettingsData] = useState(settingsStore.settings);
@@ -15,71 +12,77 @@ const SettingsPage = observer(() => {
     }, []);
 
     const handleInputChange = (fieldName, value) => {
-        setSettingsData(prevState => ({
+        setSettingsData((prevState) => ({
             ...prevState,
-            [fieldName]: value
+            [fieldName]: value,
         }));
     };
 
     const handleSaveClick = () => {
         settingsStore.saveMultipleKeys(settingsData);
-    }
+    };
 
     return (
-        <div style={{ margin: 16 }}>
-            <h2>{dictionaryStore.getString('settings')}</h2>
+        <div className="m-4">
+            <h1>{dictionaryStore.getString('settings')}</h1>
 
-            <div style={{ margin: '15px 0' }}>
+            <div className="my-4">
                 <span>{dictionaryStore.getString('select_currency_symbol')}</span>
-                <Select
+                <select
                     value={settingsData.currencySymbol}
-                    style={{ width: 120 }}
-                    onChange={(value) => handleInputChange('currencySymbol', value)}
+                    className="w-32 border rounded-md p-2"
+                    onChange={(e) => handleInputChange('currencySymbol', e.target.value)}
                 >
-                    <Option value="$">USD ($)</Option>
-                    <Option value="₪">ILS (₪)</Option>
-                    <Option value="£">GBP (£)</Option>
-                    <Option value="€">EUR (€)</Option>
-                </Select>
+                    <option value="$">USD ($)</option>
+                    <option value="₪">ILS (₪)</option>
+                    <option value="£">GBP (£)</option>
+                    <option value="€">EUR (€)</option>
+                </select>
             </div>
 
-            <div style={{ margin: '15px 0', width: 180 }}>
+            <div className="my-4 w-48">
                 <span>{dictionaryStore.getString('enter_tax')}</span>
-                <Input
+                <input
                     type="number"
                     name="tax"
                     value={settingsData.tax}
+                    className="border rounded-md p-2"
                     onChange={(e) => handleInputChange('tax', e.target.value)}
                 />
             </div>
 
-            <div style={{ margin: '15px 0' }}>
+            <div className="my-4">
                 <span>{dictionaryStore.getString('select_direction')} </span>
-                <Select
+                <select
                     value={settingsData.direction}
-                    style={{ width: 180 }}
-                    onChange={(value) => handleInputChange('direction', value)}
+                    className="w-48 border rounded-md p-2"
+                    onChange={(e) => handleInputChange('direction', e.target.value)}
                 >
-                    <Option value="ltr">LTR</Option>
-                    <Option value="rtl">RTL</Option>
-                </Select>
+                    <option value="ltr">LTR</option>
+                    <option value="rtl">RTL</option>
+                </select>
             </div>
 
-            <div style={{ margin: '15px 0' }}>
+            <div className="my-4">
                 <span>{dictionaryStore.getString('select_language')}</span>
-                <Select
+                <select
                     value={settingsData.lang}
-                    style={{ width: 180 }}
-                    onChange={(value) => handleInputChange('lang', value)}>
-                    <Option value="eng">English</Option>
-                    <Option value="heb">עברית</Option>
-                </Select>
+                    className="w-48 border rounded-md p-2"
+                    onChange={(e) => handleInputChange('lang', e.target.value)}
+                >
+                    <option value="eng">English</option>
+                    <option value="heb">עברית</option>
+                </select>
             </div>
 
-            <div style={{ margin: '15px 0' }}>
-                <Button type="primary" onClick={handleSaveClick}>
+            <div className="my-4">
+                <button
+                    type="button"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
+                    onClick={handleSaveClick}
+                >
                     {dictionaryStore.getString('save')}
-                </Button>
+                </button>
             </div>
         </div>
     );

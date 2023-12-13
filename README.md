@@ -1,20 +1,20 @@
 # POS-System
-POS System: front-end [React + Ant.Design], back-end [NodeJS + MySQL(on docker) + Sequelize]
+POS System: MERN Stack
 
 
-docker-mysql
-docker-compose up
-
-go to adminer for create pos db
-http://localhost:8080/
-user: root
-password: password
-create database> pos
-
-backend
+### Install backend dependencies in backend folder
+```
+cd backend
 npm install
-npm run dev
+```
 
-frontend
+### Install frontend dependencies in frontend folder
+```
+cd frontend
 npm install
-npm run dev
+```
+
+### Run frontend and backend from root folder
+```
+npm run start
+```

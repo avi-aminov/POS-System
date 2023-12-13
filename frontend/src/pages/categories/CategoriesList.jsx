@@ -88,8 +88,9 @@ const CategoriesList = observer(() => {
 			<AddCategoryDrawer />
 			<Button
 				type="primary" onClick={() => categoriesStore.setCategoryPopupVisible(true)}>
-				{dictionaryStore.getString('add_category')}
+				{dictionaryStore.getString('add_category')} aaaaaa
 			</Button>
+
 			<Table
 				dataSource={categoriesStore.categories.map(item => ({ ...item, key: item._id }))}
 				columns={cat_columns}

@@ -1,35 +1,29 @@
-import axios from 'axios';
 import { useEffect } from 'react';
-import {
-	DeleteOutlined,
-	EditOutlined,
-} from '@ant-design/icons';
-import {
-	//Drawer,
-	Button,
-	Table,
-	message,
-	Image,
-} from 'antd';
-
+import axios from 'axios';
 import { observer } from 'mobx-react';
+import DataTable from 'react-data-table-component';
 import productsStore from '../../stores/productsStore';
 import settingsStore from '../../stores/settingsStore';
 import dictionaryStore from '../../stores/dictionaryStore';
-//import ImageUploader from '../media/ImageUploader';
 import AddProductDrawer from './AddProductDrawer';
 import categoriesStore from '../../stores/categoriesStore';
+import { RiDeleteBin5Line } from "react-icons/ri";
+import { GrEdit } from "react-icons/gr";
+import ToastService from '../../components/Toast/ToastService';
+import MagnifierUtils from '../../components/Magnifier/MagnifierUtils';
+import ModalOpener from '../../components/ModalConfirmation/ModalOpener';
 
 const ProductsList = observer(() => {
 	const serverURL = import.meta.env.VITE_SERVER_URL;
+	const Toast = ToastService();
 
-	//useEffect
+	// useEffect
 	useEffect(() => {
 		productsStore.fetchProducts();
 		categoriesStore.fetchCategories();
 	}, []);
 
-	//handle delete
+	// handle delete
 	const handleDelete = async (record) => {
 		try {
 			// Make a POST request to update the product isDelete status
@@ -40,60 +34,64 @@ const ProductsList = observer(() => {
 				console.log('Product isDelete updated successfully:', response.data);
 				productsStore.fetchProducts();
 				// Handle success, if needed
-
-				message.success(dictionaryStore.getString('item_deleted_successfully'));
+				Toast.success(dictionaryStore.getString('item_deleted_successfully'));
 			} else {
 				console.error('Unexpected response:', response);
-				// Handle unexpected response, if needed
-				message.error('Error product delete');
+				Toast.error('Error product delete');
 			}
 		} catch (error) {
 			console.error('Error updating product isDelete:', error);
-			// Handle error, if needed
-			message.error('Error product delete');
+			Toast.error('Error product delete');
 		}
 	};
 
-	//able data
+	// table data
 	const columns = [
 		{
-			title: dictionaryStore.getString('image'),
-			dataIndex: 'image',
-			render: (image, record) => {
-				return (
-					image && <Image
-						data-imgurl={image}
-						width={40}
-						alt={record.name}
-						src={`${serverURL}/uploads/${image}`}
-					/>
-				);
-			},
+			name: dictionaryStore.getString('image'),
+			selector: (row) => row.image,
+			cell: (record) => (
+				<img
+					onClick={() => {
+						MagnifierUtils.open(`${serverURL}/uploads/${record.image}`)
+					}}
+					className='cursor-pointer p-2'
+					width={60}
+					alt={record.name}
+					src={`${serverURL}/uploads/${record.image}`}
+				/>
+			),
 		},
-		{ title: dictionaryStore.getString('name'), dataIndex: 'name' },
+		{ name: dictionaryStore.getString('name'), selector: (row) => row.name },
 		{
-			title: dictionaryStore.getString('price'),
-			dataIndex: 'price',
-			render: (_id, record) =>
-				`${record.price} ${settingsStore.settings.currencySymbol}`,
+			name: dictionaryStore.getString('price'),
+			selector: (row) => row.price,
+			cell: (record) => `${record.price} ${settingsStore.settings.currencySymbol}`,
 		},
 		{
-			title: dictionaryStore.getString('actions'),
-			dataIndex: '_id',
-			render: (_id, record) => (
-				<div>
-					<EditOutlined
+			name: dictionaryStore.getString('actions'),
+			selector: (row) => row._id,
+			cell: (record) => (
+				<div className='flex gap-2'>
+					<GrEdit
+						size={20}
 						style={{ cursor: 'pointer' }}
 						onClick={() => {
-							productsStore.setEditItem(record);
-							productsStore.setPopupModal(true)
+							productsStore.updateEditItem(record);
+							productsStore.isEditItem = true;
+							productsStore.setPopupModal(true);
 						}}
 					/>
-					<DeleteOutlined
-						style={{ cursor: 'pointer' }}
-						onClick={() => {
+					<ModalOpener
+						onConfirm={(record) => {
+							console.log('Confirmed!', record);
 							handleDelete(record);
 						}}
+						onClose={() => {
+							console.log('Cancel');
+						}}
+						openerContent={<RiDeleteBin5Line style={{ cursor: 'pointer' }} size={20} color='red' />}
+						record={record} // Pass the record prop here
 					/>
 				</div>
 			),
@@ -101,20 +99,22 @@ const ProductsList = observer(() => {
 	];
 
 	return (
-		<div style={{ padding: '15px' }}>
-			<Button type="primary" onClick={() => productsStore.setPopupModal(true)}>
-				{dictionaryStore.getString('add_product')}
-			</Button>
+		<div style={{ height: 'calc(100vh)', overflow: 'auto' }} className="content overflow-y-auto">
+			<div className="p-8" style={{ width: 'calc(100%)', paddingLeft: 'calc(80px + 2rem)' }}>
+				<button
+					className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800" type="primary"
+					onClick={() => {
+						productsStore.updateEditItem({});
+						productsStore.setPopupModal(true);
+					}}>
+					{dictionaryStore.getString('add_product')}
+				</button>
 
-			<Table
-				dataSource={productsStore.products.map(item => ({ ...item, key: item._id }))}
-				columns={columns}
-				bordered
-				pagination={{
-					pageSize: 20,
-				}}
-			/>
-			<AddProductDrawer />
+				<DataTable pagination columns={columns} data={productsStore.products} />
+				<AddProductDrawer />
+
+			</div>
+			{Toast.ToastComponent}
 		</div>
 	);
 });

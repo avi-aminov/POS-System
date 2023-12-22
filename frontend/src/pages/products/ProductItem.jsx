@@ -1,41 +1,36 @@
-import { Card } from 'antd';
 import { observer } from 'mobx-react';
 import cartStore from '../../stores/cartStore';
 import settingStore from '../../stores/settingsStore';
-import { ImageWrap, Img, Price } from './ProductItem.style';
 
 const ItemList = observer(({ item }) => {
 	const serverURL = import.meta.env.VITE_SERVER_URL;
-	const { Meta } = Card;
 
 	const handleAddTOCart = () => {
 		cartStore.addToCart(item);
 	};
 
 	return (
-		<div>
-			<Card
-				onClick={() => handleAddTOCart()}
-				style={{
-
-					marginBottom: 20,
-					cursor: 'pointer',
-				}}
-				cover={
-					<ImageWrap>
-						{
-							item.image ?
-								<Img alt={item.name} src={`${serverURL}/uploads/${item.image}`} /> : item.name
-						}
-					</ImageWrap>
-				}
-			>
-				<Meta title={item.name} />
-				<Price>
+		<div className='text-center cursor-pointer' onClick={() => handleAddTOCart()}>
+			{
+				item.image
+					?
+					<img
+						src={`${serverURL}/uploads/${item.image}`}
+						alt={item.name}
+						className="w-full object-cover h-full p-2"
+					/>
+					:
+					item.name
+			}
+			<div className="px-1 py-4">
+				<div className="font-bold text-xl mb-2">
 					{item.price}
 					{settingStore.settings.currencySymbol}
-				</Price>
-			</Card>
+				</div>
+				<p className="text-gray-700 text-base">
+					{item.name}
+				</p>
+			</div>
 		</div>
 	);
 });

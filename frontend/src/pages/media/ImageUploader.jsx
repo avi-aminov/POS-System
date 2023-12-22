@@ -166,30 +166,42 @@ const ImageUploader = () => {
     };
 
     return (
-        <div style={{ padding: '15px' }}>
-            <Upload
-                customRequest={customRequest}
-                onChange={handleChange}
-                fileList={fileList}
-                multiple={true}
-                showUploadList={{
-                    showPreviewIcon: true,
-                    showRemoveIcon: true,
-                    showDownloadIcon: true,
-                }}
-            >
-                <Button icon={<UploadOutlined />}>Upload Image</Button>
-            </Upload>
 
-            <Table
-                dataSource={imageList.map(item => ({ ...item, key: item._id }))}
-                columns={columns}
-                sortOrder="ascend"
-                pagination={{
-                    pageSize: 20,
-                }}
-            />
+        <div style={{ height: 'calc(100vh)', overflow: 'auto' }} className="content overflow-y-auto">
+            <div className="p-8" style={{ width: 'calc(100%)', paddingLeft: 'calc(80px + 2rem)' }}>
+                <div className="m-4">
+
+                    <div style={{ padding: '15px' }}>
+                        <Upload
+                            customRequest={customRequest}
+                            onChange={handleChange}
+                            fileList={fileList}
+                            multiple={true}
+                            showUploadList={{
+                                showPreviewIcon: true,
+                                showRemoveIcon: true,
+                                showDownloadIcon: true,
+                            }}
+                        >
+                            <Button icon={<UploadOutlined />}>Upload Image</Button>
+                        </Upload>
+
+                        <Table
+                            dataSource={imageList.map(item => ({ ...item, key: item._id }))}
+                            columns={columns}
+                            sortOrder="ascend"
+                            pagination={{
+                                pageSize: 20,
+                            }}
+                        />
+                    </div>
+
+                </div>
+            </div>
         </div>
+
+
+
     );
 };
 

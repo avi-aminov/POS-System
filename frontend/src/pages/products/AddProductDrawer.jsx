@@ -1,54 +1,60 @@
-import axios from 'axios';
+/* eslint-disable react/prop-types */
+import { useState } from 'react';
 import { observer } from 'mobx-react';
-import {
-    Drawer,
-    Button,
-    Form,
-    Input,
-    Select,
-    InputNumber,
-    message,
-} from 'antd';
-
 import categoriesStore from '../../stores/categoriesStore';
 import dictionaryStore from '../../stores/dictionaryStore';
 import productsStore from '../../stores/productsStore';
 import ImageUploader from '../media/ImageUploader';
+import ToastService from '../../components/Toast/ToastService';
+import Drawer from '../../components/Drawer';
 
 const AddProductDrawer = observer(() => {
-    const showDrawer = () => {
+    const Toast = ToastService();
+
+    const [formFields] = useState([
+        { name: 'name', label: 'Name', type: 'text' },
+        { name: 'description', label: 'Description', type: 'textarea' },
+        { name: 'price', label: 'Price', type: 'number' },
+        { name: 'new_price', label: 'New Price', type: 'number' },
+        { name: 'stock', label: 'Stock', type: 'number' },
+        { name: 'barcode', label: 'Barcode', type: 'text' },
+        { name: 'image', label: 'Image', type: 'text' },
+    ]);
+
+    const showDrawer = (e) => {
+        e.preventDefault();
         productsStore.setDrawerVisible(true);
     };
 
-    // handle form  submit
-    const handleSubmit = async (value) => {
-        if (productsStore.editItem === null) {
-            const data = { ...value };
-            try {
-                await axios.post('/add-product', data);
-                message.success(dictionaryStore.getString('product_added_successfully'));
-                productsStore.fetchProducts();
-                productsStore.setPopupModal(false);
-            } catch (error) {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const onSaveSuccess = () => {
+            Toast.success(dictionaryStore.getString('product_added_successfully'));
+            productsStore.fetchProducts();
+            productsStore.setPopupModal(false);
+        };
+
+        const onUpdateSuccess = () => {
+            Toast.success(dictionaryStore.getString('product_updated_successfully'));
+        };
+
+        if (!productsStore.isEditItem) {
+            productsStore.saveProduct(onSaveSuccess, (error) => {
                 console.error('Error adding category:', error);
-                message.error(dictionaryStore.getString('error_adding_category'));
-            }
+                Toast.error(dictionaryStore.getString('error_adding_category'));
+            });
         } else {
-            const data = { ...value, _id: productsStore.editItem._id };
+            productsStore.editProduct(onUpdateSuccess, (error) => {
+                console.error('Error', error);
+                Toast.error('Error updating product');
+            });
+        }
+    };
 
-            try {
-                await axios.post('/update-product', data);
-                message.success(dictionaryStore.getString('product_updated_successfully'));
-
-                // Update the MobX store's products array
-                const updatedProducts = productsStore.products.map((product) =>
-                    product._id === productsStore.editItem._id ? { ...product, ...data } : product
-                );
-                productsStore.products = updatedProducts;
-                productsStore.setPopupModal(false);
-            } catch (error) {
-                message.error('Error updating product');
-            }
+    const fieldsHandler = (fieldName, value) => {
+        if (value !== undefined) {
+            productsStore.setEditItem(fieldName, value);
         }
     };
 
@@ -56,134 +62,112 @@ const AddProductDrawer = observer(() => {
         productsStore.setDrawerVisible(false);
     };
 
-    return <>
-        {productsStore.productPopupModal && (
-            <Drawer
-                title={`${productsStore.editItem !== null ?
-                    dictionaryStore.getString('edit_product') :
-                    dictionaryStore.getString('add_new_product')
-                    }`}
-                open={productsStore.productPopupModal}
-                onClose={() => {
-                    productsStore.setEditItem(null);
-                    productsStore.setPopupModal(false);
-                }}
-                width={400} // Set the width according to your design
-                placement="right" // Adjust placement as needed
-                footer={null} // Remove footer if not needed
-            >
-                <Form
-                    layout="vertical"
-                    initialValues={productsStore.editItem}
-                    onFinish={handleSubmit}
-                >
-                    <Form.Item
-                        name="name"
-                        label={dictionaryStore.getString('name')}
-                        rules={[
-                            {
-                                required: true,
-                                message: dictionaryStore.getString('please_enter_the_name'),
-                            },
-                        ]}
+    return (
+        <>
+            {productsStore.productPopupModal && (
+                <>
+                    <Drawer
+                        title={`${productsStore.isEditItem ?
+                            dictionaryStore.getString('edit_product') :
+                            dictionaryStore.getString('add_new_product')
+                            }`}
+                        isOpen={productsStore.productPopupModal}
+                        onClose={() => {
+                            productsStore.setEditItem(null);
+                            productsStore.setPopupModal(false);
+                            productsStore.isEditItem = false;
+                        }}
+                        zIndex={1002}
+                        width="1/3"
                     >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name="description"
-                        label={dictionaryStore.getString('description')}>
-                        <Input.TextArea />
-                    </Form.Item>
-                    <Form.Item
-                        name="price"
-                        label={dictionaryStore.getString('price')}
-                        rules={[
-                            {
-                                required: true,
-                                message: dictionaryStore.getString('please_enter_the_price'),
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item name="newPrice" label={dictionaryStore.getString('new_price')}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name="stock"
-                        label={dictionaryStore.getString('stock')}
-                        rules={[
-                            {
-                                required: true,
-                                message: dictionaryStore.getString('please_enter_the_stock'),
-                            },
-                        ]}
-                    >
-                        <InputNumber min={0} />
-                    </Form.Item>
-                    <Form.Item name="barcode" label={dictionaryStore.getString('barcode')}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name="image"
-                        label={dictionaryStore.getString('select_image')}
-                        rules={[
-                            {
-                                message: dictionaryStore.getString('please_enter_the_name'),
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Button type="primary" onClick={showDrawer}>
-                        {dictionaryStore.getString('select_image')}
-                    </Button>
-
-                    <Form.Item
-                        name="categoryID"
-                        label={dictionaryStore.getString('category')}
-                        rules={[
-                            {
-                                required: true,
-                                message: dictionaryStore.getString('please_select_the_category'),
-                            },
-                        ]}
-                    >
-                        <Select>
-                            {categoriesStore.categories &&
-                                categoriesStore.categories.map((item) => (
-                                    <Select.Option
-                                        value={item._id}
-                                        key={item._id}
-                                    >
-                                        {item.name}
-                                    </Select.Option>
+                        <form className="max-w-md mx-auto">
+                            <div className="flex w-72 flex-col gap-6">
+                                {formFields.map((field) => (
+                                    <FormInput
+                                        key={field.name}
+                                        label={field.label}
+                                        name={field.name}
+                                        type={field.type}
+                                        onChange={(e) => fieldsHandler(field.name, e.target.value)}
+                                        value={productsStore.editItem[field.name] || ''}
+                                    />
                                 ))}
-                        </Select>
-                    </Form.Item>
 
-                    <div className="d-flex justify-content-end">
-                        <Button type="primary" htmlType="submit">
-                            {productsStore.editItem !== null ?
-                                dictionaryStore.getString('save') :
-                                dictionaryStore.getString('add')
-                            }
-                        </Button>
-                    </div>
-                </Form>
+                                <button
+                                    type="primary"
+                                    onClick={showDrawer}
+                                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
+                                >
+                                    {dictionaryStore.getString('select_image')}
+                                </button>
 
-                <Drawer
-                    title="Image Uploader"
-                    width={'60%'}
-                    onClose={closeDrawer}
-                    open={productsStore.drawerVisible}
-                    style={{ zIndex: '9000' }}
-                >
-                    <ImageUploader onClose={closeDrawer} />
-                </Drawer>
-            </Drawer>
-        )}
-    </>;
+                                <select
+                                    label={dictionaryStore.getString('category')}
+                                    name="categoryID"
+                                    onChange={(e) => fieldsHandler('categoryID', e.target.value)}
+                                    className="mt-1 p-2 w-full border rounded-md"
+                                >
+                                    {categoriesStore.categories &&
+                                        categoriesStore.categories.map((item) => (
+                                            <option value={item._id} key={item._id}>
+                                                {item.name}
+                                            </option>
+                                        ))}
+                                </select>
+
+                                <button
+                                    type="primary"
+                                    onClick={handleSubmit}
+                                    className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:shadow-outline-green active:bg-green-800">
+                                    {productsStore.isEditItem ?
+                                        dictionaryStore.getString('save') :
+                                        dictionaryStore.getString('add')
+                                    }
+                                </button>
+                            </div>
+                        </form>
+                        {Toast.ToastComponent}
+                    </Drawer>
+
+                    <Drawer
+                        title="Image Uploader"
+                        onClose={closeDrawer}
+                        isOpen={productsStore.drawerVisible}
+                        zIndex={1003}
+                        width="2/3"
+                    >
+                        <ImageUploader onClose={closeDrawer} />
+                    </Drawer>
+                </>
+            )}
+        </>
+    );
 });
+
+const FormInput = ({ label, name, type, onChange, value }) => {
+    const inputProps = {
+        name,
+        onChange,
+        value,
+        className: "mt-1 p-2 w-full border rounded-md",
+    };
+
+    return (
+        <>
+            {type === 'textarea' ? (
+                <textarea
+                    {...inputProps}
+                    placeholder={`Enter ${label}`}
+                />
+            ) : (
+                <input
+                    type={type}
+                    {...inputProps}
+                    placeholder={`Enter ${label}`}
+                />
+            )}
+        </>
+    );
+};
 
 export default AddProductDrawer;

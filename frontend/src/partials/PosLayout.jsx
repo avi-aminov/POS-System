@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import PosMenu from './PosMenu';
 import settingsStore from '../stores/settingsStore';
-import Spinner from '../components/Spinner';
+import { Spinner } from "@material-tailwind/react";
 
 const DefaultLayout = observer(() => {
 	const [loading, setLoading] = useState(false);
@@ -19,23 +19,21 @@ const DefaultLayout = observer(() => {
 	}, []);
 
 	return (
-		<>
+		// h-screen overflow-hidden
+		<div className=''>
 			{
 				loading
-					? <div >
-						<div className="min-h-screen bg-gray-100 flex">
+					?
+					<div className="wrap h-screen overflow-hidden">
+						<div className="left-sidebar z-1001 w-[80px] fixed top-0 left-0 h-full">
 							<PosMenu />
-
-							<div className="container mx-auto py-3 pl-20 px-6">
-								<div className="w-full h-full p-2">
-									<Outlet />
-								</div>
-							</div>
 						</div>
+						<Outlet />
 					</div>
-					: <Spinner />
+					:
+					<Spinner />
 			}
-		</>
+		</div>
 	);
 });
 

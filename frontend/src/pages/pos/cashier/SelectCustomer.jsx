@@ -1,19 +1,10 @@
 import { observer } from 'mobx-react';
 import customersStore from '../../../stores/customersStore';
 import dictionaryStore from '../../../stores/dictionaryStore';
-import { Select, Row, Col } from 'antd';
-import { UserAddOutlined, MinusSquareOutlined } from '@ant-design/icons';
 
 const SelectCustomer = observer(() => {
-
     const showDrawer = () => {
         customersStore.showAddCustomerDrawer = true;
-    };
-
-    const filterOption = (input, option) => {
-        return (option?.label ?? '')
-            .toLowerCase()
-            .includes(input.toLowerCase());
     };
 
     const onChange = (value) => {
@@ -25,58 +16,55 @@ const SelectCustomer = observer(() => {
     };
 
     return (
-        <div >
-            <div>
-                <Row>
-                    <Col span={18}>
-                        <div style={{ padding: '5px 15px' }}>
-                            <Select
-                                style={{ width: '100%' }}
-                                showSearch
-                                placeholder={dictionaryStore.getString('select_customer')}
-                                optionFilterProp="children"
-                                onChange={onChange}
-                                onSearch={onSearch}
-                                filterOption={filterOption}
-                                options={
-                                    customersStore.customerSelectData
-                                }
-                            />
-                        </div>
-                    </Col>
-                    <Col span={6}>
-                        <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-                            <UserAddOutlined
-                                style={{ cursor: 'pointer' }}
-                                onClick={showDrawer}
-                            />
-                            <MinusSquareOutlined
-                                style={{ cursor: 'pointer' }}
-                                onClick={() => {
-                                    customersStore.clearSelectedCustomers();
-                                }}
-                            />
-                        </div>
-                    </Col>
-                </Row>
-
-                <div style={{ padding: '5px 15px' }}>
-                    <label>
-                        {dictionaryStore.getString('current_customer')}
-                        <span
-                            style={{ color: 'red', fontWeight: '700' }}
-                            className="style-i4"
-                            id="current_customer"
+        <div>
+            <div className="flex">
+                <div className="w-3/4">
+                    <div className="p-2">
+                        <select
+                            className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring focus:border-blue-300"
+                            value={customersStore.selectedCustomers || ''}
+                            onChange={(e) => onChange(e.target.value)}
+                            onInput={(e) => onSearch(e.target.value)}
                         >
-                            {customersStore.customerSelectData.length > 0 &&
-                                customersStore.customerSelectedData?.fName}{' '}
-                            {customersStore.customerSelectData.length > 0 &&
-                                customersStore.customerSelectedData?.lName}
-                        </span>
-                    </label>
+                            <option value="" disabled>
+                                Select Customer
+                            </option>
+                            {customersStore.customerSelectData.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
+                <div className="w-1/4 flex items-center">
+                    <button
+                        className="cursor-pointer"
+                        onClick={showDrawer}
+                    >
+                        Add User
+                    </button>
+                    <button
+                        className="cursor-pointer ml-2"
+                        onClick={() => {
+                            customersStore.clearSelectedCustomers();
+                        }}
+                    >
+                        Clear
+                    </button>
+                </div>
+            </div>
 
-
+            <div className="p-2">
+                <label className="block">
+                    {dictionaryStore.getString('current_customer')}
+                    <span className="text-red-700 font-bold" id="current_customer">
+                        {customersStore.customerSelectData.length > 0 &&
+                            customersStore.customerSelectedData?.fName}{' '}
+                        {customersStore.customerSelectData.length > 0 &&
+                            customersStore.customerSelectedData?.lName}
+                    </span>
+                </label>
             </div>
         </div>
     );

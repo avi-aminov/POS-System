@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Input } from 'antd';
 import { observer } from 'mobx-react';
+import { FaBarcode } from "react-icons/fa6";
+import { LuPackagePlus } from "react-icons/lu";
+import { generateRandomID } from '../../utils/Utility';
 import productsStore from '../../stores/productsStore';
 import dictionaryStore from '../../stores/dictionaryStore';
-import { BarcodeOutlined, PlusSquareOutlined } from '@ant-design/icons';
 import cartStore from '../../stores/cartStore';
 import ModalForGetParameter from '../../components/ModalForGetParameter';
-import { generateRandomID } from '../../utils/Utility';
 
 const ProductSearch = observer(() => {
 	const [modalVisible, setModalVisible] = useState(false);
@@ -26,30 +26,32 @@ const ProductSearch = observer(() => {
 			price: inputValue,
 			quantity: 1,
 			totalPrice: inputValue,
-			// Add other parameters as needed
 		};
 
-		cartStore.addToCart(globalProduct)
+		cartStore.addToCart(globalProduct);
 		setModalVisible(false);
 	};
 
 	return (
-		<div style={{ display: 'flex' }}>
-			<Input
-				style={{ margin: '0 10px' }}
+		<div className="flex items-center">
+			<input
+				className="m-2 p-2 border border-gray-300"
+				type="text"
 				placeholder={dictionaryStore.getString('search_for_a_product')}
 				value={productsStore.searchQuery}
 				onChange={(e) => productsStore.setSearchQuery(e.target.value)}
 			/>
-			<div style={{ display: 'flex' }}>
-				<BarcodeOutlined
-					style={{ cursor: 'pointer' }}
+			<div className="flex">
+				<FaBarcode
+					size={26}
+					className="cursor-pointer m-2 text-xl"
 					onClick={() => {
 						console.log('BarcodeOutlined');
 					}}
 				/>
-				<PlusSquareOutlined
-					style={{ cursor: 'pointer' }}
+				<LuPackagePlus
+					size={26}
+					className="cursor-pointer m-2 text-xl"
 					onClick={handleOpenModal}
 				/>
 				<ModalForGetParameter

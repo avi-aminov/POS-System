@@ -3,54 +3,43 @@ import AddCustomerDrawer from './AddCustomerDrawer';
 import SelectCustomer from './SelectCustomer';
 import CashierProducts from './CashierProducts';
 import CashierBilling from './CashierBilling';
-import { Col } from 'antd';
-import dictionaryStore from '../../../stores/dictionaryStore';
-import settingsStore from '../../../stores/settingsStore';
 
-import {
-	OrderPosWrap,
-	RightSideWrap,
-	RightSideHeader,
-	CashierProductsWrap,
-	TableHeaderRow
-} from './Cashier.style';
+import dictionaryStore from '../../../stores/dictionaryStore';
+//import settingsStore from '../../../stores/settingsStore';
 
 const Cashier = observer(() => {
 
 	return (
-		<OrderPosWrap direction={settingsStore.settings.direction}>
-			<Col flex={2}>
-				<AddCustomerDrawer />
-				<div className="order--pos-right">
-					<div className="card billing-section-wrap">
+		<div>
+			<AddCustomerDrawer />
+			<div className="order--pos-right">
+				<div className="card billing-section-wrap">
+					<div className="flex flex-col h-full">
+						<div className="p-3 bg-light">
+							<h5 className="m-0">
+								{dictionaryStore.getString('billing_section')}
+							</h5>
+							<SelectCustomer />
+						</div>
 
-						<RightSideWrap>
+						<div className="bg-gray-200 p-3 font-bold">
+							<div className="flex">
+								<div className="w-2/4">{dictionaryStore.getString('item')}</div>
+								<div className="w-1/4">{dictionaryStore.getString('qty')}</div>
+								<div className="w-1/4">{dictionaryStore.getString('price')}</div>
+								<div className="w-1/4">{dictionaryStore.getString('action')}</div>
+							</div>
+						</div>
 
-							<RightSideHeader>
-								<h5 className="p-3 m-0 bg-light">
-									{dictionaryStore.getString('billing_section')}
-								</h5>
-								<SelectCustomer />
-							</RightSideHeader>
+						<div style={{ height: 'calc(100vh - 365px)' }} className="overflow-auto">
+							<CashierProducts />
+						</div>
 
-							<TableHeaderRow gutter={16}>
-								<Col span={8}>{dictionaryStore.getString('item')}</Col>
-								<Col span={7}>{dictionaryStore.getString('qty')}</Col>
-								<Col span={4}>{dictionaryStore.getString('price')}</Col>
-								<Col span={4}>{dictionaryStore.getString('action')}</Col>
-							</TableHeaderRow>
-
-							<CashierProductsWrap>
-								<CashierProducts />
-							</CashierProductsWrap>
-
-							<CashierBilling />
-						</RightSideWrap>
+						<CashierBilling />
 					</div>
 				</div>
-			</Col>
-		</OrderPosWrap>
-
+			</div>
+		</div>
 	);
 });
 

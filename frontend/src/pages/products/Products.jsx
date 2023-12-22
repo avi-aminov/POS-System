@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { Row, Col } from 'antd';
 import { observer } from 'mobx-react';
 import categoriesStore from '../../stores/categoriesStore';
 import productsStore from '../../stores/productsStore';
@@ -11,7 +10,9 @@ const Products = observer(() => {
 	}, []);
 
 	return (
-		<Row>
+		<div
+			className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4"
+			style={{ height: 'calc(100vh - 200px)', overflow: 'auto' }}>
 			{productsStore.products && productsStore.products
 				.filter(
 					(item) =>
@@ -21,11 +22,11 @@ const Products = observer(() => {
 							productsStore.searchQuery === ''),
 				)
 				.map((item) => (
-					<Col key={item._id} xs={24} lg={6} md={12} sm={6}>
+					<div key={item._id} className="bg-white border">
 						<ItemList key={item._id} item={item} />
-					</Col>
+					</div>
 				))}
-		</Row>
+		</div>
 	);
 });
 
